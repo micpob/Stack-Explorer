@@ -2,8 +2,10 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Platform, SafeAreaView, Button } from 'react-native';
 import styled from 'styled-components/native';
 import SearchButton from './src/components/SearchButton';
+import CategoriesView from './src/components/CategoriesView';
 import { WebView } from 'react-native-webview';
 import React, { Component, useState, useRef, useEffect } from 'react'
+
 
 const MainContainer = styled.View`
   flex-direction: column;
@@ -13,36 +15,24 @@ const MainContainer = styled.View`
 `
 export default function App() {
 
-  const [showWebview, setShowWebview] = useState(false)
+  console.log('App started')
+
+  const [showCategoriesView, setShowCategoriesView] = useState(true)
+  const [showWebview, setShowWebview] = useState(true)
+  const [tags, setTags] = useState([])
+  const [lastUrl, setLastUrl] = useState('')
 
   return (
 
     <MainContainer>
       <SearchButton setShowWebview={setShowWebview} showWebview={showWebview} ></SearchButton>
       
-      {showWebview ?  Platform.OS === "web"  ? (
-          <iframe src="https://stackoverflow.com/" height={'100%'} width={'100%'} />
-        ) : (
-          <View style={{ flex: 1 }}>
-            <WebView
-              source={{ uri: "https://stackoverflow.com/" }}
-              style={{marginTop: 22, flex: 1}}
-            />
-          </View>
-        ) : null
+      {showCategoriesView && 
+        <CategoriesView></CategoriesView>
       }
-      {/* <WebView
-              source={{ uri: "https://reactnative.dev/" }}
-              style={{height: '40%', backgroundColor: 'green'}}
-            /> */}
-      {/* <Text>Open up App.js to start working on your app!</Text> */}
-      {/* <SearchButton setShowWebview={setShowWebview} showWebview={showWebview}></SearchButton> */}
-      {/* <WebView
-              source={{ uri: "https://reactnative.dev/" }}
-              style={{marginTop: 22, flex: 1}}
-            /> */}
+
      
-      {/* { Platform.OS === "web" && showWebview ? (
+      {/* {!showCategoriesView && randomUrl.length > 0 ?  Platform.OS === "web"  ? (
           <iframe src="https://micpob.com/" height={'100%'} width={'100%'} />
         ) : (
           <View style={{ flex: 1 }}>
