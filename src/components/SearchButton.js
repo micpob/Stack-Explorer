@@ -30,10 +30,10 @@ const SearchButton = ({setShowWebview, showWebview}) => {
   }
   
 
-  /* const openRandomLink = (linksArray) => {
-    const randomNumber = Math.floor(Math.random() * (linksArray.length - 1))
-    const questionUrl = linksArray[randomNumber]
-    window.open(questionUrl, '_blank').focus()
+    //const fetchUrl = `https://api.stackexchange.com/2.3/search/advanced?pagesize=10&fromdate=946684800&order=desc&sort=activity&accepted=True&tagged=${tagsForUrl}&views=50&site=stackoverflow`
+    //let fetchUrl = `https://api.stackexchange.com/2.3/search/advanced?page=${page}&pagesize=100&fromdate=946684800&order=desc&sort=activity&accepted=True&tagged=${tagsForUrl}&views=50&site=stackoverflow&filter=!-MJX1_ZwORBEZ4ki2)9Un9Jkk2*tr)q*I`
+    let fetchUrl = `https://api.stackexchange.com/2.3/search/advanced?page=${page}&pagesize=100&fromdate=946684800&order=desc&sort=activity&accepted=True&tagged=${tagsForUrl}&views=50&site=stackoverflow&filter=!0ynczPwaq3R_qM75`
+    console.log('fetchUrl:', fetchUrl)
     const newLinksArray = linksArray.filter(link => link !== questionUrl)
     setLinks(newLinksArray)
     console.log(`links:`, newLinksArray)
