@@ -9,15 +9,23 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.8.0",
+    "@ant-design/icons-react-native": "^2.3.2",
+    "@expo/vector-icons": "^13.0.0",
     "@expo/webpack-config": "^0.17.0",
+    "@react-native-async-storage/async-storage": "~1.17.3",
+    "@react-native-community/art": "^1.2.0",
     "expo": "~46.0.16",
+    "expo-constants": "~13.2.4",
+    "expo-font": "~10.2.0",
     "expo-status-bar": "~1.4.0",
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-native": "0.69.6",
+    "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.18.7",
-    "styled-components": "^5.3.6",
-    "react-native-webview": "11.23.0"
+    "react-native-webview": "11.23.0",
+    "styled-components": "^5.3.6"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
