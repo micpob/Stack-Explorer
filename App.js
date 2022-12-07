@@ -55,8 +55,8 @@ export default function App() {
     <MainContainer>
       
         <ButtonsContainer>
-          <Button onPress={() => { AsyncStorage.clear() }}>DEL</Button>
-          <SearchButton /* page={page} setPage={setPage} */ setShowLoader={setShowLoader} tags={tags} lastUrl={lastUrl} setLastUrl={setLastUrl} links={links} setLinks={setLinks} setRandomUrl={setRandomUrl}></SearchButton>
+          <Button title="DEL" onPress={() => { AsyncStorage.clear() }}></Button>
+          <SearchButton setShowLoader={setShowLoader} setShowAlert={setShowAlert} tags={tags} lastUrl={lastUrl} setLastUrl={setLastUrl} links={links} setLinks={setLinks} setRandomUrl={setRandomUrl}></SearchButton>
           {/* <FavoritesButton></FavoritesButton> */}
         </ButtonsContainer>
       
