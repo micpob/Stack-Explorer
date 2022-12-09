@@ -26,10 +26,10 @@ const StyledTextButton = styled.Text`
   font-weight: 600;
 `
 
-const SearchButton = ({setShowLoader, tags, lastUrl, setLastUrl, links, setLinks, setRandomUrl}) => {
+const SearchButton = ({setShowLoader, setShowAlert, tags, setRandomUrl, lastUrl, setLastUrl, links, setLinks}) => {
   
   let tagsForUrl = tags.join(';')
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(20)
   const firstTimeRender = useRef(true)
 
   useEffect(() => {
@@ -42,72 +42,99 @@ const SearchButton = ({setShowLoader, tags, lastUrl, setLastUrl, links, setLinks
   }, [page])
 
   const handleClick = async () => {
-    console.log('page:', page)
-    //const fetchUrl = `https://api.stackexchange.com/2.3/search/advanced?pagesize=10&fromdate=946684800&order=desc&sort=activity&accepted=True&tagged=${tagsForUrl}&views=50&site=stackoverflow`
-    //let fetchUrl = `https://api.stackexchange.com/2.3/search/advanced?page=${page}&pagesize=100&fromdate=946684800&order=desc&sort=activity&accepted=True&tagged=${tagsForUrl}&views=50&site=stackoverflow&filter=!-MJX1_ZwORBEZ4ki2)9Un9Jkk2*tr)q*I`
-    let fetchUrl = `https://api.stackexchange.com/2.3/search/advanced?page=${page}&pagesize=10&fromdate=946684800&order=desc&sort=activity&accepted=True&tagged=${tagsForUrl}&views=50&site=stackoverflow&filter=!0ynczPwaq3R_qM75`
-    
-    const keys = await AsyncStorage.getAllKeys()
+    setShowAlert(false)
 
-    if (keys.includes(fetchUrl)) {
-      let links = await AsyncStorage.getItem(fetchUrl)
-      links = JSON.parse(links)
-      console.log('links from storage:', links)
-      if (links.length > 0) {
-        openRandomLink(fetchUrl, links)  
-      } else if (page !== 1) {
-        console.log('reset page to 1')
-        setPage(1)
-      } else {
-        setShowLoader(false)
-        console.log('there are no results with the selected tags ')
-      }
+    printAsyncStorage()
+    console.log('links:', links)
+    console.log('page:', page)
+
+    let fetchUrl = `https://api.stackexchange.com/2.3/search/advanced?pagesize=5&fromdate=946684800&order=desc&sort=activity&accepted=True&views=50&site=stackoverflow&filter=!0ynczPwaq3R_qM75&page=${page}&tagged=${tagsForUrl}`
+    //let fetchUrl = `https://api.stackexchange.com/2.3/search/advanced?pagesize=5&fromdate=946684800&order=desc&sort=activity&accepted=True&views=50&site=stackoverflow&filter=!0ynczPwaq3R_qM75&tagged=${tagsForUrl}&page=${page}`
+    
+    if (lastUrl === fetchUrl && links.length > 0) {
+      openRandomLink(fetchUrl, links)
     } else {
-      setShowLoader(true)
-      fetch(fetchUrl)
-      .then(response => response.json())
-      .then(data => {
-      console.log('data:', data)
-      if (typeof data.items == 'undefined') { console.log('data.items undefined'); return}
-      if (data.items.length === 0) {
-        if (page !== 1) {
-          console.log('reset page to 1')
-          setPage(1)
+      const keys = await AsyncStorage.getAllKeys()
+
+      const tagsArray = keys.map(key => {
+          let n = key.lastIndexOf('=')
+          return key.substring(n + 1)
+      })
+
+      if (tagsArray.includes(tagsForUrl)) {
+        const fetchUrlIndex = tagsArray.indexOf(tagsForUrl)
+        const key = keys[fetchUrlIndex]
+        let linksFromStorage = await AsyncStorage.getItem(key)
+        linksFromStorage = JSON.parse(linksFromStorage)
+        console.log('links from storage:', linksFromStorage)
+        if (linksFromStorage.length > 0) {
+          openRandomLink(fetchUrl, linksFromStorage)  
         } else {
-          setShowLoader(false)
-          console.log('there are no results with the selected tags ')
-          //alert('there are no results with the selected tags ')
+          console.log('change page in fetch URL')
+          const newPage = page + 1
+          setPage(newPage)
         }
       } else {
-        const linksArray = data.items.map(item => item.link)
-        //console.log('links:', linksArray)
-        
-        //setLinks(linksArray)
-        //setLastUrl(fetchUrl)
-        openRandomLink(fetchUrl, linksArray)  
+        setShowLoader(true)
+        fetch(fetchUrl)
+        .then(response => response.json())
+        .then(data => {
+          console.log('data:', data)
+          if (typeof data.items == 'undefined') { console.log('data.items undefined'); setPage(1); return}
+          if (data.items.length === 0) {
+            if (page !== 1) {
+              console.log('reset page to 1')
+              setPage(1)
+            } else {
+              setShowLoader(false)
+              setShowAlert(true)
+              console.log('there are no results with the selected tags ')
+              //alert('there are no results with the selected tags ')
+            }
+          } else {
+            const linksArray = data.items.map(item => item.link)
+            //console.log('links:', linksArray)
+            openRandomLink(fetchUrl, linksArray)
+          }
+        })
       }
-    })
   }
  }
   
   const openRandomLink = async (fetchUrl, linksArray) => {
     const questionUrl = linksArray[Math.floor(Math.random()*linksArray.length)]
+    console.log('questionUrl:', questionUrl)
+    setShowLoader(false)
+    setRandomUrl(questionUrl)
     const newLinksArray = linksArray.filter(link => link !== questionUrl)
-    //setLinks(newLinksArray)
     const jsonNewLinksArray = JSON.stringify(newLinksArray)
-    
-     const waiting = await AsyncStorage.setItem(fetchUrl, jsonNewLinksArray)
-    if (newLinksArray.length === 0) {
+    AsyncStorage.setItem(fetchUrl, jsonNewLinksArray)
+    setLinks(newLinksArray)
+    setLastUrl(fetchUrl)
+    /* if (newLinksArray.length === 0) {
       console.log('change page in fetch URL')
       const newPage = page + 1
       setPage(newPage)
-    }
-    setShowLoader(false)
-    setRandomUrl(questionUrl)
+    } */
+
+    //DEV
     let newLinksArrayStored = await AsyncStorage.getItem(fetchUrl)
     newLinksArrayStored = JSON.parse(newLinksArrayStored)
     console.log('newLinksArrayStored:', newLinksArrayStored)
+    console.info(new Blob([JSON.stringify(newLinksArrayStored)]).size)
   }
+
+  const printAsyncStorage = () => {
+    AsyncStorage.getAllKeys((err, keys) => {
+      AsyncStorage.multiGet(keys, (error, stores) => {
+        let asyncStorage = {}
+        stores.map((result, i, store) => {
+          asyncStorage[store[i][0]] = store[i][1]
+        });
+        console.table(asyncStorage)
+      });
+    });
+  };
 
   return (
     <MainContainer>
