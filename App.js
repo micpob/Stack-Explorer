@@ -24,6 +24,8 @@ const ButtonsContainer = styled.View`
   margin-top: 30px;
   align-items: center;
   justify-content: space-around;
+  margin-top: auto;
+  padding: 20px 5px 20px 5px;
 `
 const LoaderContainer = styled.View`
   margin: auto;
@@ -54,11 +56,7 @@ export default function App() {
 
     <MainContainer>
       
-        <ButtonsContainer>
-          <Button title="DEL" onPress={() => { AsyncStorage.clear() }}></Button>
-          <SearchButton setShowLoader={setShowLoader} setShowAlert={setShowAlert} tags={tags} lastUrl={lastUrl} setLastUrl={setLastUrl} links={links} setLinks={setLinks} setRandomUrl={setRandomUrl}></SearchButton>
-          {/* <FavoritesButton></FavoritesButton> */}
-        </ButtonsContainer>
+       
       
       
       {/* {showCategoriesView && 
@@ -95,7 +93,14 @@ export default function App() {
           </View>
         ) : null
       } */}
-      <StatusBar style="auto" />
+
+
+      <ButtonsContainer>
+        <Button title="DEL" onPress={() => { AsyncStorage.clear(); const keys = AsyncStorage.getAllKeys(); console.log('keys:', keys)}}></Button>
+        <SearchButton setShowLoader={setShowLoader} setShowAlert={setShowAlert} tags={tags} lastUrl={lastUrl} setLastUrl={setLastUrl} links={links} setLinks={setLinks} setRandomUrl={setRandomUrl}></SearchButton>
+        {/* <FavoritesButton></FavoritesButton> */}
+      </ButtonsContainer>
+      {/* <StatusBar style="auto" /> */}
     </MainContainer>
   )
 }
