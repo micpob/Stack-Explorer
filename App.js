@@ -8,7 +8,8 @@ import React, { Component, useState, useRef, useEffect } from 'react'
 import AnimatedLoader from 'react-native-animated-loader'
 import reactDom from 'react-dom'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import ProgressBar from 'react-native-progress/Bar'
+import TagsView from './src/components/TagsView'
 
 
 const MainContainer = styled.View`
@@ -29,6 +30,11 @@ const ButtonsContainer = styled.View`
 `
 const LoaderContainer = styled.View`
   margin: auto;
+`
+
+const ProgressBarcontainer = styled.View`
+  heigth: 5px;
+  margin-top: auto;
 `
 export default function App() {
 
@@ -63,12 +69,12 @@ export default function App() {
         <CategoriesView></CategoriesView>
       } */}
 
-      {showLoader ? 
+       {showLoader && 
       <LoaderContainer>
         <ActivityIndicator size="large" color="blue" />
       </LoaderContainer>
-        :
-        null
+      }
+
       }
 
 
@@ -82,18 +88,10 @@ export default function App() {
           </View>
         ) : null
       }
-      {/* {!showCategoriesView && randomUrl.length > 0 ?  Platform.OS === "web"  ? (
-          <iframe src={{ uri: randomUrl }} height={'100%'} width={'100%'} />
-        ) : (
-          <View style={{ flex: 1 }}>
-            <WebView
-              source={{ uri: randomUrl }}
-              style={{marginTop: 22, flex: 1}}
-            />
-          </View>
-        ) : null
-      } */}
 
+      <ProgressBarcontainer>
+        { showLoader && <ProgressBar animationConfig={{ bounciness: 0 }} progress={0} width={null} indeterminate={true} color='orange' indeterminateAnimationDuration={3000} borderWidth={0} borderColor='black' borderRadius={0} marginTop='auto' /> }
+      </ProgressBarcontainer>
 
       <ButtonsContainer>
         <Button title="DEL" onPress={() => { AsyncStorage.clear(); const keys = AsyncStorage.getAllKeys(); console.log('keys:', keys)}}></Button>
