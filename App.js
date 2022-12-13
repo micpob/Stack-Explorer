@@ -2,14 +2,14 @@ import { StatusBar } from 'expo-status-bar'
 import { ActivityIndicator, StyleSheet, Text, View, Platform, SafeAreaView, Button } from 'react-native'
 import styled from 'styled-components/native'
 import SearchButton from './src/components/SearchButton'
-import FavoritesButton from './src/components/FavoritesButton'
+import FavoritesButton from './Deposit/FavoritesButton'
 import { WebView } from 'react-native-webview'
 import React, { Component, useState, useRef, useEffect } from 'react'
-import AnimatedLoader from 'react-native-animated-loader'
 import reactDom from 'react-dom'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ProgressBar from 'react-native-progress/Bar'
 import TagsView from './src/components/TagsView'
+import ShowTagsButton from './src/components/ShowTagsButton'
 
 
 const MainContainer = styled.View`
@@ -22,11 +22,9 @@ const ButtonsContainer = styled.View`
   display: flex;
   flex-direction: row;
   width: 100%;
-  margin-top: 30px;
   align-items: center;
   justify-content: space-around;
-  margin-top: auto;
-  padding: 20px 5px 20px 5px;
+  padding: 20px 0px 20px 0px;
 `
 const LoaderContainer = styled.View`
   margin: auto;
@@ -38,47 +36,45 @@ const ProgressBarcontainer = styled.View`
 `
 export default function App() {
 
-  //console.log('App started')
-
-  const [showCategoriesView, setShowCategoriesView] = useState(false)
+  const [showTagsView, setShowTagsView] = useState(false)
   const [showLoader, setShowLoader] = useState(false)
+  const [showAlert, setShowAlert] = useState(false)
   const [showWebview, setShowWebview] = useState(true)
-  const [tags, setTags] = useState(['inkscape'])
+  const [tags, setTags] = useState(['vba'])
+  //const [tags, setTags] = useState(['HTML', 'CSS', 'JavaScript', 'React', 'Angular', 'PHP', 'SQL', 'MySql'])
   const [lastUrl, setLastUrl] = useState('')
   const [links, setLinks] = useState([])
   const [randomUrl, setRandomUrl] = useState('')
   //const [page, setPage] = useState(1)
-  const styles = StyleSheet.create({
-    lottie: {
-      backgroundColor: 'red',
-      width: 300,
-      height: 300,
-    },
-  })
 
-  11
+
 
   return (
 
     <MainContainer>
       
+
+      { 
+        showTagsView &&
+        <TagsView></TagsView>
+      }
        
-      
-      
-      {/* {showCategoriesView && 
-        <CategoriesView></CategoriesView>
-      } */}
-
-       {showLoader && 
-      <LoaderContainer>
-        <ActivityIndicator size="large" color="blue" />
-      </LoaderContainer>
+      {
+        showLoader && 
+        <LoaderContainer>
+          <ActivityIndicator size="large" color="blue" />
+        </LoaderContainer> 
       }
 
-      }
+      {
+        showAlert && 
+        <LoaderContainer>
+          <Text>There are no results with the selected tags</Text>
+        </LoaderContainer> 
+      } 
 
 
-      {!showLoader && !showCategoriesView && randomUrl.length > 0 ?  
+      {!showLoader && !showAlert && !showTagsView && randomUrl.length > 0 ?  
         (
           <View style={{ flex: 1 }}>
             <WebView
@@ -88,17 +84,16 @@ export default function App() {
           </View>
         ) : null
       }
-
+      
       <ProgressBarcontainer>
         { showLoader && <ProgressBar animationConfig={{ bounciness: 0 }} progress={0} width={null} indeterminate={true} color='orange' indeterminateAnimationDuration={3000} borderWidth={0} borderColor='black' borderRadius={0} marginTop='auto' /> }
       </ProgressBarcontainer>
 
       <ButtonsContainer>
+        <ShowTagsButton setShowAlert={setShowAlert} setShowTagsView={setShowTagsView}></ShowTagsButton>
+        <SearchButton setShowTagsView={setShowTagsView} setShowLoader={setShowLoader} setShowAlert={setShowAlert} tags={tags} lastUrl={lastUrl} setLastUrl={setLastUrl} links={links} setLinks={setLinks} setRandomUrl={setRandomUrl}></SearchButton>
         <Button title="DEL" onPress={() => { AsyncStorage.clear(); const keys = AsyncStorage.getAllKeys(); console.log('keys:', keys)}}></Button>
-        <SearchButton setShowLoader={setShowLoader} setShowAlert={setShowAlert} tags={tags} lastUrl={lastUrl} setLastUrl={setLastUrl} links={links} setLinks={setLinks} setRandomUrl={setRandomUrl}></SearchButton>
-        {/* <FavoritesButton></FavoritesButton> */}
       </ButtonsContainer>
-      {/* <StatusBar style="auto" /> */}
     </MainContainer>
   )
 }
