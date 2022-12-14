@@ -19,19 +19,21 @@ const StyledTagButton = styled.TouchableOpacity`
 const StyledTextButton = styled.Text`
   color:  ${props => props.selected ? 'white' : 'black'}
   font-size: 16px;
+  font-weight: 600;
 `
-const TagButton = ({title, selected}) => {
+const TagButton = ({title, selected, handleClick}) => {
 
-  const [isSelected, setIsSelected] = useState(selected)
+  /* const [isSelected, setIsSelected] = useState(selected)
 
   const handleClick = () => {
+
     setIsSelected(!isSelected)
-  }
+  } */
   
   return (
-    <MainContainer selected={isSelected}>
+    <MainContainer selected={selected}>
       <StyledTagButton onPress={handleClick} >
-        <StyledTextButton selected={isSelected}>{title}</StyledTextButton>
+        <StyledTextButton selected={selected}>{title}</StyledTextButton>
       </StyledTagButton>
     </MainContainer>
   )

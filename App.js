@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ProgressBar from 'react-native-progress/Bar'
 import TagsView from './src/components/TagsView'
 import ShowTagsButton from './src/components/ShowTagsButton'
+import defaultTags from './src/utils/defaultTags'
 
 
 const MainContainer = styled.View`
@@ -36,18 +37,43 @@ const ProgressBarcontainer = styled.View`
 `
 export default function App() {
 
+  console.log('starting App.js')
+  console.log('defaultTags:', defaultTags)
+
   const [showTagsView, setShowTagsView] = useState(false)
   const [showLoader, setShowLoader] = useState(false)
   const [showAlert, setShowAlert] = useState(false)
   const [showWebview, setShowWebview] = useState(true)
+  const [site, setSite] = useState('stackoverflow')
   const [tags, setTags] = useState(['vba'])
-  //const [tags, setTags] = useState(['HTML', 'CSS', 'JavaScript', 'React', 'Angular', 'PHP', 'SQL', 'MySql'])
   const [lastUrl, setLastUrl] = useState('')
   const [links, setLinks] = useState([])
   const [randomUrl, setRandomUrl] = useState('')
   //const [page, setPage] = useState(1)
 
+  const getStoredtags = async () => {
+    let storedTags = await AsyncStorage.getItem(`${site}-tags`)
+    if (storedTags && storedTags.length > 0) {
+      storedTags = JSON.parse(storedTags)
+      return storedTags
+    } else {
+      const importedTags = defaultTags[`${site}`]
+      return importedTags
+    }
+  }
 
+  useEffect(() => {
+    console.log('useEffect')
+    const getTags = async () => {
+      const storedTags = await getStoredtags()
+      console.log('storedtags:', storedTags)
+      const selectedTags = storedTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
+      setTags(selectedTags)
+    }
+    getTags()
+  }, [])
+
+  console.log('tags:', tags)
 
   return (
 
@@ -56,7 +82,7 @@ export default function App() {
 
       { 
         showTagsView &&
-        <TagsView></TagsView>
+        <TagsView getStoredtags={getStoredtags} /* getSelectedTags={getSelectedTags} */ site={site} setSite={setSite} tags={tags} setTags={setTags}></TagsView>
       }
        
       {

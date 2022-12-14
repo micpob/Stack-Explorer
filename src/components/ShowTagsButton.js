@@ -33,7 +33,7 @@ const ShowTagsButton = ({setShowAlert, setShowTagsView}) => {
   return (
     <MainContainer>
       <StyledTagsButton onPress={handleClick}>
-        <StyledTextButton>T</StyledTextButton>
+        <StyledTextButton>TAGS</StyledTextButton>
       </StyledTagsButton>
     </MainContainer>  
   )
