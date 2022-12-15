@@ -1,19 +1,26 @@
 import { StyleSheet, Text, View, Platform, SafeAreaView, Button } from 'react-native';
 import styled from 'styled-components/native'
 import TagButton from './TagButton'
+import AddTagForm from './AddTagForm'
 import React, { Component, useState, useRef, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const MainContainer = styled.View`
-  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: row;
   flex-wrap: wrap;
-  height: 100%;
   width: 100%;
-  margin-top: 45px;
+  margin-top: auto;
+  align-self: flex-end;
+  padding: 8px;
+`
+
+const StyledTitle = styled.Text`
+  width: 100%;
+  font-size: 25px;
+  font-weight: 600;
 `
 const TagsView = ({getStoredtags, site, setSite, tags, setTags}) => {
 
@@ -59,10 +66,16 @@ const TagsView = ({getStoredtags, site, setSite, tags, setTags}) => {
     }
   }
 
+  const handleLongPress = (tag) => {
+
+  }
+
 
   return (
     <MainContainer >
-       {allTags.map(tag => <TagButton key={tag.name} title={tag.name} selected={tag.selected} handleClick={() => handleClick(tag)} ></TagButton>)}
+      <StyledTitle>TAGS:</StyledTitle>
+      {allTags.map(tag => <TagButton key={tag.name} title={tag.name} selected={tag.selected} handleClick={() => handleClick(tag) } handleLongPress={() => handleLongPress(tag) }></TagButton>)}
+      <AddTagForm site={site} allTags={allTags} setAllTags={setAllTags}></AddTagForm>
     </MainContainer>
   )
 }
