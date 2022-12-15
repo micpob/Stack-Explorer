@@ -13,3 +13,5 @@ Deposit/
 
 # macOS
 .DS_Store
+
+*.txt
