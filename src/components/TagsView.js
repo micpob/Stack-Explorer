@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Platform, SafeAreaView, Button } from 'react-native';
+import { StyleSheet, Text, View, Platform, SafeAreaView, Button, Alert } from 'react-native';
 import styled from 'styled-components/native'
 import TagButton from './TagButton'
 import AddTagForm from './AddTagForm'
@@ -54,6 +54,14 @@ const TagsView = ({getStoredtags, site, setSite, tags, setTags}) => {
     } else {
       const selectedTagsCount = allTags.reduce((acc, cur) => cur.selected ? ++acc : acc, 0)
       if (selectedTagsCount > 3) {
+        Alert.alert(
+          "Too many tags",
+          "Can't select more than 4 tags at the same time",
+          [ ],
+          {
+            cancelable: true
+          }
+        )
         console.log('cant select more than 4 tags at the same time')
       } else {
         const newAllTags = allTags.map(tagObject => tagObject.name === tag.name ? { name: tagObject.name, selected: true} : tagObject)
