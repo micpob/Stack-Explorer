@@ -22,7 +22,7 @@ const StyledTitle = styled.Text`
   font-size: 25px;
   font-weight: 600;
 `
-const TagsView = ({getStoredtags, site, setSite, tags, setTags}) => {
+const SettingsView = ({getStoredtags, site, setSite, tags, setTags}) => {
 
   //const [allTags, setAllTags] = useState(['HTML', 'CSS', 'JavaScript', 'React', 'Angular', 'Canvas', 'Node.js', 'PHP', 'SQL', 'MySql', 'GraphQL', 'docker', 'kubernetes', 'SSH', 'FTP', 'AWS', 'nosql', 'mongo', 'mysql', 'postgresql'])
   const [allTags, setAllTags] = useState([])
@@ -88,4 +88,4 @@ const TagsView = ({getStoredtags, site, setSite, tags, setTags}) => {
   )
 }
 
-export default TagsView
+export default SettingsView

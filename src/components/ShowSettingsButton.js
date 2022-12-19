@@ -23,11 +23,11 @@ const StyledTextButton = styled.Text`
   font-weight: 600;
 `
 
-const ShowTagsButton = ({setShowAlert, setShowTagsView}) => {
+const ShowSettingsButton = ({setShowAlert, setShowSettingsView}) => {
   
   const handleClick = async () => {
     setShowAlert(false)
-    setShowTagsView(true)
+    setShowSettingsView(true)
   }
   
   return (
@@ -39,4 +39,4 @@ const ShowTagsButton = ({setShowAlert, setShowTagsView}) => {
   )
 }
 
-export default ShowTagsButton
+export default ShowSettingsButton
