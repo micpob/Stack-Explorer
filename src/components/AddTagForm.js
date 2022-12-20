@@ -2,7 +2,7 @@ import React, { Component, useState, useRef, useEffect } from 'react'
 import styled from 'styled-components/native'
 import { SafeAreaView, StyleSheet, TextInput, Text, View, Platform, Button, TouchableOpacity, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
+import NetInfo from "@react-native-community/netinfo"
 
 const MainContainer = styled.View`
   align-self: center;
@@ -45,7 +45,11 @@ const AddTagForm = ({ site, allTags, setAllTags }) => {
     if (tagAlreadyExists) {
       Alert.alert(
         "Tag already exists",
-        `the tag "${value}" is already added`,
+      NetInfo.fetch().then(state => {
+        if (!state.isConnected) {
+          Alert.alert(
+            "No internet connection",
+            `You need to be connected to the internet to add a new tag`,
         [ ],
         {
           cancelable: true
@@ -82,6 +86,9 @@ Please try with another tag.`,
           onChangeText('')
         }
       })
+        }
+      })
+
     }
   }
   

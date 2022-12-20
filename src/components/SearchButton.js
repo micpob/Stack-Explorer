@@ -2,6 +2,7 @@ import React, { Component, useState, useRef, useEffect } from 'react'
 import styled from 'styled-components/native'
 import { StyleSheet, Text, View, Platform, SafeAreaView, Button, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import NetInfo from "@react-native-community/netinfo"
 
 const MainContainer = styled.View`
   display: flex;
@@ -114,6 +115,18 @@ const SearchButton = ({setShowSettingsView, setShowLoader, setShowAlert, tags, s
   }
   
   const openRandomLink = async (fetchUrl, linksArray) => {
+
+    NetInfo.fetch().then(async (state) => {
+      if (!state.isConnected) {
+        Alert.alert(
+          "No internet connection",
+          `You need to be connected to the internet to use the app`,
+          [ ],
+          {
+            cancelable: true
+          }
+        )
+      } else {
     const questionUrl = linksArray[Math.floor(Math.random()*linksArray.length)]
     console.log('questionUrl:', questionUrl)
     setShowLoader(false)
@@ -135,6 +148,9 @@ const SearchButton = ({setShowSettingsView, setShowLoader, setShowAlert, tags, s
     console.log('newLinksArrayStored:', newLinksArrayStored)
     console.info(new Blob([JSON.stringify(newLinksArrayStored)]).size)
   }
+    })
+  }
+
 
   const printAsyncStorage = () => {
     AsyncStorage.getAllKeys((err, keys) => {
