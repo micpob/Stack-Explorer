@@ -23,7 +23,7 @@ const StyledTextButton = styled.Text`
   font-weight: 600;
 `
 
-const SearchButton = ({setShowTagsView, setShowLoader, setShowAlert, tags, setRandomUrl, lastUrl, setLastUrl, links, setLinks}) => {
+const SearchButton = ({setShowSettingsView, setShowLoader, setShowAlert, tags, setRandomUrl, lastUrl, setLastUrl, links, setLinks}) => {
   console.log('tags from search button:', tags)
   let tagsForUrl = tags.join(';').toLowerCase()
   const [page, setPage] = useState(1)
@@ -40,7 +40,7 @@ const SearchButton = ({setShowTagsView, setShowLoader, setShowAlert, tags, setRa
 
   const handleClick = async () => {
     setShowAlert(false)
-    setShowTagsView(false)
+    setShowSettingsView(false)
     printAsyncStorage()
     console.log('links:', links)
     console.log('page:', page)
