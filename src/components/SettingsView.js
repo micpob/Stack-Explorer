@@ -4,6 +4,7 @@ import TagButton from './TagButton'
 import AddTagForm from './AddTagForm'
 import React, { Component, useState, useRef, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { Notifier, Easing, NotifierComponents  } from 'react-native-notifier';
 
 const MainContainer = styled.View`
   display: flex;
@@ -61,8 +62,25 @@ const SettingsView = ({getStoredtags, site, setSite, tags, setTags}) => {
           {
             cancelable: true
           }
-        )
-        console.log('cant select more than 4 tags at the same time')
+          ) */
+          Notifier.showNotification({
+            translucentStatusBar: true,
+            title: `Too many tags selected`,
+            description: `Max. 4 tags selected at the same time`,
+            duration: 2500,
+            showAnimationDuration: 500,
+            Component: NotifierComponents.Notification,
+            componentProps: {
+              titleStyle: {color: 'white', fontSize: 24, fontWeight: '600'},
+              descriptionStyle: {color: 'white', fontSize: 16, fontWeight: '600'},
+              containerStyle: {backgroundColor: 'orange'}
+            }, 
+            /* showEasing: Easing.bounce, */
+            /* onHidden: () => console.log('Hidden'),
+            onPress: () => console.log('Press'), */
+            hideOnPress: true,
+          })
+          console.log('Max. 4 tags selected at the same time')
       } else {
         const newAllTags = allTags.map(tagObject => tagObject.name === tag.name ? { name: tagObject.name, selected: true} : tagObject)
         const jsonNewTagsArray = JSON.stringify(newAllTags)

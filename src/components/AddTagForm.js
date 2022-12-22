@@ -3,6 +3,7 @@ import styled from 'styled-components/native'
 import { SafeAreaView, StyleSheet, TextInput, Text, View, Platform, Button, TouchableOpacity, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import NetInfo from "@react-native-community/netinfo"
+import { Notifier, Easing, NotifierComponents  } from 'react-native-notifier';
 
 const MainContainer = styled.View`
   align-self: center;
@@ -30,21 +31,45 @@ const StyledInputField = styled.TextInput`
   background: white;
 `
 
-const AddTagForm = ({ site, allTags, setAllTags }) => {
+const AddTagForm = ({ site, allTags, setAllTags, setDeleteTags }) => {
 
   const [newTag, onChangeText] = React.useState('')
 
   const handleSubmit = (value) => {
+    if (value.trim().length < 1) return
 
-    if (value.length < 1) return
-
+    const tagName = value.trim().toLowerCase()
     const tagAlreadyExists = allTags.some(tag => {
-      return tag.name.toLowerCase() === value.toLowerCase()
+      return tag.name === tagName
     })
     console.log('tag already exists:', tagAlreadyExists)
     if (tagAlreadyExists) {
+      /* Notifier.showNotification({
+        translucentStatusBar: true,
+        title: `Tag already exists`,
+        description: `The tag "${tagName}" is already added`,
+        duration: 2500,
+        showAnimationDuration: 500,
+        Component: NotifierComponents.Notification,
+        componentProps: {
+          titleStyle: {fontSize: 24, fontWeight: '600'},
+          descriptionStyle: {fontSize: 16, fontWeight: '600'}
+          
+        }, */
+        /* showEasing: Easing.bounce, */
+        /* onHidden: () => console.log('Hidden'),
+        onPress: () => console.log('Press'), */
+        /* hideOnPress: true,
+      }) */
       Alert.alert(
         "Tag already exists",
+        `the tag "${tagName}" is already added`,
+        [ ],
+        {
+          cancelable: true
+        }
+      )
+    } else {
       NetInfo.fetch().then(state => {
         if (!state.isConnected) {
           Alert.alert(
@@ -66,7 +91,7 @@ const AddTagForm = ({ site, allTags, setAllTags }) => {
         if (data.items.length === 0) {
           Alert.alert(
             "Tag does not exists",
-            `The tag "${value}" does not exist on ${site}. 
+                `The tag "${tagName}" does not exist on ${site}. 
 
 Please try with another tag.`,
             [ ],
@@ -75,15 +100,33 @@ Please try with another tag.`,
             }
           )
         } else {
-          const tagToAdd = {name: value, selected: false}
+              const tagToAdd = {name: tagName, selected: false}
           console.log('tagToAdd:', tagToAdd)
           console.log('allTags:', allTags)
           const newAllTags = [...allTags, tagToAdd]
           console.log('newAllTags:', newAllTags)
+              newAllTags.sort((a, b) => a.name.localeCompare(b.name))
           const jsonNewTagsArray = JSON.stringify(newAllTags)
           AsyncStorage.setItem(`${site}-tags`, jsonNewTagsArray)
           setAllTags(newAllTags)
           onChangeText('')
+              Notifier.showNotification({
+                translucentStatusBar: true,
+                title: `Tag added`,
+                description: `The tag "${tagToAdd.name}" was added succesfully`,
+                duration: 2500,
+                showAnimationDuration: 500,
+                Component: NotifierComponents.Notification,
+                componentProps: {
+                  titleStyle: {color: 'white', fontSize: 24, fontWeight: '600'},
+                  descriptionStyle: {color: 'white', fontSize: 16, fontWeight: '600'},
+                  containerStyle: {backgroundColor: 'green'}
+                }, 
+                /* showEasing: Easing.bounce, */
+                /* onHidden: () => console.log('Hidden'),
+                onPress: () => console.log('Press'), */
+                hideOnPress: true,
+              })
         }
       })
         }
