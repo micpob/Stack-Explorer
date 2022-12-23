@@ -11,7 +11,8 @@ import ProgressBar from 'react-native-progress/Bar'
 import TagsView from './src/components/TagsView'
 import ShowTagsButton from './src/components/ShowTagsButton'
 import defaultTags from './src/utils/defaultTags'
-
+import defaultYears from './src/utils/defaultYears'
+import defaultSites from './src/utils/defaultSites'
 
 const MainContainer = styled.View`
   flex-direction: column;
@@ -45,11 +46,11 @@ export default function App() {
   const [showAlert, setShowAlert] = useState(false)
   const [showWebview, setShowWebview] = useState(true)
   const [site, setSite] = useState('stackoverflow')
-  const [tags, setTags] = useState(['vba'])
+  const [year, setYear] = useState('2018')
+  const [tags, setTags] = useState([])
   const [lastUrl, setLastUrl] = useState('')
   const [links, setLinks] = useState([])
   const [randomUrl, setRandomUrl] = useState('')
-  //const [page, setPage] = useState(1)
 
   const getStoredtags = async () => {
     let storedTags = await AsyncStorage.getItem(`${site}-tags`)
@@ -62,6 +63,19 @@ export default function App() {
     }
   }
 
+  const getSelectedYear = async () => {
+    let storedYear = await AsyncStorage.getItem(`year`)
+    console.log('STORED YEAR:', storedYear)
+    if (storedYear && storedYear.length > 0) {
+      storedYear = JSON.parse(storedYear)
+      return storedYear
+    } else {
+      const selectedYear = defaultYears['years'].find(year => year.label = '2018')
+      return selectedYear
+    }
+  }
+
+  const getSelectedSite = async () => {
   useEffect(() => {
     console.log('useEffect')
     const getTags = async () => {
@@ -71,6 +85,13 @@ export default function App() {
       setTags(selectedTags)
     }
     getTags()
+    const getYear = async () => {
+      const selectedYear = await getSelectedYear()
+      console.log('selectedYear:', selectedYear)
+      setYear(selectedYear)
+    }
+    getYear()
+    const getSite = async () => {
   }, [])
 
   console.log('tags:', tags)

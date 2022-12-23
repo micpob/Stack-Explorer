@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Platform, SafeAreaView, Button, Alert } from 'r
 import styled from 'styled-components/native'
 import TagButton from './TagButton'
 import AddTagForm from './AddTagForm'
+import YearPicker from './YearPicker'
 import React, { Component, useState, useRef, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Notifier, Easing, NotifierComponents  } from 'react-native-notifier';
@@ -23,7 +24,13 @@ const StyledTitle = styled.Text`
   font-size: 25px;
   font-weight: 600;
 `
-const SettingsView = ({getStoredtags, site, setSite, tags, setTags}) => {
+
+const YearSection = styled.View`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: auto;
+`
 
   //const [allTags, setAllTags] = useState(['HTML', 'CSS', 'JavaScript', 'React', 'Angular', 'Canvas', 'Node.js', 'PHP', 'SQL', 'MySql', 'GraphQL', 'docker', 'kubernetes', 'SSH', 'FTP', 'AWS', 'nosql', 'mongo', 'mysql', 'postgresql'])
   const [allTags, setAllTags] = useState([])
@@ -99,9 +106,15 @@ const SettingsView = ({getStoredtags, site, setSite, tags, setTags}) => {
 
   return (
     <MainContainer >
-      <StyledTitle>TAGS:</StyledTitle>
-      {allTags.map(tag => <TagButton key={tag.name} title={tag.name} selected={tag.selected} handleClick={() => handleClick(tag) } handleLongPress={() => handleLongPress(tag) }></TagButton>)}
-      <AddTagForm site={site} allTags={allTags} setAllTags={setAllTags}></AddTagForm>
+
+      <YearSection>
+        <TitleContainer>
+          <StyledTitle>Questions since:</StyledTitle>
+          <YearPicker year={year} setYear={setYear}></YearPicker>
+        </TitleContainer>
+      </YearSection>
+      
+      <SiteSection>
     </MainContainer>
   )
 }
