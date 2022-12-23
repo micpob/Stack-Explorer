@@ -76,6 +76,16 @@ export default function App() {
   }
 
   const getSelectedSite = async () => {
+    let storedSite = await AsyncStorage.getItem(`site`)
+    if (storedSite && storedSite.length > 0) {
+      storedSite = JSON.parse(storedSite)
+      return storedSite
+    } else {
+      //const selectedSite = defaultSites[`sites`].find(site => site.label = 'stackoverflow')
+      return 'stackoverflow'
+    }
+  }
+
   useEffect(() => {
     console.log('useEffect')
     const getTags = async () => {
@@ -92,9 +102,17 @@ export default function App() {
     }
     getYear()
     const getSite = async () => {
+      const selectedSite = await getSelectedSite()
+      console.log('selectedSite:', selectedSite)
+      setSite(selectedSite)
+    }
+    getSite()
   }, [])
 
   console.log('tags:', tags)
+  console.log('year:', year)
+  console.log('site:', site)
+
 
   return (
 

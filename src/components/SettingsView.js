@@ -3,6 +3,7 @@ import styled from 'styled-components/native'
 import TagButton from './TagButton'
 import AddTagForm from './AddTagForm'
 import YearPicker from './YearPicker'
+import SitePicker from './SitePicker'
 import React, { Component, useState, useRef, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Notifier, Easing, NotifierComponents  } from 'react-native-notifier';
@@ -31,19 +32,25 @@ const YearSection = styled.View`
   width: 100%;
   margin-top: auto;
 `
+const SiteSection = styled.View`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: auto;
+`
 
   //const [allTags, setAllTags] = useState(['HTML', 'CSS', 'JavaScript', 'React', 'Angular', 'Canvas', 'Node.js', 'PHP', 'SQL', 'MySql', 'GraphQL', 'docker', 'kubernetes', 'SSH', 'FTP', 'AWS', 'nosql', 'mongo', 'mysql', 'postgresql'])
   const [allTags, setAllTags] = useState([])
   console.log('allTags:', allTags)
 
   useEffect(() => {
-    console.log('useEffect')
+    console.log('useEffect from SettingView')
     const getTags = async () => {
       const storedTags = await getStoredtags()
       setAllTags(storedTags)
     }
     getTags()
-  }, [])
+  }, [site])
   
   const getSelectedTags = async (allTags) => {
     const result = await allTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
@@ -115,6 +122,12 @@ const YearSection = styled.View`
       </YearSection>
       
       <SiteSection>
+        <TitleContainer>
+          <StyledTitle>On site:</StyledTitle>
+          <SitePicker site={site} setSite={setSite}></SitePicker>
+        </TitleContainer>
+      </SiteSection>
+
     </MainContainer>
   )
 }
