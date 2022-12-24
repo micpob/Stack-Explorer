@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Platform, SafeAreaView, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Platform, SafeAreaView, Button, Alert } from 'react-native';
 import styled from 'styled-components/native'
 import TagButton from './TagButton'
 import AddTagForm from './AddTagForm'
@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
   }
 })
 
+const SettingsView = ({getStoredtags, site, setSite, tags, setTags, year, setYear}) => {
 
   const [allTags, setAllTags] = useState([])
   const [deleteTags, setDeleteTags] = useState(false)
@@ -97,23 +98,22 @@ const styles = StyleSheet.create({
       const selectedTags = newAllTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
       setTags(selectedTags)
     } else {
-    if (tag.selected) {
-      const newAllTags = allTags.map(tagObject => tagObject.name === tag.name ? { name: tagObject.name, selected: false} : tagObject)
-      const jsonNewTagsArray = JSON.stringify(newAllTags)
-      AsyncStorage.setItem(`${site}-tags`, jsonNewTagsArray)
-      setAllTags(newAllTags)
-      const selectedTags = newAllTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
-      setTags(selectedTags)
-    } else {
-      const selectedTagsCount = allTags.reduce((acc, cur) => cur.selected ? ++acc : acc, 0)
-      if (selectedTagsCount > 3) {
-        Alert.alert(
-          "Too many tags",
-          "Can't select more than 4 tags at the same time",
-          [ ],
-          {
-            cancelable: true
-          }
+      if (tag.selected) {
+        const newAllTags = allTags.map(tagObject => tagObject.name === tag.name ? { name: tagObject.name, selected: false} : tagObject)
+        const jsonNewTagsArray = JSON.stringify(newAllTags)
+        AsyncStorage.setItem(`${site}-tags`, jsonNewTagsArray)
+        setAllTags(newAllTags)
+        const selectedTags = newAllTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
+        setTags(selectedTags)
+      } else {
+        const selectedTagsCount = allTags.reduce((acc, cur) => cur.selected ? ++acc : acc, 0)
+        if (selectedTagsCount > 3) {
+          /* Alert.alert(
+            "Can't select more than 4 tags at the same time",
+            [ ],
+            {
+              cancelable: true
+            }
           ) */
           Notifier.showNotification({
             translucentStatusBar: true,
@@ -133,22 +133,19 @@ const styles = StyleSheet.create({
             hideOnPress: true,
           })
           console.log('Max. 4 tags selected at the same time')
-      } else {
-        const newAllTags = allTags.map(tagObject => tagObject.name === tag.name ? { name: tagObject.name, selected: true} : tagObject)
-        const jsonNewTagsArray = JSON.stringify(newAllTags)
-        AsyncStorage.setItem(`${site}-tags`, jsonNewTagsArray)
-        setAllTags(newAllTags)
-        const selectedTags = newAllTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
-        setTags(selectedTags)
+        } else {
+          const newAllTags = allTags.map(tagObject => tagObject.name === tag.name ? { name: tagObject.name, selected: true} : tagObject)
+          const jsonNewTagsArray = JSON.stringify(newAllTags)
+          AsyncStorage.setItem(`${site}-tags`, jsonNewTagsArray)
+          setAllTags(newAllTags)
+          const selectedTags = newAllTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
+          setTags(selectedTags)
+        }
       }
     }
   }
 
-  const handleLongPress = (tag) => {
-
-  }
-
-
+  
   return (
     <MainContainer >
 
