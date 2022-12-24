@@ -37,7 +37,7 @@ const AddTagForm = ({ site, allTags, setAllTags, setDeleteTags }) => {
 
   const handleSubmit = (value) => {
     if (value.trim().length < 1) return
-
+    
     const tagName = value.trim().toLowerCase()
     const tagAlreadyExists = allTags.some(tag => {
       return tag.name === tagName
@@ -75,41 +75,41 @@ const AddTagForm = ({ site, allTags, setAllTags, setDeleteTags }) => {
           Alert.alert(
             "No internet connection",
             `You need to be connected to the internet to add a new tag`,
-        [ ],
-        {
-          cancelable: true
-        }
-      )
-    } else {
-      const url = `https://api.stackexchange.com/2.3/search/advanced?pagesize=5&order=desc&sort=activity&tagged=${value}&site=${site}&filter=!0ynczPwaq3R_qM75`
-
-      fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        console.log('data:', data)
-        if (typeof data.items == 'undefined') { console.log('data.items undefined'); setPage(1); return}
-        if (data.items.length === 0) {
-          Alert.alert(
-            "Tag does not exists",
-                `The tag "${tagName}" does not exist on ${site}. 
-
-Please try with another tag.`,
             [ ],
             {
               cancelable: true
             }
           )
         } else {
+          const url = `https://api.stackexchange.com/2.3/search/advanced?pagesize=5&order=desc&sort=activity&tagged=${value}&site=${site}&filter=!0ynczPwaq3R_qM75`
+
+          fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            console.log('data:', data)
+            if (typeof data.items == 'undefined') { console.log('data.items undefined'); setPage(1); return}
+            if (data.items.length === 0) {
+              Alert.alert(
+                "Tag does not exists",
+                `The tag "${tagName}" does not exist on ${site}. 
+    
+    Please try with another tag.`,
+                [ ],
+                {
+                  cancelable: true
+                }
+              )
+            } else {
               const tagToAdd = {name: tagName, selected: false}
-          console.log('tagToAdd:', tagToAdd)
-          console.log('allTags:', allTags)
-          const newAllTags = [...allTags, tagToAdd]
-          console.log('newAllTags:', newAllTags)
+              console.log('tagToAdd:', tagToAdd)
+              console.log('allTags:', allTags)
+              const newAllTags = [...allTags, tagToAdd]
+              console.log('newAllTags:', newAllTags)
               newAllTags.sort((a, b) => a.name.localeCompare(b.name))
-          const jsonNewTagsArray = JSON.stringify(newAllTags)
-          AsyncStorage.setItem(`${site}-tags`, jsonNewTagsArray)
-          setAllTags(newAllTags)
-          onChangeText('')
+              const jsonNewTagsArray = JSON.stringify(newAllTags)
+              AsyncStorage.setItem(`${site}-tags`, jsonNewTagsArray)
+              setAllTags(newAllTags)
+              onChangeText('')
               Notifier.showNotification({
                 translucentStatusBar: true,
                 title: `Tag added`,
@@ -127,8 +127,8 @@ Please try with another tag.`,
                 onPress: () => console.log('Press'), */
                 hideOnPress: true,
               })
-        }
-      })
+            }
+          })
         }
       })
 
@@ -141,7 +141,10 @@ Please try with another tag.`,
         <StyledTextButton>ADD TAG</StyledTextButton> */}
         <SafeAreaView>
           <StyledInputField
+            autoCapitalize='none'
             maxLength={35}
+            onFocus={() => setDeleteTags(false)}
+            onPressIn={() => setDeleteTags(false)}
             onChangeText={onChangeText}
             onSubmitEditing={() => handleSubmit(newTag)}
             value={newTag}
