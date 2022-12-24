@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Platform, SafeAreaView, Button, Alert } from 'r
 import styled from 'styled-components/native'
 import TagButton from './TagButton'
 import AddTagForm from './AddTagForm'
+import DeleteTagsButton from './DeleteTagsButton'
 import YearPicker from './YearPicker'
 import SitePicker from './SitePicker'
 import React, { Component, useState, useRef, useEffect } from 'react'
@@ -9,19 +10,25 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Notifier, Easing, NotifierComponents  } from 'react-native-notifier';
 
 const MainContainer = styled.View`
+  flex: 1;
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  flex-direction: column;
   width: 100%;
-  margin-top: auto;
-  align-self: flex-end;
-  padding: 8px;
+  padding: 8px 4px 0px 4px;
+  margin: 15px 4px 0px 4px;
+`
+
+const TitleContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  
 `
 
 const StyledTitle = styled.Text`
-  width: 100%;
   font-size: 25px;
   font-weight: 600;
 `
@@ -38,10 +45,34 @@ const SiteSection = styled.View`
   width: 100%;
   margin-top: auto;
 `
+const TagsSection = styled.View`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: auto;
+`
+const TagsContainer = styled.ScrollView`
+  /* display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center; */
+  max-height: 65%;
+  margin: 2px;
+`
+const styles = StyleSheet.create({
+  contentContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  }
+})
 
-  //const [allTags, setAllTags] = useState(['HTML', 'CSS', 'JavaScript', 'React', 'Angular', 'Canvas', 'Node.js', 'PHP', 'SQL', 'MySql', 'GraphQL', 'docker', 'kubernetes', 'SSH', 'FTP', 'AWS', 'nosql', 'mongo', 'mysql', 'postgresql'])
+
   const [allTags, setAllTags] = useState([])
-  console.log('allTags:', allTags)
+  const [deleteTags, setDeleteTags] = useState(false)
+  
+  //console.log('allTags:', allTags)
 
   useEffect(() => {
     console.log('useEffect from SettingView')
@@ -58,7 +89,14 @@ const SiteSection = styled.View`
   }
 
   const handleClick = (tag) => {
-    //console.log(tag.name)
+    if (deleteTags) {
+      const newAllTags = allTags.filter(tagObject => tagObject.name !== tag.name)
+      const jsonNewTagsArray = JSON.stringify(newAllTags)
+      AsyncStorage.setItem(`${site}-tags`, jsonNewTagsArray)
+      setAllTags(newAllTags)
+      const selectedTags = newAllTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
+      setTags(selectedTags)
+    } else {
     if (tag.selected) {
       const newAllTags = allTags.map(tagObject => tagObject.name === tag.name ? { name: tagObject.name, selected: false} : tagObject)
       const jsonNewTagsArray = JSON.stringify(newAllTags)
@@ -128,6 +166,20 @@ const SiteSection = styled.View`
         </TitleContainer>
       </SiteSection>
 
+      <TagsSection>
+        <TitleContainer>
+          <StyledTitle>Tags:</StyledTitle>
+          {deleteTags && <Text>click on a tag to delete it</Text>}
+          <DeleteTagsButton deleteTags={deleteTags} setDeleteTags={setDeleteTags}></DeleteTagsButton>
+        </TitleContainer>
+        <TagsContainer >
+          <ScrollView contentContainerStyle={styles.contentContainer}>
+            {allTags.map(tag => <TagButton key={tag.name} title={tag.name} selected={tag.selected} deleteTags={deleteTags} handleClick={() => handleClick(tag) } ></TagButton>)}
+          </ScrollView>
+        </TagsContainer>
+        <AddTagForm site={site} allTags={allTags} setAllTags={setAllTags} setDeleteTags={setDeleteTags} ></AddTagForm>
+      </TagsSection>
+      
     </MainContainer>
   )
 }
