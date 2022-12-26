@@ -31,11 +31,10 @@ const StyledButton = styled.TouchableOpacity`
   font-weight: 600;
 ` */
 
-const ShowSettingsButton = ({setShowAlert, setShowSettingsView}) => {
+const ShowSettingsButton = ({setShowSettingsView, showSettingsView, randomUrl}) => {
   
   const handleClick = async () => {
-    setShowAlert(false)
-    setShowSettingsView(true)
+    randomUrl.length > 0 ? setShowSettingsView(!showSettingsView) : setShowSettingsView(true)
   }
   
   return (
