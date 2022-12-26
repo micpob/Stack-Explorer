@@ -16,9 +16,10 @@ const MainContainer = styled.View`
   justify-content: space-between;
   flex-direction: column;
   width: 100%;
-  padding: 8px 4px 0px 4px;
-  margin: 15px 4px 0px 4px;
-`
+  padding: 4px 8px 0px 8px;
+  background: #F4F4F4;
+  background: lavenderblush;
+  `
 
 const TitleContainer = styled.View`
   display: flex;
@@ -29,8 +30,12 @@ const TitleContainer = styled.View`
 `
 
 const StyledTitle = styled.Text`
-  font-size: 25px;
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: 900;
+  color: #408080;
+  fontFamily: 'Montserrat-Medium';
+  fontFamily: 'Cantarell-Regular';
+  fontFamily: 'OpenSans';
 `
 
 const YearSection = styled.View`
@@ -38,18 +43,23 @@ const YearSection = styled.View`
   flex-direction: column;
   width: 100%;
   margin-top: auto;
+  flex: 1;
 `
 const SiteSection = styled.View`
   display: flex;
   flex-direction: column;
   width: 100%;
   margin-top: auto;
+  flex: 1;
+
 `
 const TagsSection = styled.View`
   display: flex;
   flex-direction: column;
   width: 100%;
   margin-top: auto;
+  flex: 4;
+
 `
 const TagsContainer = styled.ScrollView`
   /* display: flex;
@@ -68,7 +78,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const SettingsView = ({getStoredtags, site, setSite, tags, setTags, year, setYear}) => {
+const SettingsView = ({getStoredtags, site, setSite, tags, setTags, year, setYear }) => {
 
   const [allTags, setAllTags] = useState([])
   const [deleteTags, setDeleteTags] = useState(false)
@@ -76,9 +86,9 @@ const SettingsView = ({getStoredtags, site, setSite, tags, setTags, year, setYea
   //console.log('allTags:', allTags)
 
   useEffect(() => {
-    console.log('useEffect from SettingView')
+    //console.log('useEffect from SettingView')
     const getTags = async () => {
-      const storedTags = await getStoredtags()
+      const storedTags = await getStoredtags(site)
       setAllTags(storedTags)
     }
     getTags()
@@ -148,7 +158,6 @@ const SettingsView = ({getStoredtags, site, setSite, tags, setTags, year, setYea
   
   return (
     <MainContainer >
-
       <YearSection>
         <TitleContainer>
           <StyledTitle>Questions since:</StyledTitle>
@@ -159,18 +168,18 @@ const SettingsView = ({getStoredtags, site, setSite, tags, setTags, year, setYea
       <SiteSection>
         <TitleContainer>
           <StyledTitle>On site:</StyledTitle>
-          <SitePicker site={site} setSite={setSite}></SitePicker>
+          <SitePicker site={site} setSite={setSite} getStoredtags={getStoredtags} setTags={setTags}></SitePicker>
         </TitleContainer>
       </SiteSection>
 
       <TagsSection>
         <TitleContainer>
-          <StyledTitle>Tags:</StyledTitle>
+          <StyledTitle>With tags:</StyledTitle>
           {deleteTags && <Text>click on a tag to delete it</Text>}
           <DeleteTagsButton deleteTags={deleteTags} setDeleteTags={setDeleteTags}></DeleteTagsButton>
         </TitleContainer>
         <TagsContainer >
-          <ScrollView contentContainerStyle={styles.contentContainer}>
+          <ScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={true} persistentScrollbar={true}>
             {allTags.map(tag => <TagButton key={tag.name} title={tag.name} selected={tag.selected} deleteTags={deleteTags} handleClick={() => handleClick(tag) } ></TagButton>)}
           </ScrollView>
         </TagsContainer>
