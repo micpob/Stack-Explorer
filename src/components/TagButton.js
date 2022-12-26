@@ -5,12 +5,14 @@ import { StyleSheet, Text, View, Platform, SafeAreaView, Button, TouchableOpacit
 
 const MainContainer = styled.View`
   border: 1px solid black;
+  border-color: ${props => props.deleteTags ? 'black' : 'black'};
   align-self: center;
   border-radius: 8px;
   padding: 4px;
   margin: 4px;
   min-width: 32px;
-  background: ${props => props.selected ? 'black' : 'white'}
+  background: ${props => props.deleteTags ? 'orange' : props.selected ? 'black' : 'white'}
+
 `
 
 const StyledTagButton = styled.TouchableOpacity`
@@ -18,26 +20,18 @@ const StyledTagButton = styled.TouchableOpacity`
 `
 
 const StyledTextButton = styled.Text`
-  color:  ${props => props.selected ? 'white' : 'black'}
   font-size: 16px;
   font-weight: 600;
   text-align: center;
+  color: ${props => props.deleteTags ? 'white' : props.selected ? 'white' : 'black'}
 `
-const TagButton = ({title, selected, handleClick, handleLongPress}) => {
-
-  /* const [isSelected, setIsSelected] = useState(selected)
-
-  const handleClick = () => {
-
-    setIsSelected(!isSelected)
-  } */
+const TagButton = ({title, selected, deleteTags, handleClick}) => {
 
 
-  
   return (
-    <MainContainer selected={selected}>
-      <StyledTagButton onPress={handleClick} onLongPress={handleLongPress} >
-        <StyledTextButton selected={selected}>{title}</StyledTextButton>
+    <MainContainer selected={selected} deleteTags={deleteTags}>
+      <StyledTagButton onPress={handleClick} >
+        <StyledTextButton selected={selected} deleteTags={deleteTags}>{title}</StyledTextButton>
       </StyledTagButton>
     </MainContainer>
   )
