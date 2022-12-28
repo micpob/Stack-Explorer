@@ -31,7 +31,7 @@ const TagButton = ({title, selected, deleteTags, handleClick}) => {
   return (
     <MainContainer selected={selected} deleteTags={deleteTags}>
       <StyledTagButton onPress={handleClick} >
-        <StyledTextButton selected={selected} deleteTags={deleteTags}>{title}</StyledTextButton>
+        <StyledTextButton selected={selected} deleteTags={deleteTags} onPress={handleClick}>{title}</StyledTextButton>
       </StyledTagButton>
     </MainContainer>
   )

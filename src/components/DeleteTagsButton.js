@@ -14,13 +14,6 @@ const MainContainer = styled.View`
 const StyledDeleteTagsButton = styled.TouchableOpacity`
   
 `
-
-const StyledTextButton = styled.Text`
-  color: ${props => props.deleteTags ? 'black' : 'gray'};
-  font-size: 16px;
-  font-weight: 600;
-  text-align: center;
-`
 const DeleteTagsButton = ({deleteTags, setDeleteTags}) => {
 
   const handleClick = () => {
@@ -32,14 +25,11 @@ const DeleteTagsButton = ({deleteTags, setDeleteTags}) => {
   return (
     <MainContainer >
       <StyledDeleteTagsButton onPress={handleClick} >
-        {/* <Ionicons name="trash-outline" size={32} color="black" /> */}
         { deleteTags ?
           <FontAwesome name="trash" size={32} color="orange" />
           :
           <FontAwesome name="trash-o" size={32} color="black" />
         }  
-        {/* <FontAwesome name="trash-o" size={32} color="black" deleteTags={deleteTags} /> */}
-        {/* <StyledTextButton deleteTags={deleteTags}>D</StyledTextButton> */}
       </StyledDeleteTagsButton>
     </MainContainer>
   )

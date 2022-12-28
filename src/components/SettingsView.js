@@ -16,9 +16,14 @@ const MainContainer = styled.View`
   justify-content: space-between;
   flex-direction: column;
   width: 100%;
-  padding: 4px 8px 0px 8px;
+  padding: 8px 8px 0px 8px;
   background: #F4F4F4;
   background: lavenderblush;
+  background: beige;
+  background: #fffdd0; /* cream */
+  background: #96DED1; /* robin's eggs blue */
+  background: #D3D3D3; /* light gray */
+  background: #ADD8E6; /* light blue */
   `
 
 const TitleContainer = styled.View`
@@ -33,9 +38,6 @@ const StyledTitle = styled.Text`
   font-size: 24px;
   font-weight: 900;
   color: #408080;
-  fontFamily: 'Montserrat-Medium';
-  fontFamily: 'Cantarell-Regular';
-  fontFamily: 'OpenSans';
 `
 
 const YearSection = styled.View`
@@ -58,7 +60,7 @@ const TagsSection = styled.View`
   flex-direction: column;
   width: 100%;
   margin-top: auto;
-  flex: 4;
+  flex: 6;
 
 `
 const TagsContainer = styled.ScrollView`
@@ -66,7 +68,7 @@ const TagsContainer = styled.ScrollView`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center; */
-  max-height: 65%;
+  max-height: 70%;
   margin: 2px;
 `
 const styles = StyleSheet.create({
@@ -94,13 +96,10 @@ const SettingsView = ({getStoredtags, site, setSite, tags, setTags, year, setYea
     getTags()
   }, [site])
   
-  const getSelectedTags = async (allTags) => {
-    const result = await allTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
-    return result
-  }
 
-  const handleClick = (tag) => {
+  const handleClick = async (tag) => {
     if (deleteTags) {
+      //console.log('deleting tag')
       const newAllTags = allTags.filter(tagObject => tagObject.name !== tag.name)
       const jsonNewTagsArray = JSON.stringify(newAllTags)
       AsyncStorage.setItem(`${site}-tags`, jsonNewTagsArray)
@@ -135,7 +134,7 @@ const SettingsView = ({getStoredtags, site, setSite, tags, setTags, year, setYea
             componentProps: {
               titleStyle: {color: 'white', fontSize: 24, fontWeight: '600'},
               descriptionStyle: {color: 'white', fontSize: 16, fontWeight: '600'},
-              containerStyle: {backgroundColor: 'orange'}
+              containerStyle: {backgroundColor: 'red'}
             }, 
             /* showEasing: Easing.bounce, */
             /* onHidden: () => console.log('Hidden'),

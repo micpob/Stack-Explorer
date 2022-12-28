@@ -27,6 +27,7 @@ const StyledInputField = styled.TextInput`
   height: 40px;
   margin: 8px;
   border-width: 1px;
+  border-radius: 4px;
   padding: 8px;
   background: white;
 `
@@ -91,9 +92,7 @@ const AddTagForm = ({ site, allTags, setAllTags, setDeleteTags }) => {
             if (data.items.length === 0) {
               Alert.alert(
                 "Tag does not exists",
-                `The tag "${tagName}" does not exist on ${site}. 
-    
-    Please try with another tag.`,
+                `The tag "${tagName}" does not exist on the selected site.\nPlease try with another tag.`,
                 [ ],
                 {
                   cancelable: true
