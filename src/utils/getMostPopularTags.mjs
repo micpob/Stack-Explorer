@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 
-const url = `https://api.stackexchange.com/2.2/tags?order=desc&sort=popular&site=askubuntu`
+const url = `https://api.stackexchange.com/2.2/tags?order=desc&sort=popular&site=travel`
 
 fetch(url)
       .then(response => response.json())
