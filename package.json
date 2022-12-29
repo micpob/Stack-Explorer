@@ -25,6 +25,7 @@
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-native": "0.69.6",
+    "react-native-modal-selector": "^2.1.2",
     "react-native-notifier": "^1.9.0",
     "react-native-progress": "^5.0.0",
     "react-native-searchable-dropdown": "^1.1.3",
