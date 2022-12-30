@@ -51,6 +51,7 @@ export default function App() {
   const [lastUrl, setLastUrl] = useState('')
   const [links, setLinks] = useState([])
   const [randomUrl, setRandomUrl] = useState('')
+  const [orOperator, setOrOperator] = useState(true)
 
   const getStoredtags = async () => {
     let storedTags = await AsyncStorage.getItem(`${site}-tags`)
@@ -70,8 +71,13 @@ export default function App() {
       storedYear = JSON.parse(storedYear)
       return storedYear
     } else {
-      const selectedYear = defaultYears['years'].find(year => year.label = '2018')
-      return selectedYear
+  const getOrOperatorState = async () => {
+    let storedOrOperatorState = await AsyncStorage.getItem(`orOperator`)
+    if (storedOrOperatorState && storedOrOperatorState.length > 0) {
+      storedOrOperatorState = JSON.parse(storedOrOperatorState)
+      return storedOrOperatorState
+    } else {
+      return true
     }
   }
 
@@ -87,10 +93,8 @@ export default function App() {
   }
 
   useEffect(() => {
-    console.log('useEffect')
-    const getTags = async () => {
-      const storedTags = await getStoredtags()
-      console.log('storedtags:', storedTags)
+      setOrOperator(orOperatorState)
+      const storedTags = await getStoredtags(selectedSite)
       const selectedTags = storedTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
       setTags(selectedTags)
     }

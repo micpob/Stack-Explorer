@@ -5,6 +5,7 @@ import AddTagForm from './AddTagForm'
 import DeleteTagsButton from './DeleteTagsButton'
 import YearPicker from './YearPicker'
 import SitePicker from './SitePicker'
+import AndOrSwitch from './AndOrSwitch'
 import React, { Component, useState, useRef, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Notifier, Easing, NotifierComponents  } from 'react-native-notifier';
@@ -173,7 +174,11 @@ const SettingsView = ({getStoredtags, site, setSite, tags, setTags, year, setYea
 
       <TagsSection>
         <TitleContainer>
-          <StyledTitle>With tags:</StyledTitle>
+          <StyledTitle>Tags:</StyledTitle>
+          { !deleteTags && 
+            <AndOrSwitch orOperator={orOperator} setOrOperator={setOrOperator} ></AndOrSwitch>
+          }
+          
           {deleteTags && <Text>click on a tag to delete it</Text>}
           <DeleteTagsButton deleteTags={deleteTags} setDeleteTags={setDeleteTags}></DeleteTagsButton>
         </TitleContainer>
