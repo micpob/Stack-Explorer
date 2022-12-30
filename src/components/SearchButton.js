@@ -1,6 +1,6 @@
 import React, { Component, useState, useRef, useEffect } from 'react'
 import styled from 'styled-components/native'
-import { StyleSheet, Text, View, Platform, SafeAreaView, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Platform, SafeAreaView, Button, TouchableOpacity, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import NetInfo from "@react-native-community/netinfo"
 
@@ -27,97 +27,106 @@ const StyledTextButton = styled.Text`
   font-weight: 600;
 `
 
-const SearchButton = ({setShowSettingsView, setShowLoader, setShowAlert, tags, setRandomUrl, lastUrl, setLastUrl, links, setLinks}) => {
-  console.log('tags from search button:', tags)
-  let tagsForUrl = tags.join(';').toLowerCase()
-  const [page, setPage] = useState(1)
-  const firstTimeRender = useRef(true)
-
- /*  useEffect(() => {
-    if ( firstTimeRender.current ) {
-      return () => {
-        firstTimeRender.current = false
-      }
-    }
-    handleClick()
-  }, [page]) */
+const SearchButton = ({setShowSettingsView, setShowLoader, year, site, tags, setRandomUrl, lastFetchUrl, setlastFetchUrl, links, setLinks, orOperator, setStarred}) => {
 
   const handleClick = async () => {
-    setShowAlert(false)
+    console.log('handleClick()')
+    //console.log('links:', links)
+
     setShowSettingsView(false)
-    printAsyncStorage()
-    console.log('links:', links)
-    console.log('page:', page)
+    setStarred(false)
+    let fetchUrlBase = `https://api.stackexchange.com/2.3/search/advanced?pagesize=5&fromdate=${year}&order=desc&sort=activity&accepted=True&views=50&site=${site}&filter=!0ynczPwaq3R_qM75`
+    let fetchUrlTags = orOperator ? `&q=${encodeURIComponent(tags.map(element => `[${element}]`).join(' or '))}` : `&q=${encodeURIComponent(tags.map(element => `[${element}]`).join(''))}` 
+    let fetchUrl = fetchUrlBase + fetchUrlTags + `&page=`
+    //console.log('FETCH URL:', fetchUrl)
 
-    //let fetchUrl = `https://api.stackexchange.com/2.3/search/advanced?pagesize=5&fromdate=946684800&order=desc&sort=activity&accepted=True&views=50&site=stackoverflow&filter=!0ynczPwaq3R_qM75&page=${page}&tagged=${tagsForUrl}`
-    let fetchUrlBase = `https://api.stackexchange.com/2.3/search/advanced?pagesize=5&fromdate=946684800&order=desc&sort=activity&accepted=True&views=50&site=stackoverflow&filter=!0ynczPwaq3R_qM75`
-    let fetchUrlTags = `&tagged=${tagsForUrl}`
-    let fetchUrlPage = `&page=${page}`
-    let fetchUrl = fetchUrlBase + fetchUrlTags + fetchUrlPage
-
-    if (lastUrl === fetchUrl && links.length > 0) {
-      console.log('lastUrl === fetchUrl && links.length > 0')
-      openRandomLink(fetchUrl, links)
+    if (lastFetchUrl.includes(fetchUrl) && links.length > 0) {
+      console.log('lastFetchUrl === fetchUrl && links.length > 0')
+      openRandomLink(lastFetchUrl, links)
     } else {
       const keys = await AsyncStorage.getAllKeys()
+      const urlAlreadyStored = keys.findIndex(key => key.includes(fetchUrl))
 
-      const urlAlreadyStored = keys.findIndex(key => key.includes(fetchUrlBase + fetchUrlTags + `&page=`))
-
-      if (urlAlreadyStored !== -1) {
-        console.log('urlAlreadyStored')
-        //const fetchUrlIndex = tagsArray.indexOf(tagsForUrl)
+      if (urlAlreadyStored === -1) {
+        fetchUrl = fetchUrl + '1'
+        console.log('URL not already stored:', fetchUrl)
+        fetchMoreLinks(fetchUrl)
+      } else {
         const key = keys[urlAlreadyStored]
-        console.log('Already stored url:', key)
+        console.log('url already stored:', key)
         let linksFromStorage = await AsyncStorage.getItem(key)
         linksFromStorage = JSON.parse(linksFromStorage)
         console.log('links from storage:', linksFromStorage)
         if (linksFromStorage.length > 0) {
           console.log('urlAlreadyStored - linksFromStorage.length > 0')
-          openRandomLink(fetchUrl, linksFromStorage)  
+          openRandomLink(key, linksFromStorage)  
         } else {
           const removeEmptyArray = await AsyncStorage.removeItem(key)
-          console.log('urlAlreadyStored - change page in fetch URL')
-          const newPage = page + 1
-          //setPage(newPage)
+          console.log('urlAlreadyStored but empty links array - change page in fetch URL')
+          const pageFromUrl = key.substring(key.lastIndexOf('=') + 1)
+          const newPage = parseInt(pageFromUrl) + 1
+          console.log('newPage = parseInt(pageFromUrl) + 1:', newPage)
           let newfetchUrl = fetchUrlBase + fetchUrlTags + `&page=${newPage}`
           console.log('fetchMoreLinks(newfetchUrl)')
           fetchMoreLinks(newfetchUrl)
-          setPage(newPage)
         }
-      } else {
-        console.log('fetchMoreLinks(fetchUrl)', fetchUrl)
-        fetchMoreLinks(fetchUrl)
       }
   }
  }
 
-  const fetchMoreLinks = (fetchUrl) => {  
+  const fetchMoreLinks = (fetchUrl) => {
     setShowLoader(true)
     fetch(fetchUrl)
     .then(response => response.json())
     .then(data => {
+      let pageFromUrl = fetchUrl.substring(fetchUrl.lastIndexOf('=') + 1)
+      pageFromUrl = parseInt(pageFromUrl)
+      console.log('fetchUrl::', fetchUrl)
       console.log('data:', data)
-      if (typeof data.items == 'undefined') { console.log('data.items undefined'); setPage(1); return}
+      if (typeof data.items == 'undefined') { 
+        console.log('data.items undefined'); 
+        let newfetchUrl =  fetchUrl.substring(0, fetchUrl.lastIndexOf('=') + 1) + '1'
+        console.log('newfetchUrl:', newfetchUrl)
+        fetchMoreLinks(newfetchUrl)
+        return
+      }
       if (data.items.length === 0) {
-        if (page !== 1) {
-          console.log('reset page to 1')
-          setPage(1)
-          handleClick()
+        if (pageFromUrl !== 1) {
+          console.log('reset page to 1 from FetchMoreLinks')
+          let newfetchUrl =  fetchUrl.substring(0, fetchUrl.lastIndexOf('=') + 1) + '1'
+          console.log('newfetchUrl:', newfetchUrl)
+          fetchMoreLinks(newfetchUrl)
         } else {
           setShowLoader(false)
-          setShowAlert(true)
-          console.log('there are no results with the selected tags ')
-          //alert('there are no results with the selected tags ')
+          Alert.alert(
+            'No results',
+            `There are no results with the selected tags and start year`,
+            [ ],
+            {
+              cancelable: true
+            }
+          )
+          setShowSettingsView(true)
         }
-      } else {
+      } else  {
+        if (data.items.length < 25 && pageFromUrl == 1) {
+          Alert.alert(
+            'Very few results',
+            `There are less than 25 results with the selected tags and start year.\n\nThis is just to alert you that you will soon start seeing the same questions repeated.`,
+            [ ],
+            {
+              cancelable: true
+            }
+          )
+        }
         const linksArray = data.items.map(item => item.link)
-        //console.log('links:', linksArray)
         openRandomLink(fetchUrl, linksArray)
-      }
+      } 
     })
   }
   
   const openRandomLink = async (fetchUrl, linksArray) => {
+    console.log('linksArray from openRandomLink:', linksArray)
 
     NetInfo.fetch().then(async (state) => {
       if (!state.isConnected) {
@@ -130,42 +139,24 @@ const SearchButton = ({setShowSettingsView, setShowLoader, setShowAlert, tags, s
           }
         )
       } else {
-    const questionUrl = linksArray[Math.floor(Math.random()*linksArray.length)]
-    console.log('questionUrl:', questionUrl)
-    setShowLoader(false)
-    setRandomUrl(questionUrl)
-    const newLinksArray = linksArray.filter(link => link !== questionUrl)
-    const jsonNewLinksArray = JSON.stringify(newLinksArray)
-    AsyncStorage.setItem(fetchUrl, jsonNewLinksArray)
-    setLinks(newLinksArray)
-    setLastUrl(fetchUrl)
-    /* if (newLinksArray.length === 0) {
-      console.log('change page in fetch URL')
-      const newPage = page + 1
-      setPage(newPage)
-    } */
+      const questionUrl = linksArray[Math.floor(Math.random()*linksArray.length)]
+      console.log('questionUrl:', questionUrl)
+      setShowLoader(false)
+      setRandomUrl(questionUrl)
+      const newLinksArray = linksArray.filter(link => link !== questionUrl)
+      const jsonNewLinksArray = JSON.stringify(newLinksArray)
+      AsyncStorage.setItem(fetchUrl, jsonNewLinksArray)
+      setLinks(newLinksArray)
+      setlastFetchUrl(fetchUrl)
 
-    //DEV
-    let newLinksArrayStored = await AsyncStorage.getItem(fetchUrl)
-    newLinksArrayStored = JSON.parse(newLinksArrayStored)
-    console.log('newLinksArrayStored:', newLinksArrayStored)
-    console.info(new Blob([JSON.stringify(newLinksArrayStored)]).size)
-  }
+      //DEV
+      let newLinksArrayStored = await AsyncStorage.getItem(fetchUrl)
+      newLinksArrayStored = JSON.parse(newLinksArrayStored)
+      console.log('newLinksArrayStored:', newLinksArrayStored)
+      console.info(new Blob([JSON.stringify(newLinksArrayStored)]).size)
+      }
     })
   }
-
-
-  const printAsyncStorage = () => {
-    AsyncStorage.getAllKeys((err, keys) => {
-      AsyncStorage.multiGet(keys, (error, stores) => {
-        let asyncStorage = {}
-        stores.map((result, i, store) => {
-          asyncStorage[store[i][0]] = store[i][1]
-        });
-        console.table(asyncStorage)
-      });
-    });
-  };
 
   return (
     <MainContainer>
