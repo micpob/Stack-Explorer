@@ -8,19 +8,22 @@ const MainContainer = styled.View`
   display: flex;
   align-items: center;
   align-self: center;
-  background: green;
-  border: 2px solid black;
-  border-radius: 6px;
+  width: 50%;
+  /* border: 2px solid black; */
+  border-radius: 4px;
   padding: 7px;
 `
 
 const StyledSearchButton = styled.TouchableOpacity`
-  
+  background: hsl(206,100%,50%);
+  background: #408080;
+  border-radius: 4px;
+  padding: 8px;
 `
 
 const StyledTextButton = styled.Text`
   color: white;
-  font-size: 25px;
+  font-size: 20px;
   font-weight: 600;
 `
 
