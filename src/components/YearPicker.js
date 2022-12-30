@@ -29,7 +29,7 @@ const YearPicker = ({year, setYear}) => {
     setYear(value)
   }
 
-  console.log('defaultYears[]', defaultYears['years'])
+  //console.log('defaultYears[]', defaultYears['years'])
 
   const data = defaultYears['years'].map((yearObj, index) => {
       return { key: index, label: yearObj.name, value: yearObj.value }
@@ -38,7 +38,7 @@ const YearPicker = ({year, setYear}) => {
 
   const getInitValue = () => {
     const initValue = defaultYears['years'].find(yearObj => yearObj.value === year)
-    console.log('initvalue:', initValue)
+    //console.log('initvalue:', initValue)
     return initValue.name
   }
 
@@ -51,7 +51,7 @@ const YearPicker = ({year, setYear}) => {
         initValueTextStyle={{color: 'black', fontSize: 20, fontWeight: '600'}}
         overlayStyle={{flex: 1, padding: '5%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.7)'}}    
         optionContainerStyle={{backgroundColor: 'white', minWidth: '80%', maxWidth: '90%', maxHeight: 600 }}  
-        optionTextStyle= {{color: colors.selectText, fontSize: 22, fontWeight: '600'}}
+        optionTextStyle= {{color: colors.primary, fontSize: 22, fontWeight: '600'}}
         animationType='fade'
         backdropPressToClose={true}
         cancelContainerStyle={{display: 'none'}}

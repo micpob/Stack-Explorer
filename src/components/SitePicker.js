@@ -45,7 +45,7 @@ const SitePicker = ({site, setSite, getStoredtags, setTags}) => {
         initValueTextStyle={{color: 'black', fontSize: 20, fontWeight: '600'}}
         overlayStyle={{flex: 1, padding: '5%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.7)'}}    
         optionContainerStyle={{backgroundColor: 'white', minWidth: '80%', maxWidth: '90%', maxHeight: 600 }}  
-        optionTextStyle= {{color: colors.selectText, fontSize: 22, fontWeight: '600'}}
+        optionTextStyle= {{color: colors.primary, fontSize: 22, fontWeight: '600'}}
         animationType='fade'
         backdropPressToClose={true}
         cancelContainerStyle={{display: 'none'}}

@@ -13,12 +13,14 @@ import ShowTagsButton from './src/components/ShowTagsButton'
 import defaultTags from './src/utils/defaultTags'
 import defaultYears from './src/utils/defaultYears'
 import defaultSites from './src/utils/defaultSites'
+import colors from './src/utils/colors'
 
 const MainContainer = styled.View`
   flex-direction: column;
   display: flex;
   height: 100%;
   width: 100%;
+  /* padding: 10px 0px 0px 0px; */
 `
 const ButtonsContainer = styled.View`
   display: flex;
@@ -26,16 +28,16 @@ const ButtonsContainer = styled.View`
   width: 100%;
   align-items: center;
   justify-content: space-around;
-  padding: 20px 0px 20px 0px;
+  margin-top: auto;
+  padding: 7px 0px 7px 0px;
+  background: lavender;
+  background: #6B4C90;
+  background: ${colors.buttonsBar}
 `
 const LoaderContainer = styled.View`
   margin: auto;
 `
 
-const ProgressBarcontainer = styled.View`
-  heigth: 5px;
-  margin-top: auto;
-`
 export default function App() {
 
   console.log('starting App.js')
@@ -131,14 +133,7 @@ export default function App() {
       {
         showLoader && 
         <LoaderContainer>
-          <ActivityIndicator size="large" color="blue" />
-        </LoaderContainer> 
-      }
-
-      {
-        showAlert && 
-        <LoaderContainer>
-          <Text>There are no results with the selected tags</Text>
+            <ActivityIndicator size="large" color={colors.primary} />
         </LoaderContainer> 
       } 
 

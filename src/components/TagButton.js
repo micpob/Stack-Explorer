@@ -1,6 +1,7 @@
 import React, { Component, useState, useRef, useEffect } from 'react'
 import styled from 'styled-components/native'
 import { StyleSheet, Text, View, Platform, SafeAreaView, Button, TouchableOpacity  } from 'react-native';
+import colors from '../utils/colors'
 
 
 const MainContainer = styled.View`
@@ -11,7 +12,7 @@ const MainContainer = styled.View`
   padding: 4px;
   margin: 4px;
   min-width: 32px;
-  background: ${props => props.deleteTags ? 'orange' : props.selected ? 'black' : 'white'}
+  background: ${props => props.deleteTags ? colors.deleteMain : props.selected ? 'black' : 'white'}
 
 `
 

@@ -4,11 +4,11 @@ import { SafeAreaView, StyleSheet, TextInput, Text, View, Platform, Button, Touc
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import NetInfo from "@react-native-community/netinfo"
 import { Notifier, Easing, NotifierComponents  } from 'react-native-notifier';
+import colors from '../utils/colors'
 
 const MainContainer = styled.View`
   align-self: center;
   padding: 4px;
-  margin: 4px;
   width: 100%;
 `
 
@@ -25,21 +25,25 @@ const StyledTextButton = styled.Text`
 
 const StyledInputField = styled.TextInput`
   height: 40px;
-  margin: 8px;
+  width: 90%;
+  max-width: 400px;
   border-width: 1px;
   border-radius: 4px;
   padding: 8px;
   background: white;
+  margin: auto;
 `
 
 const AddTagForm = ({ site, allTags, setAllTags, setDeleteTags }) => {
 
-  const [newTag, onChangeText] = React.useState('')
+  const [newTag, onChangeText] = useState('')
 
   const handleSubmit = (value) => {
-    if (value.trim().length < 1) return
     
     const tagName = value.trim().toLowerCase()
+
+    if (tagName.length < 1) return
+
     const tagAlreadyExists = allTags.some(tag => {
       return tag.name === tagName
     })
@@ -82,7 +86,7 @@ const AddTagForm = ({ site, allTags, setAllTags, setDeleteTags }) => {
             }
           )
         } else {
-          const url = `https://api.stackexchange.com/2.3/search/advanced?pagesize=5&order=desc&sort=activity&tagged=${value}&site=${site}&filter=!0ynczPwaq3R_qM75`
+          const url = `https://api.stackexchange.com/2.3/search/advanced?pagesize=5&order=desc&sort=activity&tagged=${tagName}&site=${site}&filter=!0ynczPwaq3R_qM75`
 
           fetch(url)
           .then(response => response.json())
@@ -119,7 +123,7 @@ const AddTagForm = ({ site, allTags, setAllTags, setDeleteTags }) => {
                 componentProps: {
                   titleStyle: {color: 'white', fontSize: 24, fontWeight: '600'},
                   descriptionStyle: {color: 'white', fontSize: 16, fontWeight: '600'},
-                  containerStyle: {backgroundColor: 'green'}
+                  containerStyle: {backgroundColor: colors.primary}
                 }, 
                 /* showEasing: Easing.bounce, */
                 /* onHidden: () => console.log('Hidden'),

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, Platform, SafeAreaView, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Platform, Switch, SafeAreaView, Button, Alert } from 'react-native';
 import styled from 'styled-components/native'
 import TagButton from './TagButton'
 import AddTagForm from './AddTagForm'
@@ -9,6 +9,8 @@ import AndOrSwitch from './AndOrSwitch'
 import React, { Component, useState, useRef, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Notifier, Easing, NotifierComponents  } from 'react-native-notifier';
+import colors from '../utils/colors'
+import { Entypo } from '@expo/vector-icons';
 
 const MainContainer = styled.View`
   flex: 1;
@@ -19,12 +21,17 @@ const MainContainer = styled.View`
   width: 100%;
   padding: 8px 8px 0px 8px;
   background: #F4F4F4;
-  background: lavenderblush;
-  background: beige;
-  background: #fffdd0; /* cream */
   background: #96DED1; /* robin's eggs blue */
-  background: #D3D3D3; /* light gray */
   background: #ADD8E6; /* light blue */
+  background: #D3D3D3; /* light gray */
+  background: beige;
+  background: lavenderblush;
+  background: #ADD8E6; /* light blue */
+  background: #fffdd0; /* cream */
+  background: #F4F4F4;
+  background: lightgray;
+  background: ${colors.settingsBackground};
+
   `
 
 const TitleContainer = styled.View`
@@ -35,34 +42,54 @@ const TitleContainer = styled.View`
   
 `
 
+
 const StyledTitle = styled.Text`
   font-size: 24px;
   font-weight: 900;
-  color: #408080;
+  color: ${colors.primary};
+  /* color: white; */
 `
 
 const YearSection = styled.View`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   width: 100%;
   margin-top: auto;
   flex: 1;
+  background: ${colors.settingsBoxBackground};
+  /* background: #408080; */
+  padding: 8px;
+  border-radius: 8px;
+  margin: 8px;
 `
 const SiteSection = styled.View`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   width: 100%;
   margin-top: auto;
   flex: 1;
+  background: ${colors.settingsBoxBackground};
+  /* background: #408080; */
 
+  padding: 8px;
+  border-radius: 8px;
+  margin: 8px;
 `
 const TagsSection = styled.View`
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   width: 100%;
   margin-top: auto;
   flex: 6;
+  background: ${colors.settingsBoxBackground};
+  /* background: #408080; */
 
+  padding: 8px;
+  border-radius: 8px;
+  margin: 8px;
 `
 const TagsContainer = styled.ScrollView`
   /* display: flex;
@@ -71,6 +98,7 @@ const TagsContainer = styled.ScrollView`
   justify-content: center; */
   max-height: 70%;
   margin: 2px;
+  
 `
 const styles = StyleSheet.create({
   contentContainer: {
@@ -81,7 +109,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const SettingsView = ({getStoredtags, site, setSite, tags, setTags, year, setYear }) => {
+const SettingsView = ({getStoredtags, site, setSite, tags, setTags, year, setYear, orOperator, setOrOperator }) => {
 
   const [allTags, setAllTags] = useState([])
   const [deleteTags, setDeleteTags] = useState(false)
@@ -135,7 +163,7 @@ const SettingsView = ({getStoredtags, site, setSite, tags, setTags, year, setYea
             componentProps: {
               titleStyle: {color: 'white', fontSize: 24, fontWeight: '600'},
               descriptionStyle: {color: 'white', fontSize: 16, fontWeight: '600'},
-              containerStyle: {backgroundColor: 'red'}
+              containerStyle: {backgroundColor: 'darkred'}
             }, 
             /* showEasing: Easing.bounce, */
             /* onHidden: () => console.log('Hidden'),
@@ -154,20 +182,19 @@ const SettingsView = ({getStoredtags, site, setSite, tags, setTags, year, setYea
       }
     }
   }
-
   
   return (
     <MainContainer >
       <YearSection>
         <TitleContainer>
-          <StyledTitle>Questions since:</StyledTitle>
+          <StyledTitle>Start from year:</StyledTitle>
           <YearPicker year={year} setYear={setYear}></YearPicker>
         </TitleContainer>
       </YearSection>
       
       <SiteSection>
         <TitleContainer>
-          <StyledTitle>On site:</StyledTitle>
+          <StyledTitle>Site:</StyledTitle>
           <SitePicker site={site} setSite={setSite} getStoredtags={getStoredtags} setTags={setTags}></SitePicker>
         </TitleContainer>
       </SiteSection>
@@ -188,6 +215,7 @@ const SettingsView = ({getStoredtags, site, setSite, tags, setTags, year, setYea
           </ScrollView>
         </TagsContainer>
         <AddTagForm site={site} allTags={allTags} setAllTags={setAllTags} setDeleteTags={setDeleteTags} ></AddTagForm>
+        
       </TagsSection>
       
     </MainContainer>

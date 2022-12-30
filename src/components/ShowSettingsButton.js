@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, Platform, SafeAreaView, Button, TouchableOpacit
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons';
+import colors from '../utils/colors'
 
 /* const MainContainer = styled.View`
   display: flex;
@@ -31,16 +32,18 @@ const StyledButton = styled.TouchableOpacity`
   font-weight: 600;
 ` */
 
-const ShowSettingsButton = ({setShowSettingsView, showSettingsView, randomUrl}) => {
+const ShowSettingsButton = ({setShowSettingsView, showSettingsView, randomUrl, setStarred}) => {
   
   const handleClick = async () => {
+    setStarred(false)
     randomUrl.length > 0 ? setShowSettingsView(!showSettingsView) : setShowSettingsView(true)
   }
   
   return (
     <MainContainer>
       <StyledButton onPress={handleClick}>
-        <Ionicons name="settings-outline" size={36} color="gray" />
+        {/* <Ionicons name="settings-outline" size={36} color="gray" /> */}
+        <Ionicons name="settings" size={36} color={colors.buttonsBarIcons} />
         {/* <AntDesign name="setting" size={36} color="black" /> */}
       </StyledButton>
       {/* <StyledTagsButton onPress={handleClick}>
