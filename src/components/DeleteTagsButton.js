@@ -15,13 +15,17 @@ const DeleteTagsButton = ({deleteTags, setDeleteTags}) => {
 
   const printAsyncStorage = async () => {
     await AsyncStorage.getAllKeys((err, keys) => {
+      console.log('Keys:', keys)
       AsyncStorage.multiGet(keys, (error, stores) => {
         let asyncStorage = {}
         stores.map((result, i, store) => {
           asyncStorage[store[i][0]] = store[i][1]
         })
-        console.log(asyncStorage)
-        console.table(asyncStorage)
+        console.log(asyncStorage.favorites)
+        //console.table(asyncStorage)
+        let sizeInBytes = new Blob([JSON.stringify(asyncStorage)]).size
+        var sizeInMB = (sizeInBytes / (1024*1024)).toFixed(2)
+        console.info('SIZE in mb:', sizeInMB)
       })
     })
   }
