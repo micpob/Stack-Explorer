@@ -26,12 +26,12 @@ const StyledTextButton = styled.Text`
   font-weight: 600;
 `
 
-const SearchButton = ({setShowSettingsView, setShowLoader, year, site, tags, setRandomUrl, lastFetchUrl, setlastFetchUrl, links, setLinks, orOperator, setStarred}) => {
+const SearchButton = ({setShowSettingsView, setShowLoader, year, site, tags, setRandomUrl, lastFetchUrl, setlastFetchUrl, links, setLinks, orOperator, setStarred, setShowFavoritesView}) => {
 
   const handleClick = async () => {
     //console.log('handleClick()')
     //console.log('links:', links)
-
+    setShowFavoritesView(false)
     setShowSettingsView(false)
     setStarred(false)
     let fetchUrlBase = `https://api.stackexchange.com/2.3/search/advanced?pagesize=100&fromdate=${year}&order=desc&sort=activity&accepted=True&views=50&site=${site}&filter=!0ynczPwaq3R_qM75`

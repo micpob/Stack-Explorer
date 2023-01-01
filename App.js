@@ -1,18 +1,17 @@
-import { StatusBar } from 'expo-status-bar'
-import { ActivityIndicator, StyleSheet, Text, View, Platform, SafeAreaView, Button } from 'react-native'
+import { ActivityIndicator, StatusBar } from 'react-native'
 import styled from 'styled-components/native'
 import SearchButton from './src/components/SearchButton'
-import FavoritesButton from './Deposit/FavoritesButton'
-import { WebView } from 'react-native-webview'
-import React, { Component, useState, useRef, useEffect } from 'react'
-import reactDom from 'react-dom'
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import ProgressBar from 'react-native-progress/Bar'
-import TagsView from './src/components/TagsView'
-import ShowTagsButton from './src/components/ShowTagsButton'
+import BrowserView from './src/components/BrowserView'
+import React, { useState, useEffect } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import SettingsView from './src/components/SettingsView'
+import FavoritesView from './src/components/FavoritesView'
+import ShowSettingsButton from './src/components/ShowSettingsButton'
+import FavoritesButton from './src/components/FavoritesButton'
 import defaultTags from './src/utils/defaultTags'
 import defaultYears from './src/utils/defaultYears'
 import defaultSites from './src/utils/defaultSites'
+import { NotifierWrapper } from 'react-native-notifier'
 import colors from './src/utils/colors'
 
 const MainContainer = styled.View`
@@ -40,39 +39,53 @@ const LoaderContainer = styled.View`
 
 export default function App() {
 
-  console.log('starting App.js')
-  console.log('defaultTags:', defaultTags)
+  //console.log('starting App.js')
 
-  const [showTagsView, setShowTagsView] = useState(false)
+  const [showSettingsView, setShowSettingsView] = useState(true)
+  const [showFavoritesView, setShowFavoritesView] = useState(false)
   const [showLoader, setShowLoader] = useState(false)
-  const [showAlert, setShowAlert] = useState(false)
-  const [showWebview, setShowWebview] = useState(true)
-  const [site, setSite] = useState('stackoverflow')
-  const [year, setYear] = useState('2018')
+  const [site, setSite] = useState('')
+  const [year, setYear] = useState('')
   const [tags, setTags] = useState([])
-  const [lastUrl, setLastUrl] = useState('')
+  const [lastFetchUrl, setlastFetchUrl] = useState('')
   const [links, setLinks] = useState([])
   const [randomUrl, setRandomUrl] = useState('')
   const [orOperator, setOrOperator] = useState(true)
+  const [starred, setStarred] = useState(false)
+  const [favorites, setFavorites] = useState([])
+  const [currentSite, setCurrentSite] = useState({})
 
-  const getStoredtags = async () => {
-    let storedTags = await AsyncStorage.getItem(`${site}-tags`)
+  const getFavorites = async () => {
+    let storedFavorites = await AsyncStorage.getItem(`favorites`)
+    if (storedFavorites && storedFavorites.length > 0) {
+      storedFavorites = JSON.parse(storedFavorites)
+      return storedFavorites
+    } else {
+      return []
+    }
+  }
+
+  const getStoredTags = async (selectedSite) => {
+    let storedTags = await AsyncStorage.getItem(`${selectedSite}-tags`)
     if (storedTags && storedTags.length > 0) {
       storedTags = JSON.parse(storedTags)
       return storedTags
     } else {
-      const importedTags = defaultTags[`${site}`]
-      return importedTags
+      return defaultTags[`${selectedSite}`]
     }
   }
 
   const getSelectedYear = async () => {
     let storedYear = await AsyncStorage.getItem(`year`)
-    console.log('STORED YEAR:', storedYear)
     if (storedYear && storedYear.length > 0) {
       storedYear = JSON.parse(storedYear)
       return storedYear
     } else {
+      const selectedYear = defaultYears['years'].find(year => year.name === '2018')
+      return selectedYear.value
+    }
+  }
+
   const getOrOperatorState = async () => {
     let storedOrOperatorState = await AsyncStorage.getItem(`orOperator`)
     if (storedOrOperatorState && storedOrOperatorState.length > 0) {
@@ -89,76 +102,67 @@ export default function App() {
       storedSite = JSON.parse(storedSite)
       return storedSite
     } else {
-      //const selectedSite = defaultSites[`sites`].find(site => site.label = 'stackoverflow')
-      return 'stackoverflow'
+      const selectedSite = defaultSites['sites'].find(site => site.value === 'stackoverflow')
+      return selectedSite.value
     }
   }
 
   useEffect(() => {
+    const initializeValues = async () => {
+      const selectedSite = await getSelectedSite()
+      setSite(selectedSite)
+      const storedFavorites = await getFavorites()
+      setFavorites(storedFavorites)
+      const selectedYear = await getSelectedYear()
+      setYear(selectedYear)
+      const orOperatorState = await getOrOperatorState()
       setOrOperator(orOperatorState)
-      const storedTags = await getStoredtags(selectedSite)
+      const storedTags = await getStoredTags(selectedSite)
       const selectedTags = storedTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
       setTags(selectedTags)
     }
-    getTags()
-    const getYear = async () => {
-      const selectedYear = await getSelectedYear()
-      console.log('selectedYear:', selectedYear)
-      setYear(selectedYear)
-    }
-    getYear()
-    const getSite = async () => {
-      const selectedSite = await getSelectedSite()
-      console.log('selectedSite:', selectedSite)
-      setSite(selectedSite)
-    }
-    getSite()
+    initializeValues()
   }, [])
 
-  console.log('tags:', tags)
+/*   console.log('tags:', tags)
   console.log('year:', year)
   console.log('site:', site)
-
+  console.log('orOperator:', orOperator)*/
+ 
+  if (site.length < 1 || year.length < 1) { return null }
 
   return (
+    <NotifierWrapper>
+      <StatusBar></StatusBar>
+      <MainContainer>
 
-    <MainContainer>
-      
+        {
+          showFavoritesView &&
+          <FavoritesView favorites={favorites} setFavorites={setFavorites} ></FavoritesView>
+        }
 
-      { 
-        showTagsView &&
-        <TagsView getStoredtags={getStoredtags} /* getSelectedTags={getSelectedTags} */ site={site} setSite={setSite} tags={tags} setTags={setTags}></TagsView>
-      }
-       
-      {
-        showLoader && 
-        <LoaderContainer>
+        { 
+          showSettingsView &&
+          <SettingsView getStoredTags={getStoredTags} year={year} setYear={setYear} site={site} setSite={setSite} tags={tags} setTags={setTags} orOperator={orOperator} setOrOperator={setOrOperator} ></SettingsView>
+        }
+        
+        {
+          showLoader && 
+          <LoaderContainer>
             <ActivityIndicator size="large" color={colors.primary} />
-        </LoaderContainer> 
-      } 
+          </LoaderContainer> 
+        }
 
-
-      {!showLoader && !showAlert && !showTagsView && randomUrl.length > 0 ?  
-        (
-          <View style={{ flex: 1 }}>
-            <WebView
-              source={{ uri: randomUrl }}
-              style={{marginTop: 22, flex: 1}}
-            />
-          </View>
-        ) : null
-      }
-      
-      <ProgressBarcontainer>
-        { showLoader && <ProgressBar animationConfig={{ bounciness: 0 }} progress={0} width={null} indeterminate={true} color='orange' indeterminateAnimationDuration={3000} borderWidth={0} borderColor='black' borderRadius={0} marginTop='auto' /> }
-      </ProgressBarcontainer>
-
-      <ButtonsContainer>
-        <ShowTagsButton setShowAlert={setShowAlert} setShowTagsView={setShowTagsView}></ShowTagsButton>
-        <SearchButton setShowTagsView={setShowTagsView} setShowLoader={setShowLoader} setShowAlert={setShowAlert} tags={tags} lastUrl={lastUrl} setLastUrl={setLastUrl} links={links} setLinks={setLinks} setRandomUrl={setRandomUrl}></SearchButton>
-        <Button title="DEL" onPress={() => { AsyncStorage.clear(); const keys = AsyncStorage.getAllKeys(); console.log('keys:', keys)}}></Button>
-      </ButtonsContainer>
-    </MainContainer>
+        {!showLoader && !showSettingsView && !showFavoritesView && randomUrl.length > 0 &&
+          <BrowserView randomUrl={randomUrl} setStarred={setStarred} favorites={favorites} setCurrentSite={setCurrentSite} ></BrowserView>
+        }
+        
+        <ButtonsContainer>
+          <ShowSettingsButton setShowSettingsView={setShowSettingsView} showSettingsView={showSettingsView} randomUrl={randomUrl} setStarred={setStarred} setShowFavoritesView={setShowFavoritesView} ></ShowSettingsButton>
+          <SearchButton setShowSettingsView={setShowSettingsView} setShowLoader={setShowLoader} year={year} site={site} tags={tags} lastFetchUrl={lastFetchUrl} setlastFetchUrl={setlastFetchUrl} links={links} setLinks={setLinks} setRandomUrl={setRandomUrl} orOperator={orOperator} setStarred={setStarred} setShowFavoritesView={setShowFavoritesView} ></SearchButton>
+          <FavoritesButton starred={starred} setStarred={setStarred} site={site} showLoader={showLoader} setShowLoader={setShowLoader} showSettingsView={showSettingsView} setShowSettingsView={setShowSettingsView} randomUrl={randomUrl} setFavorites={setFavorites} setShowFavoritesView={setShowFavoritesView} currentSite={currentSite} ></FavoritesButton>
+        </ButtonsContainer>
+      </MainContainer>
+    </NotifierWrapper>
   )
 }
-
