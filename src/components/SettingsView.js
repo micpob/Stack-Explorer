@@ -167,7 +167,7 @@ const SettingsView = ({ getStoredTags, site, setSite, setTags, year, setYear, or
           <DeleteTagsButton deleteTags={deleteTags} setDeleteTags={setDeleteTags}></DeleteTagsButton>
         </TitleContainer>
         <TagsContainer >
-          <ScrollView contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={true} persistentScrollbar={true}>
+          <ScrollView persistentScrollbar={true} contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={true} >
             {allTags.map(tag => <TagButton key={tag.name} title={tag.name} selected={tag.selected} deleteTags={deleteTags} handleClick={() => handleClick(tag) } ></TagButton>)}
           </ScrollView>
         </TagsContainer>

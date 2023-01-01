@@ -15,10 +15,11 @@ const StyledButton = styled.TouchableOpacity`
   
 `
 
-const ShowSettingsButton = ({setShowSettingsView, showSettingsView, randomUrl, setStarred}) => {
+const ShowSettingsButton = ({setShowSettingsView, showSettingsView, randomUrl, setStarred, setShowFavoritesView}) => {
   
   const handleClick = async () => {
     setStarred(false)
+    setShowFavoritesView(false)
     randomUrl.length > 0 ? setShowSettingsView(!showSettingsView) : setShowSettingsView(true)
   }
   
