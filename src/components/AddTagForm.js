@@ -1,6 +1,6 @@
-import React, { Component, useState, useRef, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components/native'
-import { SafeAreaView, StyleSheet, TextInput, Text, View, Platform, Button, TouchableOpacity, Alert } from 'react-native';
+import { View, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import NetInfo from "@react-native-community/netinfo"
 import { Notifier, Easing, NotifierComponents  } from 'react-native-notifier';
@@ -10,17 +10,6 @@ const MainContainer = styled.View`
   align-self: center;
   padding: 4px;
   width: 100%;
-`
-
-const StyledAddTagForm = styled.TouchableOpacity`
-  
-`
-
-const StyledTextButton = styled.Text`
-  color: white;
-  font-size: 20px;
-  font-weight: 600;
-  text-align: center;
 `
 
 const StyledInputField = styled.TextInput`
@@ -47,32 +36,13 @@ const AddTagForm = ({ site, allTags, setAllTags, setDeleteTags }) => {
     const tagAlreadyExists = allTags.some(tag => {
       return tag.name === tagName
     })
-    console.log('tag already exists:', tagAlreadyExists)
+    //console.log('tag already exists:', tagAlreadyExists)
     if (tagAlreadyExists) {
-      /* Notifier.showNotification({
-        translucentStatusBar: true,
-        title: `Tag already exists`,
-        description: `The tag "${tagName}" is already added`,
-        duration: 2500,
-        showAnimationDuration: 500,
-        Component: NotifierComponents.Notification,
-        componentProps: {
-          titleStyle: {fontSize: 24, fontWeight: '600'},
-          descriptionStyle: {fontSize: 16, fontWeight: '600'}
-          
-        }, */
-        /* showEasing: Easing.bounce, */
-        /* onHidden: () => console.log('Hidden'),
-        onPress: () => console.log('Press'), */
-        /* hideOnPress: true,
-      }) */
       Alert.alert(
         "Tag already exists",
         `the tag "${tagName}" is already added`,
         [ ],
-        {
-          cancelable: true
-        }
+        { cancelable: true }
       )
     } else {
       NetInfo.fetch().then(state => {
@@ -81,33 +51,37 @@ const AddTagForm = ({ site, allTags, setAllTags, setDeleteTags }) => {
             "No internet connection",
             `You need to be connected to the internet to add a new tag`,
             [ ],
-            {
-              cancelable: true
-            }
+            { cancelable: true }
           )
         } else {
-          const url = `https://api.stackexchange.com/2.3/search/advanced?pagesize=5&order=desc&sort=activity&tagged=${tagName}&site=${site}&filter=!0ynczPwaq3R_qM75`
+          const url = `https://api.stackexchange.com/2.3/search/advanced?pagesize=5&order=desc&sort=activity&tagged=${tagName}&site=${site}`
 
           fetch(url)
           .then(response => response.json())
           .then(data => {
-            console.log('data:', data)
-            if (typeof data.items == 'undefined') { console.log('data.items undefined'); setPage(1); return}
+            //console.log('data:', data)
+            if (typeof data.items == 'undefined') { 
+              Alert.alert(
+                "Error",
+                `There was an error while checking if the tag exists on the site.\n\nPlease make sure your internet connection is working and try again later.`,
+                [ ],
+                { cancelable: true }
+              )
+              return
+            }
             if (data.items.length === 0) {
               Alert.alert(
                 "Tag does not exists",
                 `The tag "${tagName}" does not exist on the selected site.\nPlease try with another tag.`,
                 [ ],
-                {
-                  cancelable: true
-                }
+                { cancelable: true }
               )
             } else {
               const tagToAdd = {name: tagName, selected: false}
-              console.log('tagToAdd:', tagToAdd)
-              console.log('allTags:', allTags)
+              //console.log('tagToAdd:', tagToAdd)
+              //console.log('allTags:', allTags)
               const newAllTags = [...allTags, tagToAdd]
-              console.log('newAllTags:', newAllTags)
+              //console.log('newAllTags:', newAllTags)
               newAllTags.sort((a, b) => a.name.localeCompare(b.name))
               const jsonNewTagsArray = JSON.stringify(newAllTags)
               AsyncStorage.setItem(`${site}-tags`, jsonNewTagsArray)
@@ -125,9 +99,6 @@ const AddTagForm = ({ site, allTags, setAllTags, setDeleteTags }) => {
                   descriptionStyle: {color: 'white', fontSize: 16, fontWeight: '600'},
                   containerStyle: {backgroundColor: colors.primary}
                 }, 
-                /* showEasing: Easing.bounce, */
-                /* onHidden: () => console.log('Hidden'),
-                onPress: () => console.log('Press'), */
                 hideOnPress: true,
               })
             }
@@ -140,21 +111,16 @@ const AddTagForm = ({ site, allTags, setAllTags, setDeleteTags }) => {
   
   return (
     <MainContainer >
-      {/* <StyledAddTagForm onPress={handleClick} >
-        <StyledTextButton>ADD TAG</StyledTextButton> */}
-        <SafeAreaView>
-          <StyledInputField
-            autoCapitalize='none'
-            maxLength={35}
-            onFocus={() => setDeleteTags(false)}
-            onPressIn={() => setDeleteTags(false)}
-            onChangeText={onChangeText}
-            onSubmitEditing={() => handleSubmit(newTag)}
-            value={newTag}
-            placeholder="Add new tag here"
-          />
-        </SafeAreaView>
-      {/* </StyledAddTagForm> */}
+      <StyledInputField
+        autoCapitalize='none'
+        maxLength={35}
+        onFocus={() => setDeleteTags(false)}
+        onPressIn={() => setDeleteTags(false)}
+        onChangeText={onChangeText}
+        onSubmitEditing={() => handleSubmit(newTag)}
+        value={newTag}
+        placeholder="Add new tag here"
+      />
     </MainContainer>
   )
 }

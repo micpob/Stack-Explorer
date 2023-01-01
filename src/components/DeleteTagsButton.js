@@ -1,17 +1,11 @@
-import React, { Component, useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components/native'
-import { StyleSheet, Text, View, Platform, SafeAreaView, Button, TouchableOpacity  } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { View, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import colors from '../utils/colors'
 
 const MainContainer = styled.View`
-  /* border: 1px solid black;
-  border-radius: 8px; */
-  padding: 4px;
-  margin: 4px;
-  /* background: ${props => props.deleteTags ? 'orange' : 'white'}; */
 `
 
 const StyledDeleteTagsButton = styled.TouchableOpacity`
@@ -33,10 +27,8 @@ const DeleteTagsButton = ({deleteTags, setDeleteTags}) => {
   }
 
   const handleClick = async () => {
-
     console.log('printing storage:')
     await printAsyncStorage() 
-
     setDeleteTags(!deleteTags)
   }
 

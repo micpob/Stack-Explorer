@@ -1,24 +1,23 @@
 import React, { Component, useState, useRef, useEffect } from 'react'
 import styled from 'styled-components/native'
-import { StyleSheet, Text, View, Platform, SafeAreaView, Button, TouchableOpacity, Alert } from 'react-native';
+import { Text, View, TouchableOpacity, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import NetInfo from "@react-native-community/netinfo"
+import colors from '../utils/colors'
 
 const MainContainer = styled.View`
   display: flex;
   align-items: center;
   align-self: center;
   width: 50%;
-  /* border: 2px solid black; */
   border-radius: 4px;
   padding: 7px;
 `
 
 const StyledSearchButton = styled.TouchableOpacity`
-  background: hsl(206,100%,50%);
-  background: #408080;
   border-radius: 4px;
   padding: 8px;
+  background: ${colors.primary};
 `
 
 const StyledTextButton = styled.Text`
@@ -30,18 +29,18 @@ const StyledTextButton = styled.Text`
 const SearchButton = ({setShowSettingsView, setShowLoader, year, site, tags, setRandomUrl, lastFetchUrl, setlastFetchUrl, links, setLinks, orOperator, setStarred}) => {
 
   const handleClick = async () => {
-    console.log('handleClick()')
+    //console.log('handleClick()')
     //console.log('links:', links)
 
     setShowSettingsView(false)
     setStarred(false)
-    let fetchUrlBase = `https://api.stackexchange.com/2.3/search/advanced?pagesize=5&fromdate=${year}&order=desc&sort=activity&accepted=True&views=50&site=${site}&filter=!0ynczPwaq3R_qM75`
+    let fetchUrlBase = `https://api.stackexchange.com/2.3/search/advanced?pagesize=100&fromdate=${year}&order=desc&sort=activity&accepted=True&views=50&site=${site}&filter=!0ynczPwaq3R_qM75`
     let fetchUrlTags = orOperator ? `&q=${encodeURIComponent(tags.map(element => `[${element}]`).join(' or '))}` : `&q=${encodeURIComponent(tags.map(element => `[${element}]`).join(''))}` 
     let fetchUrl = fetchUrlBase + fetchUrlTags + `&page=`
     //console.log('FETCH URL:', fetchUrl)
 
     if (lastFetchUrl.includes(fetchUrl) && links.length > 0) {
-      console.log('lastFetchUrl === fetchUrl && links.length > 0')
+      //console.log('lastFetchUrl === fetchUrl && links.length > 0')
       openRandomLink(lastFetchUrl, links)
     } else {
       const keys = await AsyncStorage.getAllKeys()
@@ -49,25 +48,25 @@ const SearchButton = ({setShowSettingsView, setShowLoader, year, site, tags, set
 
       if (urlAlreadyStored === -1) {
         fetchUrl = fetchUrl + '1'
-        console.log('URL not already stored:', fetchUrl)
+        //console.log('URL not already stored:', fetchUrl)
         fetchMoreLinks(fetchUrl)
       } else {
         const key = keys[urlAlreadyStored]
-        console.log('url already stored:', key)
+        //console.log('url already stored:', key)
         let linksFromStorage = await AsyncStorage.getItem(key)
         linksFromStorage = JSON.parse(linksFromStorage)
-        console.log('links from storage:', linksFromStorage)
+        //console.log('links from storage:', linksFromStorage)
         if (linksFromStorage.length > 0) {
-          console.log('urlAlreadyStored - linksFromStorage.length > 0')
+          //console.log('urlAlreadyStored - linksFromStorage.length > 0')
           openRandomLink(key, linksFromStorage)  
         } else {
           const removeEmptyArray = await AsyncStorage.removeItem(key)
-          console.log('urlAlreadyStored but empty links array - change page in fetch URL')
+          //console.log('urlAlreadyStored but empty links array - change page in fetch URL')
           const pageFromUrl = key.substring(key.lastIndexOf('=') + 1)
           const newPage = parseInt(pageFromUrl) + 1
-          console.log('newPage = parseInt(pageFromUrl) + 1:', newPage)
+          //console.log('newPage = parseInt(pageFromUrl) + 1:', newPage)
           let newfetchUrl = fetchUrlBase + fetchUrlTags + `&page=${newPage}`
-          console.log('fetchMoreLinks(newfetchUrl)')
+          //console.log('fetchMoreLinks(newfetchUrl)')
           fetchMoreLinks(newfetchUrl)
         }
       }
@@ -81,20 +80,20 @@ const SearchButton = ({setShowSettingsView, setShowLoader, year, site, tags, set
     .then(data => {
       let pageFromUrl = fetchUrl.substring(fetchUrl.lastIndexOf('=') + 1)
       pageFromUrl = parseInt(pageFromUrl)
-      console.log('fetchUrl::', fetchUrl)
-      console.log('data:', data)
+      //console.log('fetchUrl::', fetchUrl)
+      //console.log('data:', data)
       if (typeof data.items == 'undefined') { 
-        console.log('data.items undefined'); 
+        //console.log('data.items undefined'); 
         let newfetchUrl =  fetchUrl.substring(0, fetchUrl.lastIndexOf('=') + 1) + '1'
-        console.log('newfetchUrl:', newfetchUrl)
+        //console.log('newfetchUrl:', newfetchUrl)
         fetchMoreLinks(newfetchUrl)
         return
       }
       if (data.items.length === 0) {
         if (pageFromUrl !== 1) {
-          console.log('reset page to 1 from FetchMoreLinks')
+          //console.log('reset page to 1 from FetchMoreLinks')
           let newfetchUrl =  fetchUrl.substring(0, fetchUrl.lastIndexOf('=') + 1) + '1'
-          console.log('newfetchUrl:', newfetchUrl)
+          //console.log('newfetchUrl:', newfetchUrl)
           fetchMoreLinks(newfetchUrl)
         } else {
           setShowLoader(false)
@@ -102,21 +101,17 @@ const SearchButton = ({setShowSettingsView, setShowLoader, year, site, tags, set
             'No results',
             `There are no results with the selected tags and start year`,
             [ ],
-            {
-              cancelable: true
-            }
+            { cancelable: true }
           )
           setShowSettingsView(true)
         }
-      } else  {
-        if (data.items.length < 25 && pageFromUrl == 1) {
+      } else {
+        if (data.items.length < 25 && pageFromUrl === 1) {
           Alert.alert(
             'Very few results',
             `There are less than 25 results with the selected tags and start year.\n\nThis is just to alert you that you will soon start seeing the same questions repeated.`,
             [ ],
-            {
-              cancelable: true
-            }
+            { cancelable: true }
           )
         }
         const linksArray = data.items.map(item => item.link)
@@ -126,7 +121,7 @@ const SearchButton = ({setShowSettingsView, setShowLoader, year, site, tags, set
   }
   
   const openRandomLink = async (fetchUrl, linksArray) => {
-    console.log('linksArray from openRandomLink:', linksArray)
+    //console.log('linksArray from openRandomLink:', linksArray)
 
     NetInfo.fetch().then(async (state) => {
       if (!state.isConnected) {
@@ -134,13 +129,11 @@ const SearchButton = ({setShowSettingsView, setShowLoader, year, site, tags, set
           "No internet connection",
           `You need to be connected to the internet to use the app`,
           [ ],
-          {
-            cancelable: true
-          }
+          { cancelable: true }
         )
       } else {
       const questionUrl = linksArray[Math.floor(Math.random()*linksArray.length)]
-      console.log('questionUrl:', questionUrl)
+      //console.log('questionUrl:', questionUrl)
       setShowLoader(false)
       setRandomUrl(questionUrl)
       const newLinksArray = linksArray.filter(link => link !== questionUrl)
@@ -150,10 +143,10 @@ const SearchButton = ({setShowSettingsView, setShowLoader, year, site, tags, set
       setlastFetchUrl(fetchUrl)
 
       //DEV
-      let newLinksArrayStored = await AsyncStorage.getItem(fetchUrl)
+      /* let newLinksArrayStored = await AsyncStorage.getItem(fetchUrl)
       newLinksArrayStored = JSON.parse(newLinksArrayStored)
       console.log('newLinksArrayStored:', newLinksArrayStored)
-      console.info(new Blob([JSON.stringify(newLinksArrayStored)]).size)
+      console.info(new Blob([JSON.stringify(newLinksArrayStored)]).size) */
       }
     })
   }
