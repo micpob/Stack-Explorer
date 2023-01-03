@@ -45,8 +45,11 @@ const SitePickerSearchable = ({site, setSite, getStoredTags, setTags}) => {
         optionContainerStyle={{backgroundColor: 'white', minWidth: '80%', maxWidth: '90%', maxHeight: 600 }}  
         optionTextStyle= {{color: colors.primary, fontSize: 22, fontWeight: '600'}}
         animationType='fade'
-        cancelContainerStyle={{display: 'none'}}
         selectStyle={{backgroundColor: 'white', borderColor: 'black', paddingLeft: 12, paddingRight: 12 }}
+        cancelContainerStyle={{/* display: 'none' */ alignItems: 'center', marginTop: 8}}
+        cancelText='CANCEL'
+        cancelStyle={{backgroundColor: colors.primary, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 8, borderRadius: 4}}
+        cancelTextStyle={{fontSize: 20, fontWeight: '600', color: 'white'}}
       />
     </MainContainer>
   )
