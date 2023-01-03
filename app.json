@@ -25,7 +25,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.bomboloapp.stackexplorer"
+      "package": "com.github.micpob.stackexplorer"
     },
     "web": {
       "favicon": "./assets/favicon.png"
