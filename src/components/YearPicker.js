@@ -3,7 +3,7 @@ import styled from 'styled-components/native'
 import { Text, View, TouchableOpacity  } from 'react-native';
 import defaultYears from '../utils/defaultYears'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import ModalSelector from 'react-native-modal-selector'
+import ModalSelector from 'react-native-modal-selector-searchable'
 import colors from '../utils/colors'
 
 const MainContainer = styled.View`
@@ -37,6 +37,7 @@ const YearPicker = ({year, setYear}) => {
   return (
     <MainContainer>
       <ModalSelector
+        search={false}
         data={data}
         initValue={getInitValue()}
         onChange={(option)=> { onSelect(option.value) }}
