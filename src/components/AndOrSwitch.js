@@ -14,7 +14,6 @@ const SwitchContainer = styled.View`
 const AndOrSwitch = ({orOperator, setOrOperator}) => {
 
   const handleClick = (value) => {
-    //console.log('SWITCH clicked')
     const jsonNewSelectedOrOperator = JSON.stringify(value)
     AsyncStorage.setItem(`orOperator`, jsonNewSelectedOrOperator)
     setOrOperator(value)

@@ -54,7 +54,7 @@ const AddTagForm = ({ site, allTags, setAllTags, setDeleteTags }) => {
             { cancelable: true }
           )
         } else {
-          const url = `https://api.stackexchange.com/2.3/search/advanced?pagesize=5&order=desc&sort=activity&tagged=${tagName}&site=${site}`
+          const url = `https://api.stackexchange.com/2.3/search/advanced?pagesize=1&order=desc&sort=activity&tagged=${tagName}&site=${site}&filter=!0ynczPwaq3R_qM75`
 
           fetch(url)
           .then(response => response.json())
@@ -63,7 +63,7 @@ const AddTagForm = ({ site, allTags, setAllTags, setDeleteTags }) => {
             if (typeof data.items == 'undefined') { 
               Alert.alert(
                 "Error",
-                `There was an error while checking if the tag exists on the site.\n\nPlease make sure your internet connection is working and try again later.`,
+                `There was an error while checking if the tag exists on the selected site.\n\nPlease make sure your internet connection is working and try again later.`,
                 [ ],
                 { cancelable: true }
               )

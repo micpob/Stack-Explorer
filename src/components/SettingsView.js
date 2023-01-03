@@ -71,9 +71,8 @@ const TagsSection = styled.View`
   border-radius: 8px;
   margin: 8px;
 `
-const TagsContainer = styled.ScrollView`
+const TagsContainer = styled.View`
   max-height: 70%;
-  margin: 2px;
 `
 const styles = StyleSheet.create({
   contentContainer: {
@@ -81,6 +80,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
+    padding: 2
   }
 })
 
@@ -115,7 +115,7 @@ const SettingsView = ({ getStoredTags, site, setSite, setTags, year, setYear, or
         const selectedTags = newAllTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
         setTags(selectedTags)
       } else {
-        const selectedTagsCount = allTags.reduce((acc, cur) => cur.selected ? ++acc : acc, 0)
+        /* const selectedTagsCount = allTags.reduce((acc, cur) => cur.selected ? ++acc : acc, 0)
         if (selectedTagsCount > 3) {
           Notifier.showNotification({
             translucentStatusBar: true,
@@ -131,14 +131,14 @@ const SettingsView = ({ getStoredTags, site, setSite, setTags, year, setYear, or
             },
             hideOnPress: true,
           })
-        } else {
+        } else { */
           const newAllTags = allTags.map(tagObject => tagObject.name === tag.name ? { name: tagObject.name, selected: true} : tagObject)
           const jsonNewTagsArray = JSON.stringify(newAllTags)
           AsyncStorage.setItem(`${site}-tags`, jsonNewTagsArray)
           setAllTags(newAllTags)
           const selectedTags = newAllTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
           setTags(selectedTags)
-        }
+        //}
       }
     }
   }
