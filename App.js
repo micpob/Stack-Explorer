@@ -133,7 +133,8 @@ export default function App() {
 
   return (
     <NotifierWrapper>
-      <StatusBar></StatusBar>
+      <StatusBar backgroundColor="#000000" StatusBarStyle="light-content"></StatusBar>
+
       <MainContainer>
 
         {
