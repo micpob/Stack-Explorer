@@ -2,15 +2,20 @@ import { View,Alert } from 'react-native';
 import React, { useState, useRef, useEffect } from 'react'
 import { WebView } from 'react-native-webview'
 
-const BrowserView = ({ randomUrl, setStarred, favorites, setCurrentSite }) => {
+const BrowserView = ({ randomUrl, setStarred, favorites, setCurrentSite, currentSite, setDisableStarbutton}) => {
 
   const handleOnLoadStart = (pageInfo) => {
+    //console.log('pageInfo from OnLoadstart:', pageInfo)
+    setDisableStarbutton(true)
     setStarred(favorites.some(site=> site.url === pageInfo.url))
+    setCurrentSite({})
   }
 
   const handleOnLoad = (pageInfo) => {
+    //console.log('pageInfo from OnLoad:', pageInfo)
     const cleanedTitle = pageInfo.title.substr(0, pageInfo.title.lastIndexOf('-')).trim()
     setCurrentSite({title: cleanedTitle, url: pageInfo.url})
+    setDisableStarbutton(false)
   }
 
   return (

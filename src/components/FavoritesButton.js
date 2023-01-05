@@ -4,7 +4,6 @@ import { View, TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import colors from '../utils/colors'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import defaultSites from '../utils/defaultSites'
 
 const MainContainer = styled.View`
   display: flex;
@@ -14,39 +13,50 @@ const MainContainer = styled.View`
 `
 
 const StyledButton = styled.TouchableOpacity`
-  
+  padding: 4px
 `
 
-const FavoritesButton = ({showSettingsView, setShowSettingsView, randomUrl, starred, setStarred, showLoader, setShowLoader, setFavorites, setShowFavoritesView, currentSite}) => {
+const FavoritesButton = ({showSettingsView, setShowSettingsView, randomUrl, starred, setStarred, showLoader, setShowLoader, setFavorites, showFavoritesView, setShowFavoritesView, currentSite, setDisableStarbutton, disableStarButton}) => {
   
   const handleClick = async () => {
-    if (!showLoader && !showSettingsView && randomUrl.length > 0) {
+    if (showSettingsView) {
+      setShowLoader(false)
+      setShowSettingsView(false)
+      setStarred(false)
+      setShowFavoritesView(true)
+    } else if (!showLoader && !showSettingsView && !showFavoritesView && randomUrl.length > 0) {
+      if (typeof currentSite.url == 'undefined') {  return }
       let storedFavorites = await AsyncStorage.getItem(`favorites`)
+      setDisableStarbutton(true)
       if (starred) {
+        setStarred(false)
         if (storedFavorites && storedFavorites.length > 0) {
           storedFavorites = JSON.parse(storedFavorites)
           const newFavoritesArray = storedFavorites.filter(favorite => favorite.url !== currentSite.url)
           const jsonNewFavoritesArray = JSON.stringify(newFavoritesArray)
-          AsyncStorage.setItem(`favorites`, jsonNewFavoritesArray)
+          await AsyncStorage.setItem(`favorites`, jsonNewFavoritesArray)
           setFavorites(newFavoritesArray)
-          setStarred(false)
-        } 
+          setDisableStarbutton(false)
+        }
       } else {
-        //const selectedSite = defaultSites['sites'].find(siteObJ => siteObJ.value === site)
-        //const newFavorite = {url: randomUrl, site: selectedSite.name}
+        setStarred(true)
         if (storedFavorites && storedFavorites.length > 0) {
           storedFavorites = JSON.parse(storedFavorites)
-          const newFavoritesArray = [...storedFavorites, currentSite]
-          const jsonNewFavoritesArray = JSON.stringify(newFavoritesArray)
-          AsyncStorage.setItem(`favorites`, jsonNewFavoritesArray)
-          setFavorites(newFavoritesArray)
-          setStarred(true)
+          if (storedFavorites.includes(currentSite)) {
+            setDisableStarbutton(false)
+          } else {
+            const newFavoritesArray = [...storedFavorites, currentSite]
+            const jsonNewFavoritesArray = JSON.stringify(newFavoritesArray)
+            await AsyncStorage.setItem(`favorites`, jsonNewFavoritesArray)
+            setFavorites(newFavoritesArray)
+            setDisableStarbutton(false)
+          }
         } else {
           const newFavoritesArray = [currentSite]
           const jsonNewFavoritesArray = JSON.stringify(newFavoritesArray)
-          AsyncStorage.setItem(`favorites`, jsonNewFavoritesArray)
+          await AsyncStorage.setItem(`favorites`, jsonNewFavoritesArray)
           setFavorites(newFavoritesArray)
-          setStarred(true)
+          setDisableStarbutton(false)
         }
       }
     }
@@ -55,12 +65,13 @@ const FavoritesButton = ({showSettingsView, setShowSettingsView, randomUrl, star
   const handleLongClick = async () => {
     setShowLoader(false)
     setShowSettingsView(false)
+    setStarred(false)
     setShowFavoritesView(true)
   }
   
   return (
     <MainContainer>
-      <StyledButton onPress={ handleClick } onLongPress={ handleLongClick } delayLongPress={ 1000 }>
+      <StyledButton onPress={ handleClick } onLongPress={ handleLongClick } delayLongPress={ 1000 } disabled={disableStarButton}>
         {starred && !showLoader && !showSettingsView && randomUrl.length ? <AntDesign name="star" size={36} color="gold" /> : <AntDesign name="star" size={36} color={colors.buttonsBarIcons} />}
       </StyledButton>
     </MainContainer>  

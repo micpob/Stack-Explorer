@@ -54,6 +54,7 @@ export default function App() {
   const [starred, setStarred] = useState(false)
   const [favorites, setFavorites] = useState([])
   const [currentSite, setCurrentSite] = useState({})
+  const [disableStarButton, setDisableStarbutton] = useState(false)
 
   const getFavorites = async () => {
     let storedFavorites = await AsyncStorage.getItem(`favorites`)
@@ -139,7 +140,7 @@ export default function App() {
 
         {
           showFavoritesView &&
-          <FavoritesView favorites={favorites} setFavorites={setFavorites} ></FavoritesView>
+          <FavoritesView favorites={favorites} setFavorites={setFavorites} setRandomUrl={setRandomUrl} setShowFavoritesView={setShowFavoritesView} ></FavoritesView>
         }
 
         { 
@@ -155,13 +156,13 @@ export default function App() {
         }
 
         {!showLoader && !showSettingsView && !showFavoritesView && randomUrl.length > 0 &&
-          <BrowserView randomUrl={randomUrl} setStarred={setStarred} favorites={favorites} setCurrentSite={setCurrentSite} ></BrowserView>
+          <BrowserView randomUrl={randomUrl} setStarred={setStarred} favorites={favorites} setCurrentSite={setCurrentSite} currentSite={currentSite} setDisableStarbutton={setDisableStarbutton}></BrowserView>
         }
         
         <ButtonsContainer>
           <ShowSettingsButton setShowSettingsView={setShowSettingsView} showSettingsView={showSettingsView} randomUrl={randomUrl} setStarred={setStarred} setShowFavoritesView={setShowFavoritesView} ></ShowSettingsButton>
-          <SearchButton setShowSettingsView={setShowSettingsView} setShowLoader={setShowLoader} year={year} site={site} tags={tags} lastFetchUrl={lastFetchUrl} setlastFetchUrl={setlastFetchUrl} links={links} setLinks={setLinks} setRandomUrl={setRandomUrl} orOperator={orOperator} setStarred={setStarred} setShowFavoritesView={setShowFavoritesView} ></SearchButton>
-          <FavoritesButton starred={starred} setStarred={setStarred} site={site} showLoader={showLoader} setShowLoader={setShowLoader} showSettingsView={showSettingsView} setShowSettingsView={setShowSettingsView} randomUrl={randomUrl} setFavorites={setFavorites} setShowFavoritesView={setShowFavoritesView} currentSite={currentSite} ></FavoritesButton>
+          <SearchButton setShowSettingsView={setShowSettingsView} setShowLoader={setShowLoader} year={year} site={site} tags={tags} lastFetchUrl={lastFetchUrl} setlastFetchUrl={setlastFetchUrl} links={links} setLinks={setLinks} setRandomUrl={setRandomUrl} orOperator={orOperator} setStarred={setStarred} setShowFavoritesView={setShowFavoritesView} setCurrentSite={setCurrentSite} setDisableStarbutton={setDisableStarbutton} ></SearchButton>
+          <FavoritesButton starred={starred} setStarred={setStarred} site={site} showLoader={showLoader} setShowLoader={setShowLoader} showSettingsView={showSettingsView} setShowSettingsView={setShowSettingsView} randomUrl={randomUrl} setFavorites={setFavorites} showFavoritesView={showFavoritesView} setShowFavoritesView={setShowFavoritesView} currentSite={currentSite} disableStarButton={disableStarButton} setDisableStarbutton={setDisableStarbutton} ></FavoritesButton>
         </ButtonsContainer>
       </MainContainer>
     </NotifierWrapper>

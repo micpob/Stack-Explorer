@@ -26,11 +26,12 @@ const StyledTextButton = styled.Text`
   font-weight: 600;
 `
 
-const SearchButton = ({setShowSettingsView, setShowLoader, year, site, tags, setRandomUrl, lastFetchUrl, setlastFetchUrl, links, setLinks, orOperator, setStarred, setShowFavoritesView}) => {
+const SearchButton = ({setShowSettingsView, setShowLoader, year, site, tags, setRandomUrl, lastFetchUrl, setlastFetchUrl, links, setLinks, orOperator, setStarred, setShowFavoritesView, setCurrentSite, setDisableStarbutton}) => {
 
   const handleClick = async () => {
     //console.log('handleClick()')
-    //console.log('links:', links)
+    setDisableStarbutton(true)
+    setCurrentSite({})
     setShowFavoritesView(false)
     setShowSettingsView(false)
     setStarred(false)
