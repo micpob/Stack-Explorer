@@ -36,7 +36,7 @@ const SearchButton = ({setShowSettingsView, setShowLoader, year, site, tags, set
     setShowSettingsView(false)
     setStarred(false)
     let fetchUrlBase = `https://api.stackexchange.com/2.3/search/advanced?pagesize=100&fromdate=${year}&order=desc&sort=activity&accepted=True&views=50&site=${site}&filter=!0ynczPwaq3R_qM75`
-    let fetchUrlTags = orOperator ? `&q=${encodeURIComponent(tags.map(element => `[${element}]`).join(' or '))}` : `&q=${encodeURIComponent(tags.map(element => `[${element}]`).join(''))}` 
+    let fetchUrlTags = tags.length < 1 ? '' : orOperator ? `&q=${encodeURIComponent(tags.map(element => `[${element}]`).join(' or '))}` : `&q=${encodeURIComponent(tags.map(element => `[${element}]`).join(''))}` 
     let fetchUrl = fetchUrlBase + fetchUrlTags + `&page=`
     //console.log('FETCH URL:', fetchUrl)
 
@@ -85,7 +85,7 @@ const SearchButton = ({setShowSettingsView, setShowLoader, year, site, tags, set
       //console.log('data:', data)
       if (typeof data.items == 'undefined') { 
         //console.log('data.items undefined'); 
-        let newfetchUrl =  fetchUrl.substring(0, fetchUrl.lastIndexOf('=') + 1) + '1'
+        let newfetchUrl = fetchUrl.substring(0, fetchUrl.lastIndexOf('=') + 1) + '1'
         //console.log('newfetchUrl:', newfetchUrl)
         fetchMoreLinks(newfetchUrl)
         return
@@ -100,7 +100,7 @@ const SearchButton = ({setShowSettingsView, setShowLoader, year, site, tags, set
           setShowLoader(false)
           Alert.alert(
             'No results',
-            `There are no results with the selected tags and start year`,
+            `There are no results with the selected tags and start year. ${!orOperator && tags.length > 3 ? "\n\nWhile using the 'and' operator, please avoid selecting more than 3 tags at the same time." : "" }`,
             [ ],
             { cancelable: true }
           )
@@ -123,7 +123,7 @@ const SearchButton = ({setShowSettingsView, setShowLoader, year, site, tags, set
   
   const openRandomLink = async (fetchUrl, linksArray) => {
     //console.log('linksArray from openRandomLink:', linksArray)
-
+    //console.log('fetchUrl from openRandomLink:', fetchUrl)
     NetInfo.fetch().then(async (state) => {
       if (!state.isConnected) {
         Alert.alert(
@@ -142,12 +142,6 @@ const SearchButton = ({setShowSettingsView, setShowLoader, year, site, tags, set
       AsyncStorage.setItem(fetchUrl, jsonNewLinksArray)
       setLinks(newLinksArray)
       setlastFetchUrl(fetchUrl)
-
-      //DEV
-      /* let newLinksArrayStored = await AsyncStorage.getItem(fetchUrl)
-      newLinksArrayStored = JSON.parse(newLinksArrayStored)
-      console.log('newLinksArrayStored:', newLinksArrayStored)
-      console.info(new Blob([JSON.stringify(newLinksArrayStored)]).size) */
       }
     })
   }

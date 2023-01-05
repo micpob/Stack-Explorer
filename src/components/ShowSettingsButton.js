@@ -12,7 +12,7 @@ const MainContainer = styled.View`
 `
 
 const StyledButton = styled.TouchableOpacity`
-  
+  padding: 4px
 `
 
 const ShowSettingsButton = ({setShowSettingsView, showSettingsView, randomUrl, setStarred, setShowFavoritesView}) => {

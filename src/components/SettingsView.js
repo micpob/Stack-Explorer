@@ -99,7 +99,6 @@ const SettingsView = ({ getStoredTags, site, setSite, setTags, year, setYear, or
   
   const handleClick = async (tag) => {
     if (deleteTags) {
-      //console.log('deleting tag')
       const newAllTags = allTags.filter(tagObject => tagObject.name !== tag.name)
       const jsonNewTagsArray = JSON.stringify(newAllTags)
       AsyncStorage.setItem(`${site}-tags`, jsonNewTagsArray)
@@ -115,30 +114,12 @@ const SettingsView = ({ getStoredTags, site, setSite, setTags, year, setYear, or
         const selectedTags = newAllTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
         setTags(selectedTags)
       } else {
-        /* const selectedTagsCount = allTags.reduce((acc, cur) => cur.selected ? ++acc : acc, 0)
-        if (selectedTagsCount > 3) {
-          Notifier.showNotification({
-            translucentStatusBar: true,
-            title: `Too many tags selected`,
-            description: `Max. 4 tags selected at the same time`,
-            duration: 2500,
-            showAnimationDuration: 500,
-            Component: NotifierComponents.Notification,
-            componentProps: {
-              titleStyle: {color: 'white', fontSize: 24, fontWeight: '600'},
-              descriptionStyle: {color: 'white', fontSize: 16, fontWeight: '600'},
-              containerStyle: {backgroundColor: 'darkred'}
-            },
-            hideOnPress: true,
-          })
-        } else { */
-          const newAllTags = allTags.map(tagObject => tagObject.name === tag.name ? { name: tagObject.name, selected: true} : tagObject)
-          const jsonNewTagsArray = JSON.stringify(newAllTags)
-          AsyncStorage.setItem(`${site}-tags`, jsonNewTagsArray)
-          setAllTags(newAllTags)
-          const selectedTags = newAllTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
-          setTags(selectedTags)
-        //}
+        const newAllTags = allTags.map(tagObject => tagObject.name === tag.name ? { name: tagObject.name, selected: true} : tagObject)
+        const jsonNewTagsArray = JSON.stringify(newAllTags)
+        AsyncStorage.setItem(`${site}-tags`, jsonNewTagsArray)
+        setAllTags(newAllTags)
+        const selectedTags = newAllTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
+        setTags(selectedTags)
       }
     }
   }
@@ -162,8 +143,7 @@ const SettingsView = ({ getStoredTags, site, setSite, setTags, year, setYear, or
       <TagsSection>
         <TitleContainer>
           <StyledTitle>Tags:</StyledTitle>
-          { !deleteTags && <AndOrSwitch orOperator={orOperator} setOrOperator={setOrOperator} ></AndOrSwitch> }
-          { deleteTags && <Text>click on a tag to delete it</Text> }
+          { deleteTags ? <Text>click on a tag to delete it</Text> : <AndOrSwitch orOperator={orOperator} setOrOperator={setOrOperator}></AndOrSwitch> }
           <DeleteTagsButton deleteTags={deleteTags} setDeleteTags={setDeleteTags}></DeleteTagsButton>
         </TitleContainer>
         <TagsContainer >
@@ -173,7 +153,6 @@ const SettingsView = ({ getStoredTags, site, setSite, setTags, year, setYear, or
         </TagsContainer>
         <AddTagForm site={site} allTags={allTags} setAllTags={setAllTags} setDeleteTags={setDeleteTags} ></AddTagForm>
       </TagsSection>
-      
     </MainContainer>
   )
 }

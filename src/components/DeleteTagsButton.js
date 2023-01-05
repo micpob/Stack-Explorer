@@ -13,7 +13,7 @@ const StyledDeleteTagsButton = styled.TouchableOpacity`
 `
 const DeleteTagsButton = ({deleteTags, setDeleteTags}) => {
 
-  const printAsyncStorage = async () => {
+  /* const printAsyncStorage = async () => {
     await AsyncStorage.getAllKeys((err, keys) => {
       console.log('Keys:', keys)
       AsyncStorage.multiGet(keys, (error, stores) => {
@@ -21,25 +21,25 @@ const DeleteTagsButton = ({deleteTags, setDeleteTags}) => {
         stores.map((result, i, store) => {
           asyncStorage[store[i][0]] = store[i][1]
         })
-        console.log(asyncStorage.favorites)
-        //console.table(asyncStorage)
+        console.log(asyncStorage)
+        console.table(asyncStorage)
         let sizeInBytes = new Blob([JSON.stringify(asyncStorage)]).size
         var sizeInMB = (sizeInBytes / (1024*1024)).toFixed(2)
         console.info('SIZE in mb:', sizeInMB)
       })
     })
-  }
+  } */
 
   const handleClick = async () => {
-    console.log('printing storage:')
-    await printAsyncStorage() 
+    //console.log('printing storage:')
+    //await printAsyncStorage() 
+
     setDeleteTags(!deleteTags)
   }
 
   const handleLongClick = async () => {
-    AsyncStorage.clear()
-    //const keys = AsyncStorage.getAllKeys() 
-    console.log('cleaned storage')
+    //AsyncStorage.clear()
+    //console.log('cleaned storage')
   }
   
   return (
