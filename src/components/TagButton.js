@@ -5,13 +5,13 @@ import colors from '../utils/colors'
 
 const MainContainer = styled.View`
   border: 1px solid black;
-  border-color: ${props => props.deleteTags ? 'white' : 'black'};
+  border-color: ${props => props.deleteTags ? 'white' : props.selected ? colors.primary : 'black'};
   align-self: center;
   border-radius: 8px;
   padding: 4px;
   margin: 4px;
   min-width: 32px;
-  background: ${props => props.deleteTags ? colors.deleteMain : props.selected ? 'black' : 'white'}
+  background: ${props => props.deleteTags ? colors.deleteMain : props.selected ? colors.primary : 'white'}
 `
 
 const StyledTagButton = styled.TouchableOpacity`
