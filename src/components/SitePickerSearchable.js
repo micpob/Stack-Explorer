@@ -42,7 +42,7 @@ const SitePickerSearchable = ({site, setSite, getStoredTags, setTags}) => {
         onChange={(option)=> { onSelect(option.value) }}
         initValueTextStyle={{color: 'black', fontSize: 20, fontWeight: '600'}}
         overlayStyle={{flex: 1, padding: '5%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.7)'}}    
-        optionContainerStyle={{backgroundColor: 'white', minWidth: '80%', maxWidth: '90%', maxHeight: 600 }}  
+        optionContainerStyle={{backgroundColor: 'white', width: 300, maxHeight: 600 }}  
         optionTextStyle= {{color: colors.primary, fontSize: 22, fontWeight: '600'}}
         animationType='fade'
         selectStyle={{backgroundColor: 'white', borderColor: 'black', paddingLeft: 12, paddingRight: 12 }}
@@ -50,6 +50,7 @@ const SitePickerSearchable = ({site, setSite, getStoredTags, setTags}) => {
         cancelText='CANCEL'
         cancelStyle={{backgroundColor: colors.primary, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 8, borderRadius: 4}}
         cancelTextStyle={{fontSize: 20, fontWeight: '600', color: 'white'}}
+        listType='FLATLIST'
       />
     </MainContainer>
   )
