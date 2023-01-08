@@ -35,7 +35,7 @@ const SearchButton = ({setShowSettingsView, setShowLoader, year, site, tags, set
     setShowFavoritesView(false)
     setShowSettingsView(false)
     setStarred(false)
-    let fetchUrlBase = `https://api.stackexchange.com/2.3/search/advanced?pagesize=100&fromdate=${year}&order=desc&sort=activity&accepted=True&views=50&site=${site}&filter=!0ynczPwaq3R_qM75`
+    let fetchUrlBase = `https://api.stackexchange.com/2.3/search/advanced?pagesize=50&fromdate=${year}&order=desc&sort=activity&accepted=True&views=50&site=${site}&filter=!0ynczPwaq3R_qM75`
     let fetchUrlTags = tags.length < 1 ? '' : orOperator ? `&q=${encodeURIComponent(tags.map(element => `[${element}]`).join(' or '))}` : `&q=${encodeURIComponent(tags.map(element => `[${element}]`).join(''))}` 
     let fetchUrl = fetchUrlBase + fetchUrlTags + `&page=`
     //console.log('FETCH URL:', fetchUrl)
