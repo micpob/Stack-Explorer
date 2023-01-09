@@ -29,6 +29,12 @@ const StyledAddTagsButton = styled.TouchableOpacity`
 const StyledTextButton = styled.Text`
   color: gray;
 `
+
+const StyledBlinkingText = styled.Text`
+  color: black;
+  margin-bottom: 5px;
+  opacity: ${props => props.showText ? 1 : 0};
+`
 const AddTagsButton = ({showAddTagForm, setShowAddTagForm, }) => {
 
   const [showText, setShowText] = useState(true);
@@ -55,7 +61,7 @@ const AddTagsButton = ({showAddTagForm, setShowAddTagForm, }) => {
         {/* <Ionicons name="add-circle-outline" size={32} color="black" /> */}
         {/* <Entypo name="add-to-list" size={24} color="black" /> */}
         {/* <Ionicons name="add" size={24} color="black" /> */}
-        <StyledTextButton style={{ opacity: showText ? 1 : 0, marginBottom: 4 }}>|</StyledTextButton><StyledTextButton>Add new tag... </StyledTextButton>
+        <StyledBlinkingText showText={showText}>|</StyledBlinkingText><StyledTextButton>Add new tag... </StyledTextButton>
       </StyledAddTagsButton>
     </MainContainer>
   )
