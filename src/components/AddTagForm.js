@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import NetInfo from "@react-native-community/netinfo"
 import { Notifier, Easing, NotifierComponents  } from 'react-native-notifier';
 import colors from '../utils/colors'
+import Dialog from "react-native-dialog";
 
 const MainContainer = styled.View`
   align-self: center;
@@ -23,7 +24,7 @@ const StyledInputField = styled.TextInput`
   margin: auto;
 `
 
-const AddTagForm = ({ site, allTags, setAllTags, setDeleteTags }) => {
+const AddTagForm = ({ site, allTags, setAllTags, showAddTagForm, setShowAddTagForm, deleteTags, setDeleteTags }) => {
 
   const [newTag, onChangeText] = useState('')
 
@@ -72,7 +73,7 @@ const AddTagForm = ({ site, allTags, setAllTags, setDeleteTags }) => {
             if (data.items.length === 0) {
               Alert.alert(
                 "Tag does not exists",
-                `The tag "${tagName}" does not exist on the selected site.\nPlease try with another tag.`,
+                `The tag "${tagName}" does not exist on the selected site.\n\nRemember that multiple words tags are written as dash separated values.\nExample: microsoft-excel`,
                 [ ],
                 { cancelable: true }
               )
@@ -87,6 +88,7 @@ const AddTagForm = ({ site, allTags, setAllTags, setDeleteTags }) => {
               AsyncStorage.setItem(`${site}-tags`, jsonNewTagsArray)
               setAllTags(newAllTags)
               onChangeText('')
+              setShowAddTagForm(false)
               Notifier.showNotification({
                 translucentStatusBar: true,
                 title: `Tag added`,
@@ -108,20 +110,30 @@ const AddTagForm = ({ site, allTags, setAllTags, setDeleteTags }) => {
 
     }
   }
+
+  const handleCancel = () => {
+    onChangeText('')
+    setShowAddTagForm(false)
+  }
+
+
   
   return (
-    <MainContainer >
-      <StyledInputField
-        autoCapitalize='none'
-        maxLength={35}
-        onFocus={() => setDeleteTags(false)}
-        onPressIn={() => setDeleteTags(false)}
-        onChangeText={onChangeText}
-        onSubmitEditing={() => handleSubmit(newTag)}
-        value={newTag}
-        placeholder="Add new tag here"
-      />
-    </MainContainer>
+      <Dialog.Container visible={showAddTagForm} onBackdropPress={handleCancel} onRequestClose={handleCancel}  >
+        <Dialog.Input 
+          autoFocus={true}
+          autoCapitalize='none'
+          maxLength={35}
+          onFocus={() => setDeleteTags(false)}
+          onPressIn={() => setDeleteTags(false)}
+          onChangeText={onChangeText}
+          onSubmitEditing={() => handleSubmit(newTag)}
+          value={newTag}
+          placeholder="new-tag"
+        />
+        <Dialog.Button label="Cancel" onPress={handleCancel} />
+        <Dialog.Button label="OK" onPress={() => handleSubmit(newTag)}  />
+      </Dialog.Container>
   )
 }
 
