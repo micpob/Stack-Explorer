@@ -154,7 +154,10 @@ const SettingsView = ({ getStoredTags, site, setSite, setTags, year, setYear, or
           </ScrollView>
         </TagsContainer>
         <AddTagsButton showAddTagForm={AddTagsButton} setShowAddTagForm={setShowAddTagForm}></AddTagsButton>
-        <AddTagForm site={site} allTags={allTags} setAllTags={setAllTags} setDeleteTags={setDeleteTags} showAddTagForm={showAddTagForm} setShowAddTagForm={setShowAddTagForm} ></AddTagForm>
+        {
+          showAddTagForm &&
+          <AddTagForm site={site} allTags={allTags} setAllTags={setAllTags} setDeleteTags={setDeleteTags} showAddTagForm={showAddTagForm} setShowAddTagForm={setShowAddTagForm} ></AddTagForm>
+        }
       </TagsSection>
     </MainContainer>
   )
