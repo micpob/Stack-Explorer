@@ -16,15 +16,16 @@ const StyledButton = styled.TouchableOpacity`
   padding: 4px
 `
 
-const FavoritesButton = ({showSettingsView, setShowSettingsView, randomUrl, starred, setStarred, showLoader, setShowLoader, setFavorites, showFavoritesView, setShowFavoritesView, currentSite, setDisableStarbutton, disableStarButton}) => {
+const FavoritesButton = ({setLastScreen, showSettingsView, setShowSettingsView, randomUrl, starred, setStarred, showLoader, setShowLoader, setFavorites, showFavoritesView, setShowFavoritesView, currentSite, setDisableStarbutton, disableStarButton}) => {
   
   const handleClick = async () => {
     if (showSettingsView) {
       setShowLoader(false)
       setShowSettingsView(false)
       setStarred(false)
+      setLastScreen('settings')
       setShowFavoritesView(true)
-    } else if (!showLoader && !showSettingsView && !showFavoritesView && randomUrl.length > 0) {
+    } else if (!showLoader && !showSettingsView && !showFavoritesView && randomUrl.length > 0) {S
       if (typeof currentSite.url == 'undefined') {  return }
       let storedFavorites = await AsyncStorage.getItem(`favorites`)
       setDisableStarbutton(true)
@@ -66,6 +67,7 @@ const FavoritesButton = ({showSettingsView, setShowSettingsView, randomUrl, star
     setShowLoader(false)
     setShowSettingsView(false)
     setStarred(false)
+    setLastScreen(showSettingsView? 'settings' : 'browser')
     setShowFavoritesView(true)
   }
   

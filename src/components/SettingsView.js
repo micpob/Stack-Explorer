@@ -10,6 +10,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Notifier, Easing, NotifierComponents  } from 'react-native-notifier';
 import colors from '../utils/colors'
+import AddTagsButton from './AddTagsButton';
 
 const MainContainer = styled.View`
   flex: 1;
@@ -88,6 +89,7 @@ const SettingsView = ({ getStoredTags, site, setSite, setTags, year, setYear, or
 
   const [allTags, setAllTags] = useState([])
   const [deleteTags, setDeleteTags] = useState(false)
+  const [showAddTagForm, setShowAddTagForm] = useState(false)
 
   useEffect(() => {
     const getTags = async () => {
@@ -151,7 +153,8 @@ const SettingsView = ({ getStoredTags, site, setSite, setTags, year, setYear, or
             {allTags.map(tag => <TagButton key={tag.name} title={tag.name} selected={tag.selected} deleteTags={deleteTags} handleClick={() => handleClick(tag) } ></TagButton>)}
           </ScrollView>
         </TagsContainer>
-        <AddTagForm site={site} allTags={allTags} setAllTags={setAllTags} setDeleteTags={setDeleteTags} ></AddTagForm>
+        <AddTagsButton showAddTagForm={AddTagsButton} setShowAddTagForm={setShowAddTagForm}></AddTagsButton>
+        <AddTagForm site={site} allTags={allTags} setAllTags={setAllTags} setDeleteTags={setDeleteTags} showAddTagForm={showAddTagForm} setShowAddTagForm={setShowAddTagForm} ></AddTagForm>
       </TagsSection>
     </MainContainer>
   )

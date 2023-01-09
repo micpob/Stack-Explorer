@@ -4,6 +4,7 @@ import { Text, View, TouchableOpacity, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import NetInfo from "@react-native-community/netinfo"
 import colors from '../utils/colors'
+import ShowSettingsButton from './ShowSettingsButton';
 
 const MainContainer = styled.View`
   display: flex;
@@ -26,10 +27,16 @@ const StyledTextButton = styled.Text`
   font-weight: 600;
 `
 
-const SearchButton = ({setShowSettingsView, setShowLoader, year, site, tags, setRandomUrl, lastFetchUrl, setlastFetchUrl, links, setLinks, orOperator, setStarred, setShowFavoritesView, setCurrentSite, setDisableStarbutton}) => {
+const SearchButton = ({randomUrl, setLastRandomUrl, showFavoritesView, setLastScreen, setShowSettingsView, setShowLoader, year, site, tags, setRandomUrl, lastFetchUrl, setlastFetchUrl, links, setLinks, orOperator, setStarred, setShowFavoritesView, setCurrentSite, setDisableStarbutton}) => {
 
   const handleClick = async () => {
     //console.log('handleClick()')
+    if (showFavoritesView) {
+      setLastScreen('favorites')
+    } else if (setShowSettingsView) {
+      setLastScreen('settings')
+    }
+    setLastScreen(showFavoritesView ? 'favorites' : 'settings')
     setDisableStarbutton(true)
     setCurrentSite({})
     setShowFavoritesView(false)
@@ -136,6 +143,7 @@ const SearchButton = ({setShowSettingsView, setShowLoader, year, site, tags, set
       const questionUrl = linksArray[Math.floor(Math.random()*linksArray.length)]
       //console.log('questionUrl:', questionUrl)
       setShowLoader(false)
+      setLastRandomUrl(randomUrl.length > 0 ? randomUrl : questionUrl)
       setRandomUrl(questionUrl)
       const newLinksArray = linksArray.filter(link => link !== questionUrl)
       const jsonNewLinksArray = JSON.stringify(newLinksArray)
