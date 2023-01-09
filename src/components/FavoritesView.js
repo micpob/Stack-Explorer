@@ -89,7 +89,7 @@ const AlertText = styled.Text`
   color: #343434';
 `
 
-const FavoritesView = ({ favorites, setFavorites, setRandomUrl, setShowFavoritesView }) => {
+const FavoritesView = ({ setLastScreen, favorites, setFavorites, setRandomUrl, setShowFavoritesView }) => {
 
   const [deleteFavorites, setDeleteFavorites] = useState(false)
   //console.log('favorites from favoritesView:', favorites)
@@ -106,6 +106,7 @@ const FavoritesView = ({ favorites, setFavorites, setRandomUrl, setShowFavorites
     if (deleteFavorites) {
       return
     } else {
+      setLastScreen('favorites')
       setRandomUrl(url)
       setShowFavoritesView(false)
     }
