@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
+import { Text, View, TouchableOpacity  } from 'react-native'
 import styled from 'styled-components/native'
-import { Text, View, TouchableOpacity  } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import ModalSelector from 'react-native-modal-selector-searchable'
 import defaultYears from '../utils/defaultYears'

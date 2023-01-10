@@ -1,11 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components/native'
 import { View, TouchableOpacity, Text } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons'
-import { Ionicons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import colors from '../utils/colors'
-import { Entypo } from '@expo/vector-icons'
 
 const MainContainer = styled.View`
   width: 100%;
@@ -35,32 +30,24 @@ const StyledBlinkingText = styled.Text`
   margin-bottom: 5px;
   opacity: ${props => props.showText ? 1 : 0};
 `
-const AddTagsButton = ({showAddTagForm, setShowAddTagForm, }) => {
+const AddTagsButton = ({setShowAddTagForm, }) => {
 
   const [showText, setShowText] = useState(true);
 
   useEffect(() => {
-    // Change the state every second or the time given by User.
     const interval = setInterval(() => {
-      setShowText((showText) => !showText);
-    }, 1000);
-    return () => clearInterval(interval);
+      setShowText((showText) => !showText)
+    }, 1000)
+    return () => clearInterval(interval)
   }, [])
 
   const handleClick = async () => {
     setShowAddTagForm(true)
   }
 
-  const handleLongClick = async () => {
-
-  }
-  
   return (
     <MainContainer >
-      <StyledAddTagsButton onPress={handleClick} onLongPress={handleLongClick} >
-        {/* <Ionicons name="add-circle-outline" size={32} color="black" /> */}
-        {/* <Entypo name="add-to-list" size={24} color="black" /> */}
-        {/* <Ionicons name="add" size={24} color="black" /> */}
+      <StyledAddTagsButton onPress={handleClick} >
         <StyledBlinkingText showText={showText}>|</StyledBlinkingText><StyledTextButton>Add new tag... </StyledTextButton>
       </StyledAddTagsButton>
     </MainContainer>

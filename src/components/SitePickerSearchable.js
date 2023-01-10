@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
+import { Text, View, TouchableOpacity, TextInput  } from 'react-native'
 import styled from 'styled-components/native'
-import { Text, View, TouchableOpacity, TextInput  } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import ModalSelector from 'react-native-modal-selector-searchable'
 import defaultSites from '../utils/defaultSites'
@@ -24,10 +24,14 @@ const SitePickerSearchable = ({site, setSite, getStoredTags, setTags}) => {
     setTags(selectedTags)
   }
 
-  const data = defaultSites['sites'].map((siteObj, index) => {
+  /* const data = defaultSites['sites'].map((siteObj, index) => {
       return { key: index, label: siteObj.name, value: siteObj.value }
     }
-  )
+  ) */
+
+  const data = React.useMemo(()=> defaultSites['sites'].map((siteObj, index) => {
+    return { key: index, label: siteObj.name, value: siteObj.value }
+  }),[defaultSites['sites']])
 
   const getInitValue = () => {
     const initValue = defaultSites['sites'].find(siteObj => siteObj.value === site)

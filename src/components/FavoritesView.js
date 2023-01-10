@@ -1,6 +1,6 @@
+import React, { useState, useRef, useEffect } from 'react'
 import { StyleSheet, Text, View, ScrollView, Alert, TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native'
-import React, { useState, useRef, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import colors from '../utils/colors'
 import defaultSites from '../utils/defaultSites'
@@ -76,7 +76,7 @@ const TitleCell = styled.View`
 
 const CellText = styled.Text`
   font-size: 16px;
-  font-weight: ${props => props.deleteFavorites ? '400' : '400'};
+  font-weight: 400;
   color: ${props => props.deleteFavorites ? props.index % 2 === 0 ? 'white' : '#343434' : props.index % 2 === 0 ? colors.primary : '#686868'};
 `
 
@@ -103,9 +103,7 @@ const FavoritesView = ({ setLastScreen, favorites, setFavorites, setRandomUrl, s
   tableData.sort((a, b) => a.site.localeCompare(b.site) || a.title.toLowerCase().localeCompare(b.title.toLowerCase()))
 
   const handleClick = (url) => {
-    if (deleteFavorites) {
-      return
-    } else {
+    if (!deleteFavorites) {
       setLastScreen('favorites')
       setRandomUrl(url)
       setShowFavoritesView(false)
@@ -113,9 +111,7 @@ const FavoritesView = ({ setLastScreen, favorites, setFavorites, setRandomUrl, s
   }
 
   const handleLongClick = async (url) => {
-    if (!deleteFavorites) {
-      return
-    } else {
+    if (deleteFavorites) {
       let storedFavorites = await AsyncStorage.getItem(`favorites`)
       if (storedFavorites && storedFavorites.length > 0) {
         storedFavorites = JSON.parse(storedFavorites)
@@ -126,7 +122,6 @@ const FavoritesView = ({ setLastScreen, favorites, setFavorites, setRandomUrl, s
       }
     }
   }
-
   
   return (
     <MainContainer>

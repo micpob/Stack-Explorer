@@ -1,13 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components/native'
 import { View, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import colors from '../utils/colors'
 
 const MainContainer = styled.View`
 `
-
 const StyledDeleteTagsButton = styled.TouchableOpacity`
   
 `
@@ -33,7 +31,6 @@ const DeleteTagsButton = ({deleteTags, setDeleteTags}) => {
   const handleClick = async () => {
     //console.log('printing storage:')
     //await printAsyncStorage() 
-
     setDeleteTags(!deleteTags)
   }
 

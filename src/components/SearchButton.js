@@ -1,10 +1,9 @@
 import React, { Component, useState, useRef, useEffect } from 'react'
+import { Text, View, TouchableOpacity, Alert } from 'react-native'
 import styled from 'styled-components/native'
-import { Text, View, TouchableOpacity, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import NetInfo from "@react-native-community/netinfo"
 import colors from '../utils/colors'
-import ShowSettingsButton from './ShowSettingsButton';
 
 const MainContainer = styled.View`
   display: flex;
@@ -27,15 +26,12 @@ const StyledTextButton = styled.Text`
   font-weight: 600;
 `
 
-const SearchButton = ({randomUrl, setLastRandomUrl, showFavoritesView, setLastScreen, setShowSettingsView, setShowLoader, year, site, tags, setRandomUrl, lastFetchUrl, setlastFetchUrl, links, setLinks, orOperator, setStarred, setShowFavoritesView, setCurrentSite, setDisableStarbutton}) => {
+const SearchButton = ({showFavoritesView, setLastScreen, setShowSettingsView, setShowLoader, year, site, tags, setRandomUrl, links, setLinks, orOperator, setStarred, setShowFavoritesView, setCurrentSite, setDisableStarbutton}) => {
+
+  const [lastFetchUrl, setlastFetchUrl] = useState('')
 
   const handleClick = async () => {
     //console.log('handleClick()')
-    if (showFavoritesView) {
-      setLastScreen('favorites')
-    } else if (setShowSettingsView) {
-      setLastScreen('settings')
-    }
     setLastScreen(showFavoritesView ? 'favorites' : 'settings')
     setDisableStarbutton(true)
     setCurrentSite({})
@@ -91,11 +87,22 @@ const SearchButton = ({randomUrl, setLastRandomUrl, showFavoritesView, setLastSc
       //console.log('fetchUrl::', fetchUrl)
       //console.log('data:', data)
       if (typeof data.items == 'undefined') { 
-        //console.log('data.items undefined'); 
-        let newfetchUrl = fetchUrl.substring(0, fetchUrl.lastIndexOf('=') + 1) + '1'
-        //console.log('newfetchUrl:', newfetchUrl)
-        fetchMoreLinks(newfetchUrl)
-        return
+        //console.log('data.items undefined')
+        if (pageFromUrl === 1) {
+          setShowLoader(false)
+          Alert.alert(
+            'Error: undefined result',
+            `There seem to be some communication issues with the server.\nPlease try with another site or try again later.`,
+            [ ],
+            { cancelable: true }
+          )
+          setShowSettingsView(true)
+        } else {
+          let newfetchUrl = fetchUrl.substring(0, fetchUrl.lastIndexOf('=') + 1) + '1'
+          //console.log('newfetchUrl:', newfetchUrl)
+          fetchMoreLinks(newfetchUrl)
+          return
+        }
       }
       if (data.items.length === 0) {
         if (pageFromUrl !== 1) {
@@ -143,7 +150,6 @@ const SearchButton = ({randomUrl, setLastRandomUrl, showFavoritesView, setLastSc
       const questionUrl = linksArray[Math.floor(Math.random()*linksArray.length)]
       //console.log('questionUrl:', questionUrl)
       setShowLoader(false)
-      setLastRandomUrl(randomUrl.length > 0 ? randomUrl : questionUrl)
       setRandomUrl(questionUrl)
       const newLinksArray = linksArray.filter(link => link !== questionUrl)
       const jsonNewLinksArray = JSON.stringify(newLinksArray)

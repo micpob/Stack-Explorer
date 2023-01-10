@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react'
-import styled from 'styled-components/native'
+import React from 'react'
 import { Text, View, TouchableOpacity  } from 'react-native';
+import styled from 'styled-components/native'
 import colors from '../utils/colors'
 
 const MainContainer = styled.View`
@@ -15,7 +15,6 @@ const MainContainer = styled.View`
 `
 
 const StyledTagButton = styled.TouchableOpacity`
-  
 `
 
 const StyledText = styled.Text`

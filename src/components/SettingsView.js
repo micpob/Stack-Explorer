@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View, ScrollView, Alert } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react'
+import { StyleSheet, Text, View, ScrollView, Alert } from 'react-native'
 import styled from 'styled-components/native'
 import TagButton from './TagButton'
 import AddTagForm from './AddTagForm'
@@ -6,9 +7,7 @@ import DeleteTagsButton from './DeleteTagsButton'
 import YearPicker from './YearPicker'
 import SitePickerSearchable from './SitePickerSearchable'
 import AndOrSwitch from './AndOrSwitch'
-import React, { useState, useRef, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { Notifier, Easing, NotifierComponents  } from 'react-native-notifier';
 import colors from '../utils/colors'
 import AddTagsButton from './AddTagsButton';
 
@@ -100,30 +99,12 @@ const SettingsView = ({ getStoredTags, site, setSite, setTags, year, setYear, or
   }, [site])
   
   const handleClick = async (tag) => {
-    if (deleteTags) {
-      const newAllTags = allTags.filter(tagObject => tagObject.name !== tag.name)
-      const jsonNewTagsArray = JSON.stringify(newAllTags)
-      AsyncStorage.setItem(`${site}-tags`, jsonNewTagsArray)
-      setAllTags(newAllTags)
-      const selectedTags = newAllTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
-      setTags(selectedTags)
-    } else {
-      if (tag.selected) {
-        const newAllTags = allTags.map(tagObject => tagObject.name === tag.name ? { name: tagObject.name, selected: false} : tagObject)
-        const jsonNewTagsArray = JSON.stringify(newAllTags)
-        AsyncStorage.setItem(`${site}-tags`, jsonNewTagsArray)
-        setAllTags(newAllTags)
-        const selectedTags = newAllTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
-        setTags(selectedTags)
-      } else {
-        const newAllTags = allTags.map(tagObject => tagObject.name === tag.name ? { name: tagObject.name, selected: true} : tagObject)
-        const jsonNewTagsArray = JSON.stringify(newAllTags)
-        AsyncStorage.setItem(`${site}-tags`, jsonNewTagsArray)
-        setAllTags(newAllTags)
-        const selectedTags = newAllTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
-        setTags(selectedTags)
-      }
-    }
+    const newAllTags = deleteTags ? allTags.filter(tagObject => tagObject.name !== tag.name) : allTags.map(tagObject => tagObject.name === tag.name ? { name: tagObject.name, selected: !tag.selected} : tagObject)
+    const jsonNewTagsArray = JSON.stringify(newAllTags)
+    AsyncStorage.setItem(`${site}-tags`, jsonNewTagsArray)
+    setAllTags(newAllTags)
+    const selectedTags = newAllTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
+    setTags(selectedTags)
   }
   
   return (
@@ -153,10 +134,10 @@ const SettingsView = ({ getStoredTags, site, setSite, setTags, year, setYear, or
             {allTags.map(tag => <TagButton key={tag.name} title={tag.name} selected={tag.selected} deleteTags={deleteTags} handleClick={() => handleClick(tag) } ></TagButton>)}
           </ScrollView>
         </TagsContainer>
-        <AddTagsButton showAddTagForm={AddTagsButton} setShowAddTagForm={setShowAddTagForm}></AddTagsButton>
+        <AddTagsButton setShowAddTagForm={setShowAddTagForm}></AddTagsButton>
         {
           showAddTagForm &&
-          <AddTagForm site={site} allTags={allTags} setAllTags={setAllTags} setDeleteTags={setDeleteTags} showAddTagForm={showAddTagForm} setShowAddTagForm={setShowAddTagForm} ></AddTagForm>
+          <AddTagForm site={site} allTags={allTags} setAllTags={setAllTags} setDeleteTags={setDeleteTags} showAddTagForm={showAddTagForm} setShowAddTagForm={setShowAddTagForm}></AddTagForm>
         }
       </TagsSection>
     </MainContainer>

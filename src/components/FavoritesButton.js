@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components/native'
-import { View, TouchableOpacity } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
+import { View, TouchableOpacity } from 'react-native'
+import { AntDesign } from '@expo/vector-icons'
 import colors from '../utils/colors'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -25,7 +25,7 @@ const FavoritesButton = ({setLastScreen, showSettingsView, setShowSettingsView, 
       setStarred(false)
       setLastScreen('settings')
       setShowFavoritesView(true)
-    } else if (!showLoader && !showSettingsView && !showFavoritesView && randomUrl.length > 0) {S
+    } else if (!showLoader && !showSettingsView && !showFavoritesView && randomUrl.length > 0) {
       if (typeof currentSite.url == 'undefined') {  return }
       let storedFavorites = await AsyncStorage.getItem(`favorites`)
       setDisableStarbutton(true)
@@ -73,8 +73,8 @@ const FavoritesButton = ({setLastScreen, showSettingsView, setShowSettingsView, 
   
   return (
     <MainContainer>
-      <StyledButton onPress={ handleClick } onLongPress={ handleLongClick } delayLongPress={ 1000 } disabled={disableStarButton}>
-        {starred && !showLoader && !showSettingsView && randomUrl.length ? <AntDesign name="star" size={36} color="gold" /> : <AntDesign name="star" size={36} color={colors.buttonsBarIcons} />}
+      <StyledButton onPress={ handleClick } onLongPress={ handleLongClick } disabled={disableStarButton}>
+        { starred && !showLoader && !showSettingsView && randomUrl.length ? <AntDesign name="star" size={36} color="gold" /> : <AntDesign name="star" size={36} color={colors.buttonsBarIcons}/> }
       </StyledButton>
     </MainContainer>  
   )

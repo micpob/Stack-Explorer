@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components/native'
 import { View, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -24,7 +24,7 @@ const StyledInputField = styled.TextInput`
   margin: auto;
 `
 
-const AddTagForm = ({ site, allTags, setAllTags, showAddTagForm, setShowAddTagForm, deleteTags, setDeleteTags }) => {
+const AddTagForm = ({ site, allTags, setAllTags, showAddTagForm, setShowAddTagForm, setDeleteTags }) => {
 
   const [newTag, onChangeText] = useState('')
 
@@ -55,8 +55,7 @@ const AddTagForm = ({ site, allTags, setAllTags, showAddTagForm, setShowAddTagFo
             { cancelable: true }
           )
         } else {
-          const url = `https://api.stackexchange.com/2.3/search/advanced?pagesize=1&order=desc&sort=activity&tagged=${tagName}&site=${site}&filter=!0ynczPwaq3R_qM75`
-
+          const url = `https://api.stackexchange.com/2.3/search/advanced?pagesize=1&tagged=${tagName}&site=${site}&filter=!0ynczPwaq3R_qM75`
           fetch(url)
           .then(response => response.json())
           .then(data => {
@@ -73,7 +72,7 @@ const AddTagForm = ({ site, allTags, setAllTags, showAddTagForm, setShowAddTagFo
             if (data.items.length === 0) {
               Alert.alert(
                 "Tag does not exists",
-                `The tag "${tagName}" does not exist on the selected site.\n\nRemember that multiple words tags are written as dash separated values.\nExample: microsoft-excel`,
+                `The tag "${tagName}" does not exist on the selected site.\n\nPlease remember that multiple words tags are written as dash separated values.\nExample: microsoft-excel`,
                 [ ],
                 { cancelable: true }
               )
@@ -115,25 +114,23 @@ const AddTagForm = ({ site, allTags, setAllTags, showAddTagForm, setShowAddTagFo
     onChangeText('')
     setShowAddTagForm(false)
   }
-
-
   
   return (
-      <Dialog.Container visible={showAddTagForm} onBackdropPress={handleCancel} onRequestClose={handleCancel}  >
-        <Dialog.Input 
-          autoFocus={true}
-          autoCapitalize='none'
-          maxLength={35}
-          onFocus={() => setDeleteTags(false)}
-          onPressIn={() => setDeleteTags(false)}
-          onChangeText={onChangeText}
-          onSubmitEditing={() => handleSubmit(newTag)}
-          value={newTag}
-          placeholder="new-tag-here"
-        />
-        <Dialog.Button label="Cancel" onPress={handleCancel} />
-        <Dialog.Button label="OK" onPress={() => handleSubmit(newTag)}  />
-      </Dialog.Container>
+    <Dialog.Container visible={showAddTagForm} onBackdropPress={handleCancel} onRequestClose={handleCancel}  >
+      <Dialog.Input 
+        autoFocus={true}
+        autoCapitalize='none'
+        maxLength={35}
+        onFocus={() => setDeleteTags(false)}
+        onPressIn={() => setDeleteTags(false)}
+        onChangeText={onChangeText}
+        onSubmitEditing={() => handleSubmit(newTag)}
+        value={newTag}
+        placeholder="new-tag-here"
+      />
+      <Dialog.Button label="Cancel" onPress={handleCancel} />
+      <Dialog.Button label="OK" onPress={() => handleSubmit(newTag)}  />
+    </Dialog.Container>
   )
 }
 
