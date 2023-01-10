@@ -129,7 +129,7 @@ const AddTagForm = ({ site, allTags, setAllTags, showAddTagForm, setShowAddTagFo
           onChangeText={onChangeText}
           onSubmitEditing={() => handleSubmit(newTag)}
           value={newTag}
-          placeholder="new-tag"
+          placeholder="new-tag-here"
         />
         <Dialog.Button label="Cancel" onPress={handleCancel} />
         <Dialog.Button label="OK" onPress={() => handleSubmit(newTag)}  />
