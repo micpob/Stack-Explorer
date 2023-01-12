@@ -37,7 +37,6 @@ export default function App() {
 
   const [lastScreen, setLastScreen] = useState('')
   const [showSettingsView, setShowSettingsView] = useState(true)
-  const [showBrowserView, setShowBrowserView] = useState(false)
   const [showFavoritesView, setShowFavoritesView] = useState(false)
   const [showLoader, setShowLoader] = useState(false)
   const [site, setSite] = useState('')
@@ -61,17 +60,17 @@ export default function App() {
           setShowSettingsView(false)
           setShowFavoritesView(true)
           setLastScreen(newLastScreen)
-        break;
+        break
         case 'settings':
           setShowFavoritesView(false)
           setShowSettingsView(true)
           setLastScreen(newLastScreen)
-        break;
+        break
         default:
           setShowFavoritesView(false)
           setShowSettingsView(false)
           setLastScreen(newLastScreen)
-        break;
+        break
       }
       return true
     } else {
@@ -180,7 +179,7 @@ export default function App() {
         }
 
         {!showLoader && !showSettingsView && !showFavoritesView && randomUrl.length > 0 &&
-          <BrowserView randomUrl={randomUrl} setStarred={setStarred} favorites={favorites} setCurrentSite={setCurrentSite} setDisableStarbutton={setDisableStarbutton}></BrowserView>
+          <BrowserView setLastScreen={setLastScreen} setShowSettingsView={setShowSettingsView}  setShowFavoritesView={setShowFavoritesView} lastScreen={lastScreen} randomUrl={randomUrl} setStarred={setStarred} favorites={favorites} setCurrentSite={setCurrentSite} setDisableStarbutton={setDisableStarbutton}></BrowserView>
         }
         <ButtonsContainer>
           <ShowSettingsButton setDisableStarbutton={setDisableStarbutton} showFavoritesView={showFavoritesView} setLastScreen={setLastScreen} setShowSettingsView={setShowSettingsView} showSettingsView={showSettingsView} setStarred={setStarred} setShowFavoritesView={setShowFavoritesView} ></ShowSettingsButton>
