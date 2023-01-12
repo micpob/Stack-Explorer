@@ -15,7 +15,7 @@ const StyledButton = styled.TouchableOpacity`
   padding: 4px
 `
 
-const ShowSettingsButton = ({setLastScreen, showFavoritesView, setShowSettingsView, showSettingsView, setStarred, setShowFavoritesView}) => {
+const ShowSettingsButton = ({setDisableStarbutton, setLastScreen, showFavoritesView, setShowSettingsView, showSettingsView, setStarred, setShowFavoritesView}) => {
   
   const handleClick = async () => {
     if (showSettingsView) return
@@ -23,6 +23,7 @@ const ShowSettingsButton = ({setLastScreen, showFavoritesView, setShowSettingsVi
     setLastScreen(showFavoritesView ? 'favorites' : 'browser')
     setShowFavoritesView(false)
     setShowSettingsView(true)
+    setDisableStarbutton(false)
   }
   
   return (
