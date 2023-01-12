@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components/native'
-import { View, TouchableOpacity } from 'react-native'
+import { View, TouchableOpacity, Alert } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import colors from '../utils/colors'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -27,6 +27,17 @@ const FavoritesButton = ({setLastScreen, showSettingsView, setShowSettingsView, 
       setShowFavoritesView(true)
     } else if (!showLoader && !showSettingsView && !showFavoritesView && randomUrl.length > 0) {
       if (typeof currentSite.url == 'undefined') {  return }
+      //console.log('currentSite.url:', currentSite.url)
+      //console.log('currentSite.url.includes(questions):', currentSite.url.includes('questions'))
+      if (!currentSite.url.includes('/questions/')) {
+        Alert.alert(
+          "Can't add to favorites",
+          `Only questions pages can be added to the favorites list.`,
+          [ ],
+          { cancelable: true }
+        )
+        return
+      }
       let storedFavorites = await AsyncStorage.getItem(`favorites`)
       setDisableStarbutton(true)
       if (starred) {
