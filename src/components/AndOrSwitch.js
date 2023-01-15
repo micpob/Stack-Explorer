@@ -39,7 +39,7 @@ const AndOrSwitch = ({orOperator, setOrOperator}) => {
         style={{marginVertical: -8}}
         />
       <Text>or</Text>
-      <MaterialCommunityIcons name="message-question" size={22} color={colors.primary} style={{marginLeft: 4}} onPress={showSwitchInfoModal} />
+      <MaterialCommunityIcons name="message-question" size={22} color={colors.primary} style={{marginLeft: 4, padding: 3}} onPress={showSwitchInfoModal} />
     </SwitchContainer>
   )
 }
