@@ -7,7 +7,7 @@ import colors from '../utils/colors'
 const MainContainer = styled.View`
 `
 const StyledDeleteTagsButton = styled.TouchableOpacity`
-  
+  padding: 4px
 `
 const DeleteTagsButton = ({deleteTags, setDeleteTags}) => {
 

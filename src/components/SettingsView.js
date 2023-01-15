@@ -68,6 +68,7 @@ const TagsSection = styled.View`
   flex: 6;
   background: ${colors.settingsBoxBackground};
   padding: 8px;
+  padding-top: 2px;
   border-radius: 8px;
   margin: 8px;
 `

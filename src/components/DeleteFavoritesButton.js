@@ -8,7 +8,6 @@ const MainContainer = styled.View`
 `
 
 const StyledDeleteFavoritesButton = styled.TouchableOpacity`
-  
 `
 const DeleteFavoritesButton = ({deleteFavorites, setDeleteFavorites}) => {
 
