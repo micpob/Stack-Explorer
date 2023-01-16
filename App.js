@@ -54,6 +54,7 @@ export default function App() {
     if (lastScreen.length > 0) {
       setStarred(false)
       setDisableStarbutton(false)
+      setShowLoader(false)
       const newLastScreen = showFavoritesView ? 'favorites' : showSettingsView ? 'settings' : 'browser'
       switch (lastScreen) {
         case 'favorites':
