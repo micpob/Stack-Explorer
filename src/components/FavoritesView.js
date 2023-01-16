@@ -98,7 +98,7 @@ const FavoritesView = ({ setLastScreen, favorites, setFavorites, setRandomUrl, s
     if (typeof favObj == 'undefined') return
     const siteValue = favObj.url.includes('stackexchange') ? favObj.url.split('https://')[1].split('.stackexchange')[0] : favObj.url.split('https://')[1].split('.com')[0]
     const site = defaultSites['sites'].find(siteObj => siteObj.value === siteValue)
-    if (typeof favObj == 'undefined') return
+    if (typeof site == 'undefined') return
     return  { site: site.name, title: favObj.title, url: favObj.url} 
   })
   tableData.sort((a, b) => a.site.localeCompare(b.site) || a.title.toLowerCase().localeCompare(b.title.toLowerCase()))
