@@ -2,7 +2,7 @@ import { View, Alert, BackHandler } from 'react-native'
 import React, { useRef, useState } from "react"
 import { WebView } from 'react-native-webview'
 
-const BrowserView = ({ setLastScreen, setShowSettingsView, setShowFavoritesView, lastScreen, randomUrl, setStarred, favorites, setCurrentSite, setDisableStarbutton}) => {
+const BrowserView = ({ disableStarButton, setLastScreen, setShowSettingsView, setShowFavoritesView, lastScreen, randomUrl, setStarred, favorites, currentSite, setCurrentSite, setDisableStarbutton}) => {
 
   const webViewRef = useRef(null)
   const [canGoBack, setCanGoBack] = useState(false)
@@ -39,14 +39,15 @@ const BrowserView = ({ setLastScreen, setShowSettingsView, setShowFavoritesView,
   })
 
   const handleOnLoadStart = (pageInfo) => {
-    //console.log('pageInfo from OnLoadstart:', pageInfo)
+    //console.log('OnLoadstart:', pageInfo.title)
     setDisableStarbutton(true)
     setStarred(favorites.some(site => site.url === pageInfo.url))
     setCurrentSite({})
   }
 
-  const handleOnLoad = (pageInfo) => {
-    //console.log('pageInfo from OnLoad:', pageInfo)
+  const handleOnLoadProgress = (pageInfo) => {
+    if (typeof pageInfo.title == 'undefined' || pageInfo.title.length < 1 || pageInfo.title === pageInfo.url || !disableStarButton) return 
+    //console.log('handleOnLoadProgress:', pageInfo.title)
     const cleanedTitle = pageInfo.title.substr(0, pageInfo.title.lastIndexOf('-')).trim()
     setCurrentSite({title: cleanedTitle, url: pageInfo.url})
     setCanGoBack(pageInfo.canGoBack)
@@ -58,7 +59,7 @@ const BrowserView = ({ setLastScreen, setShowSettingsView, setShowFavoritesView,
       <WebView
         source={{ uri: randomUrl }}
         onLoadStart={ (event) => { handleOnLoadStart(event.nativeEvent) } }
-        onLoad={(event) => { handleOnLoad(event.nativeEvent) }}
+        onLoadProgress={(event) => { handleOnLoadProgress(event.nativeEvent) }}
         ref={webViewRef}
         onError={ () => {
             Alert.alert(
