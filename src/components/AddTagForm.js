@@ -1,28 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components/native'
-import { View, Alert } from 'react-native';
+import { View, Alert } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import NetInfo from "@react-native-community/netinfo"
-import { Notifier, Easing, NotifierComponents  } from 'react-native-notifier';
+import { Notifier, Easing, NotifierComponents  } from 'react-native-notifier'
 import colors from '../utils/colors'
-import Dialog from "react-native-dialog";
+import Dialog from 'react-native-dialog'
 
-const MainContainer = styled.View`
-  align-self: center;
-  padding: 4px;
-  width: 100%;
-`
+const AddTagForm = ({ site, allTags, setAllTags, showAddTagForm, setShowAddTagForm, setDeleteTags }) => {
 
-const StyledInputField = styled.TextInput`
-  height: 40px;
-  width: 90%;
-  max-width: 400px;
-  border-width: 1px;
-  border-radius: 4px;
-  padding: 8px;
-  background: white;
-  margin: auto;
-`
+  const [newTag, onChangeText] = useState('')
 
   const inputRef = useRef(null)
 
@@ -133,6 +120,8 @@ const StyledInputField = styled.TextInput`
         onSubmitEditing={() => handleSubmit(newTag)}
         value={newTag}
         placeholder="new-tag-here"
+        style={{paddingVertical: 0, fontSize: 16, lineHeight: 16, color: 'black', backgroundColor: 'white', height: 40}}
+        /* underlineColorAndroid="transparent" */
       />
       <Dialog.Button label="Cancel" onPress={handleCancel} />
       <Dialog.Button label="OK" onPress={() => handleSubmit(newTag)}  />
