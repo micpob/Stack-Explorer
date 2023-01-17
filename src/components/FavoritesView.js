@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { StyleSheet, Text, View, ScrollView, Alert, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Alert, TouchableOpacity} from 'react-native'
 import styled from 'styled-components/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import colors from '../utils/colors'
 import defaultSites from '../utils/defaultSites'
-import DeleteFavoritesButton from './DeleteFavoritesButton';
-import { AntDesign } from '@expo/vector-icons';
+import DeleteFavoritesButton from './DeleteFavoritesButton'
+import { AntDesign } from '@expo/vector-icons'
 
 const MainContainer = styled.View`
   flex: 1;

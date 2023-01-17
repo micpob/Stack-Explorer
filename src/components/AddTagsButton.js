@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components/native'
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Text } from 'react-native'
 
 const MainContainer = styled.View`
   width: 100%;
@@ -32,7 +32,7 @@ const StyledBlinkingText = styled.Text`
 `
 const AddTagsButton = ({setShowAddTagForm, }) => {
 
-  const [showText, setShowText] = useState(true);
+  const [showText, setShowText] = useState(true)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -48,7 +48,7 @@ const AddTagsButton = ({setShowAddTagForm, }) => {
   return (
     <MainContainer >
       <StyledAddTagsButton onPress={handleClick} >
-        <StyledBlinkingText showText={showText}>|</StyledBlinkingText><StyledTextButton>Add new tag... </StyledTextButton>
+        <StyledBlinkingText showText={showText}>|</StyledBlinkingText><StyledTextButton>Add new tag...</StyledTextButton>
       </StyledAddTagsButton>
     </MainContainer>
   )

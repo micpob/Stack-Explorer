@@ -2,7 +2,7 @@ import { View, Alert, BackHandler } from 'react-native'
 import React, { useRef, useState } from "react"
 import { WebView } from 'react-native-webview'
 
-const BrowserView = ({ disableStarButton, setLastScreen, setShowSettingsView, setShowFavoritesView, lastScreen, randomUrl, setStarred, favorites, currentSite, setCurrentSite, setDisableStarbutton}) => {
+const BrowserView = ({ disableStarButton, setLastScreen, setShowSettingsView, setShowFavoritesView, lastScreen, randomUrl, setStarred, favorites, setCurrentSite, setDisableStarbutton}) => {
 
   const webViewRef = useRef(null)
   const [canGoBack, setCanGoBack] = useState(false)

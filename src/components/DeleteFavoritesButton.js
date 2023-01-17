@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components/native'
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons'
 import colors from '../utils/colors'
 
@@ -9,6 +9,7 @@ const MainContainer = styled.View`
 
 const StyledDeleteFavoritesButton = styled.TouchableOpacity`
 `
+
 const DeleteFavoritesButton = ({deleteFavorites, setDeleteFavorites}) => {
 
   const handleClick = () => {    

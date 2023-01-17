@@ -121,7 +121,7 @@ const StyledInputField = styled.TextInput`
   }
   
   return (
-    <Dialog.Container visible={showAddTagForm} onBackdropPress={handleCancel} onRequestClose={handleCancel}  >
+    <Dialog.Container visible={showAddTagForm} onBackdropPress={handleCancel} onRequestClose={handleCancel} >
       <Dialog.Input 
         autoFocus={false}
         textInputRef={inputRef}

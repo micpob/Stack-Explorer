@@ -149,7 +149,7 @@ export default function App() {
     initializeValues()
   }, [])
 
-/*   console.log('tags:', tags)
+/*console.log('tags:', tags)
   console.log('year:', year)
   console.log('site:', site)
   console.log('orOperator:', orOperator)*/
@@ -180,7 +180,7 @@ export default function App() {
         }
 
         {!showLoader && !showSettingsView && !showFavoritesView && randomUrl.length > 0 &&
-          <BrowserView disableStarButton={disableStarButton} setLastScreen={setLastScreen} setShowSettingsView={setShowSettingsView} setShowFavoritesView={setShowFavoritesView} lastScreen={lastScreen} randomUrl={randomUrl} setStarred={setStarred} favorites={favorites} currentSite={currentSite} setCurrentSite={setCurrentSite} setDisableStarbutton={setDisableStarbutton}></BrowserView>
+          <BrowserView disableStarButton={disableStarButton} setLastScreen={setLastScreen} setShowSettingsView={setShowSettingsView} setShowFavoritesView={setShowFavoritesView} lastScreen={lastScreen} randomUrl={randomUrl} setStarred={setStarred} favorites={favorites} setCurrentSite={setCurrentSite} setDisableStarbutton={setDisableStarbutton}></BrowserView>
         }
         <ButtonsContainer>
           <ShowSettingsButton setDisableStarbutton={setDisableStarbutton} showFavoritesView={showFavoritesView} setLastScreen={setLastScreen} setShowSettingsView={setShowSettingsView} showSettingsView={showSettingsView} setStarred={setStarred} setShowFavoritesView={setShowFavoritesView} ></ShowSettingsButton>

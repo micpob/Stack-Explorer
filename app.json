@@ -2,7 +2,7 @@
   "expo": {
     "name": "Stack Explorer",
     "slug": "stack-explorer",
-    "version": "0.4",
+    "version": "0.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -27,7 +27,7 @@
       },
       "permissions": [],
       "package": "com.github.micpob.stackexplorer",
-      "versionCode": 5
+      "versionCode": 6
     },
     "web": {
       "favicon": "./assets/favicon.png"

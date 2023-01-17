@@ -12,7 +12,7 @@ const MainContainer = styled.View`
 `
 
 const StyledButton = styled.TouchableOpacity`
-  padding: 6px
+  padding: 6px;
 `
 
 const ShowSettingsButton = ({setDisableStarbutton, setLastScreen, showFavoritesView, setShowSettingsView, showSettingsView, setStarred, setShowFavoritesView}) => {

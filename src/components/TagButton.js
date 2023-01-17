@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, TouchableOpacity  } from 'react-native';
+import { Text, View, TouchableOpacity  } from 'react-native'
 import styled from 'styled-components/native'
 import colors from '../utils/colors'
 
@@ -11,7 +11,7 @@ const MainContainer = styled.View`
   padding: 4px;
   margin: 4px;
   min-width: 32px;
-  background: ${props => props.deleteTags ? colors.deleteMain : props.selected ? colors.primary : 'white'}
+  background: ${props => props.deleteTags ? colors.deleteMain : props.selected ? colors.primary : 'white'};
 `
 
 const StyledTagButton = styled.TouchableOpacity`
@@ -21,7 +21,7 @@ const StyledText = styled.Text`
   font-size: 16px;
   font-weight: 600;
   text-align: center;
-  color: ${props => props.deleteTags ? 'white' : props.selected ? 'white' : 'black'}
+  color: ${props => props.deleteTags ? 'white' : props.selected ? 'white' : 'black'};
 `
 const TagButton = ({title, selected, deleteTags, handleClick}) => {
 

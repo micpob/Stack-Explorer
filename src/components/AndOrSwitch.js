@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components/native'
-import { Text, View, Switch, Alert } from 'react-native';
+import { Text, View, Switch, Alert } from 'react-native'
 import colors from '../utils/colors'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 const SwitchContainer = styled.View`
   display: flex;
