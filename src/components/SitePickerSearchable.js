@@ -13,21 +13,13 @@ const MainContainer = styled.View`
   max-width: 84%;
 `
 
-const SitePickerSearchable = ({site, setSite, getStoredTags, setTags}) => {
+const SitePickerSearchable = ({site, setSite}) => {
 
   const onSelect = async (value) => {
     const jsonNewSelectedSite = JSON.stringify(value)
     AsyncStorage.setItem(`site`, jsonNewSelectedSite)
     setSite(value)
-    const storedTags = await getStoredTags(value)
-    const selectedTags = storedTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
-    setTags(selectedTags)
   }
-
-  /* const data = defaultSites['sites'].map((siteObj, index) => {
-      return { key: index, label: siteObj.name, value: siteObj.value }
-    }
-  ) */
 
   const data = React.useMemo(()=> defaultSites['sites'].map((siteObj, index) => {
     return { key: index, label: siteObj.name, value: siteObj.value }

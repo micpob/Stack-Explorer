@@ -9,7 +9,7 @@ import SitePickerSearchable from './SitePickerSearchable'
 import AndOrSwitch from './AndOrSwitch'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import colors from '../utils/colors'
-import AddTagsButton from './AddTagsButton';
+import AddTagsButton from './AddTagsButton'
 
 const MainContainer = styled.View`
   flex: 1;
@@ -95,6 +95,8 @@ const SettingsView = ({ getStoredTags, site, setSite, setTags, year, setYear, or
     const getTags = async () => {
       const storedTags = await getStoredTags(site)
       setAllTags(storedTags)
+      const selectedTags = storedTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
+      setTags(selectedTags)
     }
     getTags()
   }, [site])
@@ -120,7 +122,7 @@ const SettingsView = ({ getStoredTags, site, setSite, setTags, year, setYear, or
       <SiteSection>
         <TitleContainer>
           <StyledTitle>Site:</StyledTitle>
-          <SitePickerSearchable site={site} setSite={setSite} getStoredTags={getStoredTags} setTags={setTags}></SitePickerSearchable>
+          <SitePickerSearchable site={site} setSite={setSite} ></SitePickerSearchable>
         </TitleContainer>
       </SiteSection>
 
