@@ -24,9 +24,14 @@ const StyledInputField = styled.TextInput`
   margin: auto;
 `
 
-const AddTagForm = ({ site, allTags, setAllTags, showAddTagForm, setShowAddTagForm, setDeleteTags }) => {
+  const inputRef = useRef(null)
 
-  const [newTag, onChangeText] = useState('')
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      inputRef.current?.focus()
+    }, 300)
+    return () => clearTimeout(timer)
+  }, [])
 
   const handleSubmit = (value) => {
     
@@ -118,7 +123,8 @@ const AddTagForm = ({ site, allTags, setAllTags, showAddTagForm, setShowAddTagFo
   return (
     <Dialog.Container visible={showAddTagForm} onBackdropPress={handleCancel} onRequestClose={handleCancel}  >
       <Dialog.Input 
-        autoFocus={true}
+        autoFocus={false}
+        textInputRef={inputRef}
         autoCapitalize='none'
         maxLength={35}
         onFocus={() => setDeleteTags(false)}
