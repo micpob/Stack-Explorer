@@ -4,6 +4,7 @@ import styled from 'styled-components/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import NetInfo from "@react-native-community/netinfo"
 import colors from '../utils/colors'
+import API_KEY from '../utils/apiKey'
 
 const MainContainer = styled.View`
   display: flex;
@@ -38,9 +39,9 @@ const SearchButton = ({showFavoritesView, setLastScreen, setShowSettingsView, se
     setShowFavoritesView(false)
     setShowSettingsView(false)
     setStarred(false)
-    let fetchUrlBase = `https://api.stackexchange.com/2.3/search/advanced?pagesize=50&fromdate=${year}&order=desc&sort=activity&accepted=True&views=50&site=${site}&filter=!0ynczPwaq3R_qM75`
+    let fetchUrlParameters = `pagesize=50&order=desc&sort=activity&accepted=True&views=50&fromdate=${year}&site=${site}&filter=!0ynczPwaq3R_qM75`
     let fetchUrlTags = tags.length < 1 ? '' : orOperator ? `&q=${encodeURIComponent(tags.map(element => `[${element}]`).join(' or '))}` : `&q=${encodeURIComponent(tags.map(element => `[${element}]`).join(''))}` 
-    let fetchUrl = fetchUrlBase + fetchUrlTags + `&page=`
+    let fetchUrl = fetchUrlParameters + fetchUrlTags + `&page=`
     //console.log('FETCH URL:', fetchUrl)
 
     if (lastFetchUrl.includes(fetchUrl) && links.length > 0) {
@@ -69,7 +70,7 @@ const SearchButton = ({showFavoritesView, setLastScreen, setShowSettingsView, se
           const pageFromUrl = key.substring(key.lastIndexOf('=') + 1)
           const newPage = parseInt(pageFromUrl) + 1
           //console.log('newPage = parseInt(pageFromUrl) + 1:', newPage)
-          let newfetchUrl = fetchUrlBase + fetchUrlTags + `&page=${newPage}`
+          let newfetchUrl = fetchUrlParameters + fetchUrlTags + `&page=${newPage}`
           //console.log('fetchMoreLinks(newfetchUrl)')
           fetchMoreLinks(newfetchUrl)
         }
@@ -78,13 +79,16 @@ const SearchButton = ({showFavoritesView, setLastScreen, setShowSettingsView, se
  }
 
   const fetchMoreLinks = (fetchUrl) => {
+    const fetchUrlBase = typeof API_KEY != 'undefined' ? `https://api.stackexchange.com/2.3/search/advanced?key=${API_KEY}&` : `https://api.stackexchange.com/2.3/search/advanced?`
+    console.log('fetchUrlBase:', fetchUrlBase)
+    let fullFetchUrl = fetchUrlBase + fetchUrl
     setShowLoader(true)
-    fetch(fetchUrl)
+    fetch(fullFetchUrl)
     .then(response => response.json())
     .then(data => {
       let pageFromUrl = fetchUrl.substring(fetchUrl.lastIndexOf('=') + 1)
       pageFromUrl = parseInt(pageFromUrl)
-      //console.log('fetchUrl::', fetchUrl)
+      //console.log('fetchUrl:', fetchUrl)
       //console.log('data:', data)
       if (typeof data.items == 'undefined') { 
         //console.log('data.items undefined')
