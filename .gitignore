@@ -20,3 +20,4 @@ icons/
 assets-Deposit/
 dev/
 package-lock.json
+apiKey.js

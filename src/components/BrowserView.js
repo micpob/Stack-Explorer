@@ -2,19 +2,30 @@ import { View, Alert, BackHandler } from 'react-native'
 import React, { useRef, useState } from "react"
 import { WebView } from 'react-native-webview'
 
-const BrowserView = ({ disableStarButton, setLastScreen, setShowSettingsView, setShowFavoritesView, lastScreen, randomUrl, setStarred, favorites, setCurrentSite, setDisableStarbutton}) => {
+const BrowserView = ({ closeOnBackButtonClick, setCloseOnBackButtonClick, setBackPressCount, backPressCount, disableStarButton, setLastScreen, setShowSettingsView, setShowFavoritesView, lastScreen, randomUrl, setStarred, favorites, setCurrentSite, setDisableStarbutton}) => {
 
   const webViewRef = useRef(null)
   const [canGoBack, setCanGoBack] = useState(false)
 
   BackHandler.addEventListener('hardwareBackPress', () => {
-    //console.log('pressed back', webViewRef.current?.goBack())
-    if (canGoBack) {
+    if (backPressCount === 0 && !closeOnBackButtonClick) {
+      setBackPressCount(1)
+      setTimeout(() => setBackPressCount(0), 300)
+    } else if (backPressCount === 1 && !closeOnBackButtonClick) {
+      ToastAndroid.show('Press one more time to exit app', ToastAndroid.SHORT)
+      setCloseOnBackButtonClick(true)
+      setTimeout(() => setCloseOnBackButtonClick(false), 2000)
+      return true
+    } else if (closeOnBackButtonClick) {
+      BackHandler.exitApp()
+      return true
+    }
+    if (canGoBack && backPressCount === 0) {
       try {
         webViewRef.current?.goBack()
-    } catch (err) {
-        //console.log("[handleBackButtonPress] Error : ", err.message)
-    }
+      } catch (err) {
+          //console.log("[handleBackButtonPress] Error : ", err.message)
+      }
       return true
     } else {
       switch (lastScreen) {
@@ -28,11 +39,6 @@ const BrowserView = ({ disableStarButton, setLastScreen, setShowSettingsView, se
           setShowSettingsView(true)
           setLastScreen('browser')
         break
-        /* default:
-          setShowFavoritesView(false)
-          setShowSettingsView(false)
-          setLastScreen(newLastScreen)
-        break */
       }
     }
     return false
@@ -53,7 +59,7 @@ const BrowserView = ({ disableStarButton, setLastScreen, setShowSettingsView, se
     setCanGoBack(pageInfo.canGoBack)
     setDisableStarbutton(false)
   }
-
+  
   return (
     <View style={{ flex: 1 }}>
       <WebView
@@ -64,7 +70,7 @@ const BrowserView = ({ disableStarButton, setLastScreen, setShowSettingsView, se
         onError={ () => {
             Alert.alert(
               'Error',
-              `The page is not loading correctly, please try again later.`,
+              `The page is not loading correctly, please check your internet connection and try again later.`,
               [ ],
               { cancelable: true }
             )

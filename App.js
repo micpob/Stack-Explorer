@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, ToastAndroid } from 'react'
 import { ActivityIndicator, StatusBar, BackHandler } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import styled from 'styled-components/native'
@@ -49,9 +49,23 @@ export default function App() {
   const [favorites, setFavorites] = useState([])
   const [currentSite, setCurrentSite] = useState({})
   const [disableStarButton, setDisableStarbutton] = useState(false)
+  const [backPressCount, setBackPressCount] = useState(0)
+  const [closeOnBackButtonClick, setCloseOnBackButtonClick] = useState(false)
 
   BackHandler.addEventListener('hardwareBackPress', () => {
-    if (lastScreen.length > 0) {
+    if (backPressCount === 0 && !closeOnBackButtonClick) {
+      setBackPressCount(1)
+      setTimeout(() => setBackPressCount(0), 300)
+    } else if (backPressCount === 1 && !closeOnBackButtonClick) {
+      ToastAndroid.show('Press one more time to exit app', ToastAndroid.SHORT)
+      setCloseOnBackButtonClick(true)
+      setTimeout(() => setCloseOnBackButtonClick(false), 2000)
+      return true
+    } else if (closeOnBackButtonClick) {
+      BackHandler.exitApp()
+      return true
+    }
+    if (lastScreen.length > 0 && backPressCount === 0) {
       setStarred(false)
       setDisableStarbutton(false)
       setShowLoader(false)
@@ -180,7 +194,7 @@ export default function App() {
         }
 
         {!showLoader && !showSettingsView && !showFavoritesView && randomUrl.length > 0 &&
-          <BrowserView disableStarButton={disableStarButton} setLastScreen={setLastScreen} setShowSettingsView={setShowSettingsView} setShowFavoritesView={setShowFavoritesView} lastScreen={lastScreen} randomUrl={randomUrl} setStarred={setStarred} favorites={favorites} setCurrentSite={setCurrentSite} setDisableStarbutton={setDisableStarbutton}></BrowserView>
+          <BrowserView closeOnBackButtonClick={closeOnBackButtonClick} setCloseOnBackButtonClick={setCloseOnBackButtonClick} backPressCount={backPressCount} setBackPressCount={setBackPressCount} disableStarButton={disableStarButton} setLastScreen={setLastScreen} setShowSettingsView={setShowSettingsView} setShowFavoritesView={setShowFavoritesView} lastScreen={lastScreen} randomUrl={randomUrl} setStarred={setStarred} favorites={favorites} setCurrentSite={setCurrentSite} setDisableStarbutton={setDisableStarbutton}></BrowserView>
         }
         <ButtonsContainer>
           <ShowSettingsButton setDisableStarbutton={setDisableStarbutton} showFavoritesView={showFavoritesView} setLastScreen={setLastScreen} setShowSettingsView={setShowSettingsView} showSettingsView={showSettingsView} setStarred={setStarred} setShowFavoritesView={setShowFavoritesView} ></ShowSettingsButton>
