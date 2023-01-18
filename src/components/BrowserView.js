@@ -1,5 +1,5 @@
-import { View, Alert, BackHandler } from 'react-native'
 import React, { useRef, useState } from "react"
+import { View, Alert, BackHandler, ToastAndroid } from 'react-native'
 import { WebView } from 'react-native-webview'
 
 const BrowserView = ({ closeOnBackButtonClick, setCloseOnBackButtonClick, setBackPressCount, backPressCount, disableStarButton, setLastScreen, setShowSettingsView, setShowFavoritesView, lastScreen, randomUrl, setStarred, favorites, setCurrentSite, setDisableStarbutton}) => {

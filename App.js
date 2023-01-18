@@ -1,5 +1,5 @@
-import React, { useState, useEffect, ToastAndroid } from 'react'
-import { ActivityIndicator, StatusBar, BackHandler } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { ActivityIndicator, StatusBar, BackHandler, ToastAndroid } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import styled from 'styled-components/native'
 import SettingsView from './src/components/SettingsView'
