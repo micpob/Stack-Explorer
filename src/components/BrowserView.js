@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react"
 import { View, Alert, BackHandler, ToastAndroid } from 'react-native'
 import { WebView } from 'react-native-webview'
 
-const BrowserView = ({ closeOnBackButtonClick, setCloseOnBackButtonClick, setBackPressCount, backPressCount, disableStarButton, setLastScreen, setShowSettingsView, setShowFavoritesView, lastScreen, randomUrl, setStarred, favorites, setCurrentSite, setDisableStarbutton}) => {
+const BrowserView = ({ currentSite, setShowLoader, closeOnBackButtonClick, setCloseOnBackButtonClick, setBackPressCount, backPressCount, disableStarButton, setLastScreen, setShowSettingsView, setShowFavoritesView, lastScreen, randomUrl, setStarred, favorites, setCurrentSite, setDisableStarbutton}) => {
 
   const webViewRef = useRef(null)
   const [canGoBack, setCanGoBack] = useState(false)
@@ -24,10 +24,13 @@ const BrowserView = ({ closeOnBackButtonClick, setCloseOnBackButtonClick, setBac
       try {
         webViewRef.current?.goBack()
       } catch (err) {
-          //console.log("[handleBackButtonPress] Error : ", err.message)
+        //console.log("[handleBackButtonPress] Error : ", err.message)
       }
       return true
     } else {
+      setStarred(false)
+      setDisableStarbutton(false)
+      setShowLoader(false)
       switch (lastScreen) {
         case 'favorites':
           setShowSettingsView(false)
@@ -52,20 +55,31 @@ const BrowserView = ({ closeOnBackButtonClick, setCloseOnBackButtonClick, setBac
   }
 
   const handleOnLoadProgress = (pageInfo) => {
-    if (typeof pageInfo.title == 'undefined' || pageInfo.title.length < 1 || pageInfo.title === pageInfo.url || !disableStarButton) return 
+    if (typeof pageInfo.title == 'undefined' || pageInfo.title.length < 1 || pageInfo.title === pageInfo.url || pageInfo.title.startsWith('https://') || !disableStarButton) return 
     //console.log('handleOnLoadProgress:', pageInfo.title)
     const cleanedTitle = pageInfo.title.substr(0, pageInfo.title.lastIndexOf('-')).trim()
     setCurrentSite({title: cleanedTitle, url: pageInfo.url})
     setCanGoBack(pageInfo.canGoBack)
     setDisableStarbutton(false)
   }
+
+  const handleOnLoad = (pageInfo) => {
+    if (typeof currentSite.title == 'undefined') {
+      //console.log('handleOnLoad:', pageInfo.title)
+      const cleanedTitle = pageInfo.title.substr(0, pageInfo.title.lastIndexOf('-')).trim()
+      setCurrentSite({title: cleanedTitle, url: pageInfo.url})
+      setCanGoBack(pageInfo.canGoBack)
+      setDisableStarbutton(false)
+    }
+  }
   
   return (
     <View style={{ flex: 1 }}>
       <WebView
         source={{ uri: randomUrl }}
-        onLoadStart={ (event) => { handleOnLoadStart(event.nativeEvent) } }
+        onLoadStart={ (event) => { handleOnLoadStart(event.nativeEvent) }}
         onLoadProgress={(event) => { handleOnLoadProgress(event.nativeEvent) }}
+        onLoad={(event) => { handleOnLoad(event.nativeEvent) }}
         ref={webViewRef}
         onError={ () => {
             Alert.alert(
