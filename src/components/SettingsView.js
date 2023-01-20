@@ -85,21 +85,10 @@ const styles = StyleSheet.create({
   }
 })
 
-const SettingsView = ({ getStoredTags, site, setSite, setTags, year, setYear, orOperator, setOrOperator }) => {
+const SettingsView = ({ allTags, setAllTags, site, setSite, setTags, year, setYear, orOperator, setOrOperator }) => {
 
-  const [allTags, setAllTags] = useState([])
   const [deleteTags, setDeleteTags] = useState(false)
   const [showAddTagForm, setShowAddTagForm] = useState(false)
-
-  useEffect(() => {
-    const getTags = async () => {
-      const storedTags = await getStoredTags(site)
-      setAllTags(storedTags)
-      const selectedTags = storedTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
-      setTags(selectedTags)
-    }
-    getTags()
-  }, [site])
   
   const handleClick = async (tag) => {
     const newAllTags = deleteTags ? allTags.filter(tagObject => tagObject.name !== tag.name) : allTags.map(tagObject => tagObject.name === tag.name ? { name: tagObject.name, selected: !tag.selected} : tagObject)
@@ -109,41 +98,59 @@ const SettingsView = ({ getStoredTags, site, setSite, setTags, year, setYear, or
     const selectedTags = newAllTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
     setTags(selectedTags)
   }
-  
-  return (
-    <MainContainer >
-      <YearSection>
-        <TitleContainer>
-          <StyledTitle>Start from year:</StyledTitle>
-          <YearPicker year={year} setYear={setYear}></YearPicker>
-        </TitleContainer>
-      </YearSection>
-      
-      <SiteSection>
-        <TitleContainer>
-          <StyledTitle>Site:</StyledTitle>
-          <SitePickerSearchable site={site} setSite={setSite} ></SitePickerSearchable>
-        </TitleContainer>
-      </SiteSection>
 
-      <TagsSection>
-        <TitleContainer>
-          <StyledTitle>Tags:</StyledTitle>
-          { deleteTags ? <Text>click on a tag to delete it</Text> : <AndOrSwitch orOperator={orOperator} setOrOperator={setOrOperator}></AndOrSwitch> }
-          <DeleteTagsButton deleteTags={deleteTags} setDeleteTags={setDeleteTags}></DeleteTagsButton>
-        </TitleContainer>
-        <TagsContainer >
-          <ScrollView persistentScrollbar={true} contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={true} >
-            {allTags.map(tag => <TagButton key={tag.name} title={tag.name} selected={tag.selected} deleteTags={deleteTags} handleClick={() => handleClick(tag) } ></TagButton>)}
-          </ScrollView>
-        </TagsContainer>
-        <AddTagsButton setShowAddTagForm={setShowAddTagForm}></AddTagsButton>
-        {
-          showAddTagForm &&
-          <AddTagForm site={site} allTags={allTags} setAllTags={setAllTags} setDeleteTags={setDeleteTags} showAddTagForm={showAddTagForm} setShowAddTagForm={setShowAddTagForm}></AddTagForm>
-        }
-      </TagsSection>
-    </MainContainer>
+  return (
+    allTags.length < 1 ? 
+
+      <MainContainer >
+        <YearSection>
+          
+        </YearSection>
+        
+        <SiteSection>
+          
+        </SiteSection>
+
+        <TagsSection>
+          
+        </TagsSection>
+      </MainContainer>
+
+  :
+
+      <MainContainer >
+        <YearSection>
+          <TitleContainer>
+            <StyledTitle>Start from year:</StyledTitle>
+            <YearPicker year={year} setYear={setYear}></YearPicker>
+          </TitleContainer>
+        </YearSection>
+        
+        <SiteSection>
+          <TitleContainer>
+            <StyledTitle>Site:</StyledTitle>
+            <SitePickerSearchable site={site} setSite={setSite} ></SitePickerSearchable>
+          </TitleContainer>
+        </SiteSection>
+
+        <TagsSection>
+          <TitleContainer>
+            <StyledTitle>Tags:</StyledTitle>
+            { deleteTags ? <Text>click on a tag to delete it</Text> : <AndOrSwitch orOperator={orOperator} setOrOperator={setOrOperator}></AndOrSwitch> }
+            <DeleteTagsButton deleteTags={deleteTags} setDeleteTags={setDeleteTags}></DeleteTagsButton>
+          </TitleContainer>
+          <TagsContainer >
+            <ScrollView persistentScrollbar={true} contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={true} >
+              {allTags.map(tag => <TagButton key={tag.name} title={tag.name} selected={tag.selected} deleteTags={deleteTags} handleClick={() => handleClick(tag) } ></TagButton>)}
+            </ScrollView>
+          </TagsContainer>
+          <AddTagsButton setShowAddTagForm={setShowAddTagForm}></AddTagsButton>
+          {
+            showAddTagForm &&
+            <AddTagForm site={site} allTags={allTags} setAllTags={setAllTags} setDeleteTags={setDeleteTags} showAddTagForm={showAddTagForm} setShowAddTagForm={setShowAddTagForm}></AddTagForm>
+          }
+        </TagsSection>
+      </MainContainer>
   )
 }
 

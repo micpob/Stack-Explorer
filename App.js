@@ -41,6 +41,7 @@ export default function App() {
   const [showLoader, setShowLoader] = useState(false)
   const [site, setSite] = useState('')
   const [year, setYear] = useState('')
+  const [allTags, setAllTags] = useState([])
   const [tags, setTags] = useState([])
   const [links, setLinks] = useState([])
   const [randomUrl, setRandomUrl] = useState('')
@@ -150,18 +151,27 @@ export default function App() {
     const initializeValues = async () => {
       const selectedSite = await getSelectedSite()
       setSite(selectedSite)
-      const storedFavorites = await getFavorites()
-      setFavorites(storedFavorites)
       const selectedYear = await getSelectedYear()
       setYear(selectedYear)
       const orOperatorState = await getOrOperatorState()
       setOrOperator(orOperatorState)
-      const storedTags = await getStoredTags(selectedSite)
-      const selectedTags = storedTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
-      setTags(selectedTags)
+      const storedFavorites = await getFavorites()
+      setFavorites(storedFavorites)
     }
     initializeValues()
   }, [])
+
+  useEffect(() => {
+    const getTags = async () => {
+      if (site.length > 1) {
+        const storedTags = await getStoredTags(site)
+        setAllTags(storedTags)
+      const selectedTags = storedTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
+      setTags(selectedTags)
+    }
+    }
+    getTags()
+  }, [site])
 
 /*console.log('tags:', tags)
   console.log('year:', year)
@@ -183,7 +193,7 @@ export default function App() {
 
         { 
           showSettingsView &&
-          <SettingsView getStoredTags={getStoredTags} year={year} setYear={setYear} site={site} setSite={setSite} setTags={setTags} orOperator={orOperator} setOrOperator={setOrOperator} ></SettingsView>
+          <SettingsView allTags={allTags} setAllTags={setAllTags} year={year} setYear={setYear} site={site} setSite={setSite} setTags={setTags} orOperator={orOperator} setOrOperator={setOrOperator} ></SettingsView>
         }
         
         {
