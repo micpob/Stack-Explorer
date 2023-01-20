@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import NetInfo from "@react-native-community/netinfo"
 import colors from '../utils/colors'
-import API_KEY from '../utils/apiKey'
+import keys from '../utils/keys'
 
 const MainContainer = styled.View`
   display: flex;
@@ -79,8 +79,8 @@ const SearchButton = ({showFavoritesView, setLastScreen, setShowSettingsView, se
  }
 
   const fetchMoreLinks = (fetchUrl) => {
-    const fetchUrlBase = typeof API_KEY != 'undefined' ? `https://api.stackexchange.com/2.3/search/advanced?key=${API_KEY}&` : `https://api.stackexchange.com/2.3/search/advanced?`
-    console.log('fetchUrlBase:', fetchUrlBase)
+    const apiKey = keys.apyKey
+    const fetchUrlBase = apiKey.length > 0 ? `https://api.stackexchange.com/2.3/search/advanced?key=${apiKey}&` : `https://api.stackexchange.com/2.3/search/advanced?`
     let fullFetchUrl = fetchUrlBase + fetchUrl
     setShowLoader(true)
     fetch(fullFetchUrl)
