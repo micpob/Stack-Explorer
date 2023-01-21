@@ -57,16 +57,7 @@ export default function App() {
     if (backPressCount === 0 && !closeOnBackButtonClick) {
       setBackPressCount(1)
       setTimeout(() => setBackPressCount(0), 300)
-    } else if (backPressCount === 1 && !closeOnBackButtonClick) {
-      ToastAndroid.show('Press one more time to exit app', ToastAndroid.SHORT)
-      setCloseOnBackButtonClick(true)
-      setTimeout(() => setCloseOnBackButtonClick(false), 2000)
-      return true
-    } else if (closeOnBackButtonClick) {
-      BackHandler.exitApp()
-      return true
-    }
-    if (lastScreen.length > 0 && backPressCount === 0) {
+      if (lastScreen.length > 0) {
       setStarred(false)
       setDisableStarbutton(false)
       setShowLoader(false)
@@ -91,6 +82,15 @@ export default function App() {
       return true
     } else {
       BackHandler.exitApp()
+    }
+    } else if (backPressCount === 1 && !closeOnBackButtonClick) {
+      ToastAndroid.show('Press one more time to exit app', ToastAndroid.SHORT)
+      setCloseOnBackButtonClick(true)
+      setTimeout(() => setCloseOnBackButtonClick(false), 2000)
+      return true
+    } else if (closeOnBackButtonClick) {
+      BackHandler.exitApp()
+      return true
     }
     return false
   })

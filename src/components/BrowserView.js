@@ -11,20 +11,11 @@ const BrowserView = ({ currentSite, setShowLoader, closeOnBackButtonClick, setCl
     if (backPressCount === 0 && !closeOnBackButtonClick) {
       setBackPressCount(1)
       setTimeout(() => setBackPressCount(0), 300)
-    } else if (backPressCount === 1 && !closeOnBackButtonClick) {
-      ToastAndroid.show('Press one more time to exit app', ToastAndroid.SHORT)
-      setCloseOnBackButtonClick(true)
-      setTimeout(() => setCloseOnBackButtonClick(false), 2000)
-      return true
-    } else if (closeOnBackButtonClick) {
-      BackHandler.exitApp()
-      return true
-    }
-    if (canGoBack && backPressCount === 0) {
+      if (canGoBack) {
       try {
         webViewRef.current?.goBack()
       } catch (err) {
-        //console.log("[handleBackButtonPress] Error : ", err.message)
+
       }
       return true
     } else {
@@ -43,6 +34,16 @@ const BrowserView = ({ currentSite, setShowLoader, closeOnBackButtonClick, setCl
           setLastScreen('browser')
         break
       }
+        return true
+      }
+    } else if (backPressCount === 1 && !closeOnBackButtonClick) {
+      ToastAndroid.show('Press one more time to exit app', ToastAndroid.SHORT)
+      setCloseOnBackButtonClick(true)
+      setTimeout(() => setCloseOnBackButtonClick(false), 2000)
+      return true
+    } else if (closeOnBackButtonClick) {
+      BackHandler.exitApp()
+      return true
     }
     return false
   })
