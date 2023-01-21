@@ -6,6 +6,7 @@ import NetInfo from "@react-native-community/netinfo"
 import { Notifier, Easing, NotifierComponents  } from 'react-native-notifier'
 import colors from '../utils/colors'
 import Dialog from 'react-native-dialog'
+import keys from '../utils/keys'
 
 const AddTagForm = ({ site, allTags, setAllTags, showAddTagForm, setShowAddTagForm, setDeleteTags }) => {
 
@@ -47,7 +48,9 @@ const AddTagForm = ({ site, allTags, setAllTags, showAddTagForm, setShowAddTagFo
             { cancelable: true }
           )
         } else {
-          const url = `https://api.stackexchange.com/2.3/search/advanced?pagesize=1&tagged=${tagName}&site=${site}&filter=!0ynczPwaq3R_qM75`
+          const apiKey = keys.apyKey
+          const fetchUrlBase = apiKey.length > 0 ? `https://api.stackexchange.com/2.3/search/advanced?key=${apiKey}&` : `https://api.stackexchange.com/2.3/search/advanced?`
+          const url = fetchUrlBase + `pagesize=1&tagged=${tagName}&site=${site}&filter=!0ynczPwaq3R_qM75`
           fetch(url)
           .then(response => response.json())
           .then(data => {
