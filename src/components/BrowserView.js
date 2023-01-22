@@ -12,28 +12,28 @@ const BrowserView = ({ currentSite, setShowLoader, closeOnBackButtonClick, setCl
       setBackPressCount(1)
       setTimeout(() => setBackPressCount(0), 300)
       if (canGoBack) {
-      try {
-        webViewRef.current?.goBack()
-      } catch (err) {
+        try {
+          webViewRef.current?.goBack()
+        } catch (err) {
 
-      }
-      return true
-    } else {
-      setStarred(false)
-      setDisableStarbutton(false)
-      setShowLoader(false)
-      switch (lastScreen) {
-        case 'favorites':
-          setShowSettingsView(false)
-          setShowFavoritesView(true)
-          setLastScreen('browser')
-        break
-        case 'settings':
-          setShowFavoritesView(false)
-          setShowSettingsView(true)
-          setLastScreen('browser')
-        break
-      }
+        }
+        return true
+      } else {
+        setStarred(false)
+        setDisableStarbutton(false)
+        setShowLoader(false)
+        switch (lastScreen) {
+          case 'favorites':
+            setShowSettingsView(false)
+            setShowFavoritesView(true)
+            setLastScreen('browser')
+          break
+          case 'settings':
+            setShowFavoritesView(false)
+            setShowSettingsView(true)
+            setLastScreen('browser')
+          break
+        }
         return true
       }
     } else if (backPressCount === 1 && !closeOnBackButtonClick) {
@@ -49,7 +49,6 @@ const BrowserView = ({ currentSite, setShowLoader, closeOnBackButtonClick, setCl
   })
 
   const handleOnLoadStart = (pageInfo) => {
-    //console.log('OnLoadstart:', pageInfo.title)
     setDisableStarbutton(true)
     setStarred(favorites.some(site => site.url === pageInfo.url))
     setCurrentSite({})
@@ -57,7 +56,6 @@ const BrowserView = ({ currentSite, setShowLoader, closeOnBackButtonClick, setCl
 
   const handleOnLoadProgress = (pageInfo) => {
     if (typeof pageInfo.title == 'undefined' || pageInfo.title.length < 1 || pageInfo.title === pageInfo.url || pageInfo.title.startsWith('https://') || !disableStarButton) return 
-    //console.log('handleOnLoadProgress:', pageInfo.title)
     const cleanedTitle = pageInfo.title.substr(0, pageInfo.title.lastIndexOf('-')).trim()
     setCurrentSite({title: cleanedTitle, url: pageInfo.url})
     setCanGoBack(pageInfo.canGoBack)
@@ -66,7 +64,6 @@ const BrowserView = ({ currentSite, setShowLoader, closeOnBackButtonClick, setCl
 
   const handleOnLoad = (pageInfo) => {
     if (typeof currentSite.title == 'undefined') {
-      //console.log('handleOnLoad:', pageInfo.title)
       const cleanedTitle = pageInfo.title.substr(0, pageInfo.title.lastIndexOf('-')).trim()
       setCurrentSite({title: cleanedTitle, url: pageInfo.url})
       setCanGoBack(pageInfo.canGoBack)

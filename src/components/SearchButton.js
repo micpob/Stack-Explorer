@@ -32,7 +32,6 @@ const SearchButton = ({showFavoritesView, setLastScreen, setShowSettingsView, se
   const [lastFetchUrl, setlastFetchUrl] = useState('')
 
   const handleClick = async () => {
-    //console.log('handleClick()')
     setLastScreen(showFavoritesView ? 'favorites' : 'settings')
     setDisableStarbutton(true)
     setCurrentSite({})
@@ -42,10 +41,8 @@ const SearchButton = ({showFavoritesView, setLastScreen, setShowSettingsView, se
     let fetchUrlParameters = `pagesize=50&order=desc&sort=activity&accepted=True&views=50&fromdate=${year}&site=${site}&filter=!0ynczPwaq3R_qM75`
     let fetchUrlTags = tags.length < 1 ? '' : orOperator ? `&q=${encodeURIComponent(tags.map(element => `[${element}]`).join(' or '))}` : `&q=${encodeURIComponent(tags.map(element => `[${element}]`).join(''))}` 
     let fetchUrl = fetchUrlParameters + fetchUrlTags + `&page=`
-    //console.log('FETCH URL:', fetchUrl)
 
     if (lastFetchUrl.includes(fetchUrl) && links.length > 0) {
-      //console.log('lastFetchUrl === fetchUrl && links.length > 0')
       openRandomLink(lastFetchUrl, links)
     } else {
       const keys = await AsyncStorage.getAllKeys()
@@ -53,25 +50,18 @@ const SearchButton = ({showFavoritesView, setLastScreen, setShowSettingsView, se
 
       if (urlAlreadyStored === -1) {
         fetchUrl = fetchUrl + '1'
-        //console.log('URL not already stored:', fetchUrl)
         fetchMoreLinks(fetchUrl)
       } else {
         const key = keys[urlAlreadyStored]
-        //console.log('url already stored:', key)
         let linksFromStorage = await AsyncStorage.getItem(key)
         linksFromStorage = JSON.parse(linksFromStorage)
-        //console.log('links from storage:', linksFromStorage)
         if (linksFromStorage.length > 0) {
-          //console.log('urlAlreadyStored - linksFromStorage.length > 0')
           openRandomLink(key, linksFromStorage)  
         } else {
           const removeEmptyArray = await AsyncStorage.removeItem(key)
-          //console.log('urlAlreadyStored but empty links array - change page in fetch URL')
           const pageFromUrl = key.substring(key.lastIndexOf('=') + 1)
           const newPage = parseInt(pageFromUrl) + 1
-          //console.log('newPage = parseInt(pageFromUrl) + 1:', newPage)
           let newfetchUrl = fetchUrlParameters + fetchUrlTags + `&page=${newPage}`
-          //console.log('fetchMoreLinks(newfetchUrl)')
           fetchMoreLinks(newfetchUrl)
         }
       }
@@ -88,10 +78,7 @@ const SearchButton = ({showFavoritesView, setLastScreen, setShowSettingsView, se
     .then(data => {
       let pageFromUrl = fetchUrl.substring(fetchUrl.lastIndexOf('=') + 1)
       pageFromUrl = parseInt(pageFromUrl)
-      //console.log('fetchUrl:', fetchUrl)
-      //console.log('data:', data)
       if (typeof data.items == 'undefined') { 
-        //console.log('data.items undefined')
         if (pageFromUrl === 1) {
           setShowLoader(false)
           Alert.alert(
@@ -103,16 +90,13 @@ const SearchButton = ({showFavoritesView, setLastScreen, setShowSettingsView, se
           setShowSettingsView(true)
         } else {
           let newfetchUrl = fetchUrl.substring(0, fetchUrl.lastIndexOf('=') + 1) + '1'
-          //console.log('newfetchUrl:', newfetchUrl)
           fetchMoreLinks(newfetchUrl)
           return
         }
       }
       if (data.items.length === 0) {
         if (pageFromUrl !== 1) {
-          //console.log('reset page to 1 from FetchMoreLinks')
           let newfetchUrl =  fetchUrl.substring(0, fetchUrl.lastIndexOf('=') + 1) + '1'
-          //console.log('newfetchUrl:', newfetchUrl)
           fetchMoreLinks(newfetchUrl)
         } else {
           setShowLoader(false)
@@ -140,8 +124,6 @@ const SearchButton = ({showFavoritesView, setLastScreen, setShowSettingsView, se
   }
   
   const openRandomLink = async (fetchUrl, linksArray) => {
-    //console.log('linksArray from openRandomLink:', linksArray)
-    //console.log('fetchUrl from openRandomLink:', fetchUrl)
     NetInfo.fetch().then(async (state) => {
       if (!state.isConnected) {
         Alert.alert(
@@ -152,7 +134,6 @@ const SearchButton = ({showFavoritesView, setLastScreen, setShowSettingsView, se
         )
       } else {
       const questionUrl = linksArray[Math.floor(Math.random()*linksArray.length)]
-      //console.log('questionUrl:', questionUrl)
       setShowLoader(false)
       setRandomUrl(questionUrl)
       const newLinksArray = linksArray.filter(link => link !== questionUrl)

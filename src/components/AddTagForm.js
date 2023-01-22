@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
-import styled from 'styled-components/native'
-import { View, Alert } from 'react-native'
+import { Alert } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import NetInfo from "@react-native-community/netinfo"
-import { Notifier, Easing, NotifierComponents  } from 'react-native-notifier'
+import { Notifier, NotifierComponents  } from 'react-native-notifier'
 import colors from '../utils/colors'
 import Dialog from 'react-native-dialog'
 import keys from '../utils/keys'
@@ -30,7 +29,6 @@ const AddTagForm = ({ site, allTags, setAllTags, showAddTagForm, setShowAddTagFo
     const tagAlreadyExists = allTags.some(tag => {
       return tag.name === tagName
     })
-    //console.log('tag already exists:', tagAlreadyExists)
     if (tagAlreadyExists) {
       Alert.alert(
         "Tag already exists",
@@ -54,7 +52,6 @@ const AddTagForm = ({ site, allTags, setAllTags, showAddTagForm, setShowAddTagFo
           fetch(url)
           .then(response => response.json())
           .then(data => {
-            //console.log('data:', data)
             if (typeof data.items == 'undefined') { 
               Alert.alert(
                 "Error",
@@ -73,10 +70,7 @@ const AddTagForm = ({ site, allTags, setAllTags, showAddTagForm, setShowAddTagFo
               )
             } else {
               const tagToAdd = {name: tagName, selected: false}
-              //console.log('tagToAdd:', tagToAdd)
-              //console.log('allTags:', allTags)
               const newAllTags = [...allTags, tagToAdd]
-              //console.log('newAllTags:', newAllTags)
               newAllTags.sort((a, b) => a.name.localeCompare(b.name))
               const jsonNewTagsArray = JSON.stringify(newAllTags)
               AsyncStorage.setItem(`${site}-tags`, jsonNewTagsArray)
@@ -124,7 +118,6 @@ const AddTagForm = ({ site, allTags, setAllTags, showAddTagForm, setShowAddTagFo
         value={newTag}
         placeholder="new-tag-here"
         style={{paddingVertical: 0, fontSize: 16, lineHeight: 16, color: 'black', backgroundColor: 'white', height: 40}}
-        /* underlineColorAndroid="transparent" */
       />
       <Dialog.Button label="Cancel" onPress={handleCancel} />
       <Dialog.Button label="OK" onPress={() => handleSubmit(newTag)}  />

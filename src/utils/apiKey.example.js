@@ -1,1 +1,0 @@
-export default API_KEY = 'place_your_key_here'

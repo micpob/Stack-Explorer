@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React from 'react'
 import { Text, View, TouchableOpacity  } from 'react-native'
 import styled from 'styled-components/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'

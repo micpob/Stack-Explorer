@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, View, ScrollView, Alert } from 'react-native'
 import styled from 'styled-components/native'
 import TagButton from './TagButton'

@@ -27,8 +27,6 @@ const FavoritesButton = ({setLastScreen, showSettingsView, setShowSettingsView, 
       setShowFavoritesView(true)
     } else if (!showLoader && !showSettingsView && !showFavoritesView && randomUrl.length > 0) {
       if (typeof currentSite.url == 'undefined') { return }
-      //console.log('currentSite.url:', currentSite.url)
-      //console.log('currentSite.url.includes(questions):', currentSite.url.includes('questions'))
       if (!currentSite.url.includes('/questions/')) {
         Alert.alert(
           "Can't add to favorites",
@@ -77,8 +75,8 @@ const FavoritesButton = ({setLastScreen, showSettingsView, setShowSettingsView, 
   const handleLongClick = async () => {
     setShowLoader(false)
     setStarred(false)
-    setShowSettingsView(false)
     setLastScreen(showSettingsView? 'settings' : 'browser')
+    setShowSettingsView(false)
     setShowFavoritesView(true)
   }
   

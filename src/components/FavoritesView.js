@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, View, ScrollView, Alert, TouchableOpacity} from 'react-native'
 import styled from 'styled-components/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -26,13 +26,13 @@ const TableContainer = styled.View`
 `
 
 const TableHeader = styled.View`
-display: flex;
-flex-direction: row;
-justify-content: center;
-align-items: center;
-width: 100%;
-padding: 8px;
-background-color: ${colors.primary};
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 8px;
+  background-color: ${colors.primary};
 `
 
 const HeaderSiteCell = styled.View`
@@ -92,7 +92,6 @@ const AlertText = styled.Text`
 const FavoritesView = ({ setLastScreen, favorites, setFavorites, setRandomUrl, setShowFavoritesView }) => {
 
   const [deleteFavorites, setDeleteFavorites] = useState(false)
-  //console.log('favorites from favoritesView:', favorites)
   
   const tableData = favorites.map(favObj => {
     if (typeof favObj == 'undefined') return

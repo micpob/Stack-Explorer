@@ -58,31 +58,31 @@ export default function App() {
       setBackPressCount(1)
       setTimeout(() => setBackPressCount(0), 300)
       if (lastScreen.length > 0) {
-      setStarred(false)
-      setDisableStarbutton(false)
-      setShowLoader(false)
-      const newLastScreen = showFavoritesView ? 'favorites' : showSettingsView ? 'settings' : 'browser'
-      switch (lastScreen) {
-        case 'favorites':
-          setShowSettingsView(false)
-          setShowFavoritesView(true)
-          setLastScreen(newLastScreen)
-        break
-        case 'settings':
-          setShowFavoritesView(false)
-          setShowSettingsView(true)
-          setLastScreen(newLastScreen)
-        break
-        default:
-          setShowFavoritesView(false)
-          setShowSettingsView(false)
-          setLastScreen(newLastScreen)
-        break
+        setStarred(false)
+        setDisableStarbutton(false)
+        setShowLoader(false)
+        const newLastScreen = showFavoritesView ? 'favorites' : showSettingsView ? 'settings' : 'browser'
+        switch (lastScreen) {
+          case 'favorites':
+            setShowSettingsView(false)
+            setShowFavoritesView(true)
+            setLastScreen(newLastScreen)
+          break
+          case 'settings':
+            setShowFavoritesView(false)
+            setShowSettingsView(true)
+            setLastScreen(newLastScreen)
+          break
+          default:
+            setShowFavoritesView(false)
+            setShowSettingsView(false)
+            setLastScreen(newLastScreen)
+          break
+        }
+        return true
+      } else {
+        BackHandler.exitApp()
       }
-      return true
-    } else {
-      BackHandler.exitApp()
-    }
     } else if (backPressCount === 1 && !closeOnBackButtonClick) {
       ToastAndroid.show('Press one more time to exit app', ToastAndroid.SHORT)
       setCloseOnBackButtonClick(true)
@@ -166,18 +166,13 @@ export default function App() {
       if (site.length > 1) {
         const storedTags = await getStoredTags(site)
         setAllTags(storedTags)
-      const selectedTags = storedTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
-      setTags(selectedTags)
-    }
+        const selectedTags = storedTags.filter(tagObject => tagObject.selected).map(selectedTagObject => selectedTagObject.name)
+        setTags(selectedTags)
+      }
     }
     getTags()
   }, [site])
 
-/*console.log('tags:', tags)
-  console.log('year:', year)
-  console.log('site:', site)
-  console.log('orOperator:', orOperator)*/
- 
   if (site.length < 1 || year.length < 1) { return null }
 
   return (
