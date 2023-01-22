@@ -100,23 +100,6 @@ const SettingsView = ({ allTags, setAllTags, site, setSite, setTags, year, setYe
   }
 
   return (
-    allTags.length < 1 ? 
-
-      <MainContainer >
-        <YearSection>
-          
-        </YearSection>
-        
-        <SiteSection>
-          
-        </SiteSection>
-
-        <TagsSection>
-          
-        </TagsSection>
-      </MainContainer>
-
-  :
 
       <MainContainer >
         <YearSection>
