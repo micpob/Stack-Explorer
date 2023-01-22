@@ -1,0 +1,22 @@
+node_modules/
+.expo/
+dist/
+npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+Deposit/
+
+# macOS
+.DS_Store
+
+*.txt
+fonts/
+icons/
+assets-Deposit/
+dev/
+package-lock.json
