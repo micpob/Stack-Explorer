@@ -52,6 +52,7 @@ export default function App() {
   const [disableStarButton, setDisableStarbutton] = useState(false)
   const [backPressCount, setBackPressCount] = useState(0)
   const [closeOnBackButtonClick, setCloseOnBackButtonClick] = useState(false)
+  const [buttonOpacity, setButtonOpacity] = useState(1)
 
   BackHandler.addEventListener('hardwareBackPress', () => {
     if (backPressCount === 0 && !closeOnBackButtonClick) {
@@ -183,12 +184,12 @@ export default function App() {
 
         {
           showFavoritesView &&
-          <FavoritesView setLastScreen={setLastScreen} favorites={favorites} setFavorites={setFavorites} setRandomUrl={setRandomUrl} setShowFavoritesView={setShowFavoritesView} ></FavoritesView>
+          <FavoritesView setButtonOpacity={setButtonOpacity} setLastScreen={setLastScreen} favorites={favorites} setFavorites={setFavorites} setRandomUrl={setRandomUrl} setShowFavoritesView={setShowFavoritesView} ></FavoritesView>
         }
 
         { 
           showSettingsView &&
-          <SettingsView allTags={allTags} setAllTags={setAllTags} year={year} setYear={setYear} site={site} setSite={setSite} setTags={setTags} orOperator={orOperator} setOrOperator={setOrOperator} ></SettingsView>
+          <SettingsView setButtonOpacity={setButtonOpacity} allTags={allTags} setAllTags={setAllTags} year={year} setYear={setYear} site={site} setSite={setSite} setTags={setTags} orOperator={orOperator} setOrOperator={setOrOperator} ></SettingsView>
         }
         
         {
@@ -199,11 +200,11 @@ export default function App() {
         }
 
         {!showLoader && !showSettingsView && !showFavoritesView && randomUrl.length > 0 &&
-          <BrowserView currentSite={currentSite} setShowLoader={setShowLoader} closeOnBackButtonClick={closeOnBackButtonClick} setCloseOnBackButtonClick={setCloseOnBackButtonClick} backPressCount={backPressCount} setBackPressCount={setBackPressCount} disableStarButton={disableStarButton} setLastScreen={setLastScreen} setShowSettingsView={setShowSettingsView} setShowFavoritesView={setShowFavoritesView} lastScreen={lastScreen} randomUrl={randomUrl} setStarred={setStarred} favorites={favorites} setCurrentSite={setCurrentSite} setDisableStarbutton={setDisableStarbutton}></BrowserView>
+          <BrowserView buttonOpacity={buttonOpacity} setButtonOpacity={setButtonOpacity} currentSite={currentSite} setShowLoader={setShowLoader} closeOnBackButtonClick={closeOnBackButtonClick} setCloseOnBackButtonClick={setCloseOnBackButtonClick} backPressCount={backPressCount} setBackPressCount={setBackPressCount} disableStarButton={disableStarButton} setLastScreen={setLastScreen} setShowSettingsView={setShowSettingsView} setShowFavoritesView={setShowFavoritesView} lastScreen={lastScreen} randomUrl={randomUrl} setStarred={setStarred} favorites={favorites} setCurrentSite={setCurrentSite} setDisableStarbutton={setDisableStarbutton}></BrowserView>
         }
         <ButtonsContainer>
           <ShowSettingsButton setDisableStarbutton={setDisableStarbutton} showFavoritesView={showFavoritesView} setLastScreen={setLastScreen} setShowSettingsView={setShowSettingsView} showSettingsView={showSettingsView} setStarred={setStarred} setShowFavoritesView={setShowFavoritesView} ></ShowSettingsButton>
-          <SearchButton setLastScreen={setLastScreen} setShowSettingsView={setShowSettingsView} showFavoritesView={showFavoritesView} setShowLoader={setShowLoader} year={year} site={site} tags={tags} links={links} setLinks={setLinks} setRandomUrl={setRandomUrl} orOperator={orOperator} setStarred={setStarred} setShowFavoritesView={setShowFavoritesView} setCurrentSite={setCurrentSite} setDisableStarbutton={setDisableStarbutton}></SearchButton>
+          <SearchButton setButtonOpacity={setButtonOpacity} buttonOpacity={buttonOpacity} setLastScreen={setLastScreen} setShowSettingsView={setShowSettingsView} showFavoritesView={showFavoritesView} setShowLoader={setShowLoader} year={year} site={site} tags={tags} links={links} setLinks={setLinks} setRandomUrl={setRandomUrl} orOperator={orOperator} setStarred={setStarred} setShowFavoritesView={setShowFavoritesView} setCurrentSite={setCurrentSite} setDisableStarbutton={setDisableStarbutton}></SearchButton>
           <FavoritesButton showFavoritesView={showFavoritesView} setLastScreen={setLastScreen} starred={starred} setStarred={setStarred} showLoader={showLoader} setShowLoader={setShowLoader} showSettingsView={showSettingsView} setShowSettingsView={setShowSettingsView} randomUrl={randomUrl} setFavorites={setFavorites} setShowFavoritesView={setShowFavoritesView} currentSite={currentSite} disableStarButton={disableStarButton} setDisableStarbutton={setDisableStarbutton} ></FavoritesButton>
         </ButtonsContainer>
       </MainContainer>

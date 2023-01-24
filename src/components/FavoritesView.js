@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, ScrollView, Alert, TouchableOpacity} from 'react-native'
 import styled from 'styled-components/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -89,10 +89,14 @@ const AlertText = styled.Text`
   color: #343434';
 `
 
-const FavoritesView = ({ setLastScreen, favorites, setFavorites, setRandomUrl, setShowFavoritesView }) => {
+const FavoritesView = ({ setButtonOpacity, setLastScreen, favorites, setFavorites, setRandomUrl, setShowFavoritesView }) => {
 
   const [deleteFavorites, setDeleteFavorites] = useState(false)
   
+  useEffect(() => {
+    setButtonOpacity(1)
+  }, [])
+
   const tableData = favorites.map(favObj => {
     if (typeof favObj == 'undefined') return
     const siteValue = favObj.url.includes('stackexchange') ? favObj.url.split('https://')[1].split('.stackexchange')[0] : favObj.url.split('https://')[1].split('.com')[0]

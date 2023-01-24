@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react"
 import { View, Alert, BackHandler, ToastAndroid } from 'react-native'
 import { WebView } from 'react-native-webview'
 
-const BrowserView = ({ currentSite, setShowLoader, closeOnBackButtonClick, setCloseOnBackButtonClick, setBackPressCount, backPressCount, disableStarButton, setLastScreen, setShowSettingsView, setShowFavoritesView, lastScreen, randomUrl, setStarred, favorites, setCurrentSite, setDisableStarbutton}) => {
+const BrowserView = ({ buttonOpacity, setButtonOpacity, currentSite, setShowLoader, closeOnBackButtonClick, setCloseOnBackButtonClick, setBackPressCount, backPressCount, disableStarButton, setLastScreen, setShowSettingsView, setShowFavoritesView, lastScreen, randomUrl, setStarred, favorites, setCurrentSite, setDisableStarbutton}) => {
 
   const webViewRef = useRef(null)
   const [canGoBack, setCanGoBack] = useState(false)
@@ -15,7 +15,6 @@ const BrowserView = ({ currentSite, setShowLoader, closeOnBackButtonClick, setCl
         try {
           webViewRef.current?.goBack()
         } catch (err) {
-
         }
         return true
       } else {
@@ -55,11 +54,17 @@ const BrowserView = ({ currentSite, setShowLoader, closeOnBackButtonClick, setCl
   }
 
   const handleOnLoadProgress = (pageInfo) => {
-    if (typeof pageInfo.title == 'undefined' || pageInfo.title.length < 1 || pageInfo.title === pageInfo.url || pageInfo.title.startsWith('https://') || !disableStarButton) return 
-    const cleanedTitle = pageInfo.title.substr(0, pageInfo.title.lastIndexOf('-')).trim()
-    setCurrentSite({title: cleanedTitle, url: pageInfo.url})
-    setCanGoBack(pageInfo.canGoBack)
-    setDisableStarbutton(false)
+    if (disableStarButton === false && buttonOpacity !== 1) {
+      setButtonOpacity(1)
+    }
+     if (typeof pageInfo.title == 'undefined' || pageInfo.title.length < 1 || pageInfo.title.startsWith('https://') || disableStarButton === false) {
+      return
+    } else {
+      const cleanedTitle = pageInfo.title.substr(0, pageInfo.title.lastIndexOf('-')).trim()
+      setCurrentSite({title: cleanedTitle, url: pageInfo.url})
+      setCanGoBack(pageInfo.canGoBack)
+      setDisableStarbutton(false)
+    }
   }
 
   const handleOnLoad = (pageInfo) => {
@@ -68,6 +73,7 @@ const BrowserView = ({ currentSite, setShowLoader, closeOnBackButtonClick, setCl
       setCurrentSite({title: cleanedTitle, url: pageInfo.url})
       setCanGoBack(pageInfo.canGoBack)
       setDisableStarbutton(false)
+      setButtonOpacity(1)
     }
   }
   

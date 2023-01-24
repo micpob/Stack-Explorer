@@ -27,11 +27,12 @@ const StyledTextButton = styled.Text`
   font-weight: 600;
 `
 
-const SearchButton = ({showFavoritesView, setLastScreen, setShowSettingsView, setShowLoader, year, site, tags, setRandomUrl, links, setLinks, orOperator, setStarred, setShowFavoritesView, setCurrentSite, setDisableStarbutton}) => {
+const SearchButton = ({buttonOpacity, setButtonOpacity, showFavoritesView, setLastScreen, setShowSettingsView, setShowLoader, year, site, tags, setRandomUrl, links, setLinks, orOperator, setStarred, setShowFavoritesView, setCurrentSite, setDisableStarbutton}) => {
 
   const [lastFetchUrl, setlastFetchUrl] = useState('')
 
   const handleClick = async () => {
+    setButtonOpacity(0.2)
     setLastScreen(showFavoritesView ? 'favorites' : 'settings')
     setDisableStarbutton(true)
     setCurrentSite({})
@@ -147,7 +148,7 @@ const SearchButton = ({showFavoritesView, setLastScreen, setShowSettingsView, se
 
   return (
     <MainContainer>
-      <StyledSearchButton onPress={handleClick}>
+      <StyledSearchButton onPress={handleClick} style={{opacity: buttonOpacity}}>
         <StyledTextButton>SEARCH</StyledTextButton>
       </StyledSearchButton>
     </MainContainer>  

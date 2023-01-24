@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, ScrollView, Alert } from 'react-native'
 import styled from 'styled-components/native'
 import TagButton from './TagButton'
@@ -85,11 +85,15 @@ const styles = StyleSheet.create({
   }
 })
 
-const SettingsView = ({ allTags, setAllTags, site, setSite, setTags, year, setYear, orOperator, setOrOperator }) => {
+const SettingsView = ({ setButtonOpacity, allTags, setAllTags, site, setSite, setTags, year, setYear, orOperator, setOrOperator }) => {
 
   const [deleteTags, setDeleteTags] = useState(false)
   const [showAddTagForm, setShowAddTagForm] = useState(false)
   
+  useEffect(() => {
+    setButtonOpacity(1)
+  }, [])
+
   const handleClick = async (tag) => {
     const newAllTags = deleteTags ? allTags.filter(tagObject => tagObject.name !== tag.name) : allTags.map(tagObject => tagObject.name === tag.name ? { name: tagObject.name, selected: !tag.selected} : tagObject)
     const jsonNewTagsArray = JSON.stringify(newAllTags)
