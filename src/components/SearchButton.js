@@ -31,6 +31,29 @@ const SearchButton = ({buttonOpacity, setButtonOpacity, showFavoritesView, setLa
 
   const [lastFetchUrl, setlastFetchUrl] = useState('')
 
+  let siteForUrl = site
+
+  switch (site) {
+    case 'threedprinting':
+      siteForUrl = '3dprinting'
+    break
+    case 'mathoverflownet':
+      siteForUrl = 'mathoverflow.net'
+    break
+    case 'esstackoverflow':
+      siteForUrl = 'es.stackoverflow'
+    break
+    case 'jastackoverflow':
+      siteForUrl = 'ja.stackoverflow'
+    break
+    case 'ptstackoverflow':
+      siteForUrl = 'pt.stackoverflow'
+    break
+    case 'rustackoverflow':
+      siteForUrl = 'ru.stackoverflow'
+    break
+  }
+
   const handleClick = async () => {
     setButtonOpacity(0.2)
     setLastScreen(showFavoritesView ? 'favorites' : 'settings')
@@ -39,7 +62,8 @@ const SearchButton = ({buttonOpacity, setButtonOpacity, showFavoritesView, setLa
     setShowFavoritesView(false)
     setShowSettingsView(false)
     setStarred(false)
-    let fetchUrlParameters = `pagesize=50&order=desc&sort=activity&accepted=True&views=25&fromdate=${year}&site=${site}&filter=!0ynczPwaq3R_qM75`
+
+    let fetchUrlParameters = `pagesize=50&order=desc&sort=activity&accepted=True&views=25&fromdate=${year}&site=${siteForUrl}&filter=!0ynczPwaq3R_qM75`
     let fetchUrlTags = tags.length < 1 ? '' : orOperator ? `&q=${encodeURIComponent(tags.map(element => `[${element}]`).join(' or '))}` : `&q=${encodeURIComponent(tags.map(element => `[${element}]`).join(''))}` 
     let fetchUrl = fetchUrlParameters + fetchUrlTags + `&page=`
 
