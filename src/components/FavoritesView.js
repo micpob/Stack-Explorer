@@ -97,15 +97,6 @@ const FavoritesView = ({ setButtonOpacity, setLastScreen, favorites, setFavorite
     setButtonOpacity(1)
   }, [])
 
-  const tableData = favorites.map(favObj => {
-    if (typeof favObj == 'undefined') return
-    const siteValue = favObj.url.includes('stackexchange') ? favObj.url.split('https://')[1].split('.stackexchange')[0] : favObj.url.split('https://')[1].split('.com')[0]
-    const site = defaultSites['sites'].find(siteObj => siteObj.value === siteValue)
-    if (typeof site == 'undefined') return
-    return  { site: site.name, title: favObj.title, url: favObj.url} 
-  })
-  tableData.sort((a, b) => a.site.localeCompare(b.site) || a.title.toLowerCase().localeCompare(b.title.toLowerCase()))
-
   const handleClick = (url) => {
     if (!deleteFavorites) {
       setLastScreen('favorites')
@@ -129,11 +120,11 @@ const FavoritesView = ({ setButtonOpacity, setLastScreen, favorites, setFavorite
   
   return (
     <MainContainer>
-      { tableData.length > 0 ?
+      { favorites.length > 0 ?
           <TableContainer>
             <TableHeader><HeaderSiteCell deleteFavorites={deleteFavorites}><HeaderText deleteFavorites={deleteFavorites}>{ deleteFavorites ? 'Long click on a row to delete it' : 'Site' }</HeaderText></HeaderSiteCell><HeaderTitleCell deleteFavorites={deleteFavorites}><HeaderText>{ deleteFavorites ? '' : 'Title' }</HeaderText></HeaderTitleCell><DeleteFavoritesButton deleteFavorites={deleteFavorites} setDeleteFavorites={setDeleteFavorites}></DeleteFavoritesButton></TableHeader>
             <RowsContainer>
-              {tableData.map((favorite, index) => <TouchableOpacity key={index} onPress={() => handleClick(favorite.url)} onLongPress={() => handleLongClick(favorite.url)} ><Row index={index} deleteFavorites={deleteFavorites} ><SiteCell><CellText index={index} deleteFavorites={deleteFavorites}>{favorite.site}</CellText></SiteCell><TitleCell><CellText index={index} deleteFavorites={deleteFavorites}>{favorite.title}</CellText></TitleCell></Row></TouchableOpacity>)}
+              {favorites.map((favorite, index) => <TouchableOpacity key={index} onPress={() => handleClick(favorite.url)} onLongPress={() => handleLongClick(favorite.url)} ><Row index={index} deleteFavorites={deleteFavorites} ><SiteCell><CellText index={index} deleteFavorites={deleteFavorites}>{favorite.siteName}</CellText></SiteCell><TitleCell><CellText index={index} deleteFavorites={deleteFavorites}>{favorite.title}</CellText></TitleCell></Row></TouchableOpacity>)}
             </RowsContainer>
           </TableContainer>
         :

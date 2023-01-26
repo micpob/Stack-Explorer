@@ -27,7 +27,7 @@ const FavoritesButton = ({setLastScreen, showSettingsView, setShowSettingsView, 
       setShowFavoritesView(true)
     } else if (!showLoader && !showSettingsView && !showFavoritesView && randomUrl.length > 0) {
       if (typeof currentSite.url == 'undefined') { return }
-      if (!currentSite.url.includes('/questions/')) {
+      if (currentSite.title.length < 1 || currentSite.siteName.length < 1 || !currentSite.url.includes('/questions/') || currentSite.url.includes('/questions/ask')) {
         Alert.alert(
           "Can't add to favorites",
           `Only questions pages can be added to the favorites list.`,
@@ -56,6 +56,7 @@ const FavoritesButton = ({setLastScreen, showSettingsView, setShowSettingsView, 
             setDisableStarbutton(false)
           } else {
             const newFavoritesArray = [...storedFavorites, currentSite]
+            newFavoritesArray.sort((a, b) => a.siteName.localeCompare(b.siteName) || a.title.toLowerCase().localeCompare(b.title.toLowerCase()))
             const jsonNewFavoritesArray = JSON.stringify(newFavoritesArray)
             await AsyncStorage.setItem(`favorites`, jsonNewFavoritesArray)
             setFavorites(newFavoritesArray)

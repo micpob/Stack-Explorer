@@ -1,8 +1,9 @@
 import React, { useRef, useState } from "react"
 import { View, Alert, BackHandler, ToastAndroid } from 'react-native'
 import { WebView } from 'react-native-webview'
+import defaultSites from '../utils/defaultSites'
 
-const BrowserView = ({ buttonOpacity, setButtonOpacity, currentSite, setShowLoader, closeOnBackButtonClick, setCloseOnBackButtonClick, setBackPressCount, backPressCount, disableStarButton, setLastScreen, setShowSettingsView, setShowFavoritesView, lastScreen, randomUrl, setStarred, favorites, setCurrentSite, setDisableStarbutton}) => {
+const BrowserView = ({ site, buttonOpacity, setButtonOpacity, currentSite, setShowLoader, closeOnBackButtonClick, setCloseOnBackButtonClick, setBackPressCount, backPressCount, disableStarButton, setLastScreen, setShowSettingsView, setShowFavoritesView, lastScreen, randomUrl, setStarred, favorites, setCurrentSite, setDisableStarbutton}) => {
 
   const webViewRef = useRef(null)
   const [canGoBack, setCanGoBack] = useState(false)
@@ -47,6 +48,51 @@ const BrowserView = ({ buttonOpacity, setButtonOpacity, currentSite, setShowLoad
     return false
   })
 
+  const setNewCurrentSite = (pageInfo) => {
+    if (pageInfo.url.includes(site)) {
+      const siteObj = defaultSites['sites'].find(siteObj => siteObj.value === site)
+      const cleanedTitle = pageInfo.title.substr(0, pageInfo.title.lastIndexOf('-')).trim()
+      setCurrentSite({siteName: siteObj.name ?? '', title: cleanedTitle, url: pageInfo.url})
+      setCanGoBack(pageInfo.canGoBack)
+      setDisableStarbutton(false)
+    } else {
+      const specialNameSites = ['3dprinting', 'mathoverflow.net', 'pt.stackoverflow', 'es.stackoverflow', 'ru.stackoverflow', 'ja.stackoverflow']
+      if (specialNameSites.some(el => pageInfo.url.includes(el))) {
+        let siteName
+        switch (site) {
+          case 'threedprinting':
+            siteName = '3D Printing'
+          break
+          case 'mathoverflownet':
+            siteName = 'MathOverflow'
+          break
+          case 'esstackoverflow':
+            siteName = 'Stack Overflow en español'
+          break
+          case 'jastackoverflow':
+            siteName = 'スタック・オーバーフロー'
+          break
+          case 'ptstackoverflow':
+            siteName = 'Stack Overflow em Português'
+          break
+          case 'rustackoverflow':
+            siteName = 'Stack Overflow на русском'
+          break
+          default:
+            siteName = ''
+        }
+        const cleanedTitle = pageInfo.title.substr(0, pageInfo.title.lastIndexOf('-')).trim()
+        setCurrentSite({siteName: siteName, title: cleanedTitle, url: pageInfo.url})
+        setCanGoBack(pageInfo.canGoBack)
+        setDisableStarbutton(false)
+      } else {
+        setCurrentSite({siteName: '', title: '', url: pageInfo.url})
+        setCanGoBack(pageInfo.canGoBack)
+        setDisableStarbutton(false)
+      }
+    }
+  }
+
   const handleOnLoadStart = (pageInfo) => {
     setDisableStarbutton(true)
     setStarred(favorites.some(site => site.url === pageInfo.url))
@@ -60,19 +106,13 @@ const BrowserView = ({ buttonOpacity, setButtonOpacity, currentSite, setShowLoad
      if (typeof pageInfo.title == 'undefined' || pageInfo.title.length < 1 || pageInfo.title.startsWith('https://') || disableStarButton === false) {
       return
     } else {
-      const cleanedTitle = pageInfo.title.substr(0, pageInfo.title.lastIndexOf('-')).trim()
-      setCurrentSite({title: cleanedTitle, url: pageInfo.url})
-      setCanGoBack(pageInfo.canGoBack)
-      setDisableStarbutton(false)
+      setNewCurrentSite(pageInfo)
     }
   }
 
   const handleOnLoad = (pageInfo) => {
     if (typeof currentSite.title == 'undefined') {
-      const cleanedTitle = pageInfo.title.substr(0, pageInfo.title.lastIndexOf('-')).trim()
-      setCurrentSite({title: cleanedTitle, url: pageInfo.url})
-      setCanGoBack(pageInfo.canGoBack)
-      setDisableStarbutton(false)
+      setNewCurrentSite(pageInfo)
       setButtonOpacity(1)
     }
   }
