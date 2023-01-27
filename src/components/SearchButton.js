@@ -63,7 +63,7 @@ const SearchButton = ({buttonOpacity, setButtonOpacity, showFavoritesView, setLa
     setShowSettingsView(false)
     setStarred(false)
 
-    let fetchUrlParameters = `pagesize=50&order=desc&sort=activity&accepted=True&views=25&fromdate=${year}&site=${siteForUrl}&filter=!0ynczPwaq3R_qM75`
+    let fetchUrlParameters = `&fromdate=${year}&site=${siteForUrl}`
     let fetchUrlTags = tags.length < 1 ? '' : orOperator ? `&q=${encodeURIComponent(tags.map(element => `[${element}]`).join(' or '))}` : `&q=${encodeURIComponent(tags.map(element => `[${element}]`).join(''))}` 
     let fetchUrl = fetchUrlParameters + fetchUrlTags + `&page=`
 
@@ -95,7 +95,7 @@ const SearchButton = ({buttonOpacity, setButtonOpacity, showFavoritesView, setLa
 
   const fetchMoreLinks = (fetchUrl) => {
     const apiKey = keys.apyKey
-    const fetchUrlBase = apiKey.length > 0 ? `https://api.stackexchange.com/2.3/search/advanced?key=${apiKey}&` : `https://api.stackexchange.com/2.3/search/advanced?`
+    const fetchUrlBase = apiKey.length > 0 ? `https://api.stackexchange.com/2.3/search/advanced?key=${apiKey}&filter=!0ynczPwaq3R_qM75&pagesize=50&order=desc&sort=activity&accepted=True&views=25` : `https://api.stackexchange.com/2.3/search/advanced?filter=!0ynczPwaq3R_qM75&pagesize=50&order=desc&sort=activity&accepted=True&views=25`
     let fullFetchUrl = fetchUrlBase + fetchUrl
     setShowLoader(true)
     fetch(fullFetchUrl)
