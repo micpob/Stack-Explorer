@@ -1,5 +1,5 @@
 const sites = [
-  {name:"3D Printing",value:"threedprinting"},
+  {name: "3D Printing",value:"threedprinting"},
   {name: "Academia", value:"academia"},
   {name: "Amateur Radio", value:"ham"},
   {name: "Android Enthusiasts", value:"android"},
