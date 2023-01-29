@@ -49,7 +49,8 @@ const BrowserView = ({ site, buttonOpacity, setButtonOpacity, currentSite, setSh
   })
 
   const setNewCurrentSite = (pageInfo) => {
-    if (pageInfo.url.includes(site)) {
+    let domainName = pageInfo.url.split('//')[1].split('.')[0]
+    if (domainName === site) {
       const siteObj = defaultSites['sites'].find(siteObj => siteObj.value === site)
       const cleanedTitle = pageInfo.title.substr(0, pageInfo.title.lastIndexOf('-')).trim()
       setCurrentSite({siteName: siteObj.name ?? '', title: cleanedTitle, url: pageInfo.url})
@@ -57,25 +58,25 @@ const BrowserView = ({ site, buttonOpacity, setButtonOpacity, currentSite, setSh
       setDisableStarbutton(false)
     } else {
       const specialNameSites = ['3dprinting', 'mathoverflow.net', 'pt.stackoverflow', 'es.stackoverflow', 'ru.stackoverflow', 'ja.stackoverflow']
-      if (specialNameSites.some(el => pageInfo.url.includes(el))) {
+      if (specialNameSites.some(specialSiteName => pageInfo.url.includes(specialSiteName))) {
         let siteName
-        switch (site) {
-          case 'threedprinting':
+        switch (domainName) {
+          case '3dprinting':
             siteName = '3D Printing'
           break
-          case 'mathoverflownet':
+          case 'mathoverflow':
             siteName = 'MathOverflow'
           break
-          case 'esstackoverflow':
+          case 'es':
             siteName = 'Stack Overflow en español'
           break
-          case 'jastackoverflow':
+          case 'ja':
             siteName = 'スタック・オーバーフロー'
           break
-          case 'ptstackoverflow':
+          case 'pt':
             siteName = 'Stack Overflow em Português'
           break
-          case 'rustackoverflow':
+          case 'ru':
             siteName = 'Stack Overflow на русском'
           break
           default:
@@ -83,6 +84,12 @@ const BrowserView = ({ site, buttonOpacity, setButtonOpacity, currentSite, setSh
         }
         const cleanedTitle = pageInfo.title.substr(0, pageInfo.title.lastIndexOf('-')).trim()
         setCurrentSite({siteName: siteName, title: cleanedTitle, url: pageInfo.url})
+        setCanGoBack(pageInfo.canGoBack)
+        setDisableStarbutton(false)
+      } else if (defaultSites['sites'].some(siteObj => siteObj.value === domainName)) {
+        const siteObj = defaultSites['sites'].find(siteObj => siteObj.value === domainName)
+        const cleanedTitle = pageInfo.title.substr(0, pageInfo.title.lastIndexOf('-')).trim()
+        setCurrentSite({siteName: siteObj.name ?? '', title: cleanedTitle, url: pageInfo.url})
         setCanGoBack(pageInfo.canGoBack)
         setDisableStarbutton(false)
       } else {
