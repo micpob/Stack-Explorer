@@ -189,7 +189,7 @@ export default function App() {
 
         { 
           showSettingsView &&
-          <SettingsView setButtonOpacity={setButtonOpacity} allTags={allTags} setAllTags={setAllTags} year={year} setYear={setYear} site={site} setSite={setSite} setTags={setTags} orOperator={orOperator} setOrOperator={setOrOperator} ></SettingsView>
+          <SettingsView setDisableStarbutton={setDisableStarbutton} setButtonOpacity={setButtonOpacity} allTags={allTags} setAllTags={setAllTags} year={year} setYear={setYear} site={site} setSite={setSite} setTags={setTags} orOperator={orOperator} setOrOperator={setOrOperator} ></SettingsView>
         }
         
         {

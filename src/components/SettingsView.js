@@ -85,13 +85,14 @@ const styles = StyleSheet.create({
   }
 })
 
-const SettingsView = ({ setButtonOpacity, allTags, setAllTags, site, setSite, setTags, year, setYear, orOperator, setOrOperator }) => {
+const SettingsView = ({ setDisableStarbutton, setButtonOpacity, allTags, setAllTags, site, setSite, setTags, year, setYear, orOperator, setOrOperator }) => {
 
   const [deleteTags, setDeleteTags] = useState(false)
   const [showAddTagForm, setShowAddTagForm] = useState(false)
   
   useEffect(() => {
     setButtonOpacity(1)
+    setDisableStarbutton(false)
   }, [])
 
   const handleClick = async (tag) => {
