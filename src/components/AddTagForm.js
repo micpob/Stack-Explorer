@@ -48,7 +48,28 @@ const AddTagForm = ({ site, allTags, setAllTags, showAddTagForm, setShowAddTagFo
         } else {
           const apiKey = keys.apyKey
           const fetchUrlBase = apiKey.length > 0 ? `https://api.stackexchange.com/2.3/search/advanced?key=${apiKey}&` : `https://api.stackexchange.com/2.3/search/advanced?`
-          const url = fetchUrlBase + `pagesize=1&tagged=${tagName}&site=${site}&filter=!0ynczPwaq3R_qM75`
+          let siteForUrl = site
+          switch (site) {
+            case 'threedprinting':
+              siteForUrl = '3dprinting'
+            break
+            case 'mathoverflownet':
+              siteForUrl = 'mathoverflow.net'
+            break
+            case 'esstackoverflow':
+              siteForUrl = 'es.stackoverflow'
+            break
+            case 'jastackoverflow':
+              siteForUrl = 'ja.stackoverflow'
+            break
+            case 'ptstackoverflow':
+              siteForUrl = 'pt.stackoverflow'
+            break
+            case 'rustackoverflow':
+              siteForUrl = 'ru.stackoverflow'
+            break
+          }
+          const url = fetchUrlBase + `pagesize=1&tagged=${tagName}&site=${siteForUrl}&filter=!0ynczPwaq3R_qM75`
           fetch(url)
           .then(response => response.json())
           .then(data => {
