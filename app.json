@@ -2,7 +2,7 @@
   "expo": {
     "name": "Stack Explorer",
     "slug": "stack-explorer",
-    "version": "0.9.2",
+    "version": "0.9.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -27,7 +27,7 @@
       },
       "permissions": [],
       "package": "com.github.micpob.stackexplorer",
-      "versionCode": 12
+      "versionCode": 13
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -36,6 +36,16 @@
       "eas": {
         "projectId": "0257ea6a-a53b-4285-bb1c-a48ab6f324c9"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enableProguardInReleaseBuilds": true
+          }
+        }
+      ]
+    ]
   }
 }
