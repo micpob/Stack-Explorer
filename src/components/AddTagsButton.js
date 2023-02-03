@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import styled from 'styled-components/native'
 import { View, TouchableOpacity, Text } from 'react-native'
+import styled from 'styled-components/native'
 
 const MainContainer = styled.View`
   width: 100%;
