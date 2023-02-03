@@ -1,12 +1,24 @@
-import React, { useRef, useState } from "react"
+import React, { useRef, useState, useEffect } from "react"
 import { View, Alert, BackHandler, ToastAndroid } from 'react-native'
 import { WebView } from 'react-native-webview'
 import defaultSites from '../utils/defaultSites'
+import Constants from 'expo-constants'
 
 const BrowserView = ({ site, buttonOpacity, setButtonOpacity, currentSite, setShowLoader, closeOnBackButtonClick, setCloseOnBackButtonClick, setBackPressCount, backPressCount, disableStarButton, setLastScreen, setShowSettingsView, setShowFavoritesView, lastScreen, randomUrl, setStarred, favorites, setCurrentSite, setDisableStarbutton}) => {
 
   const webViewRef = useRef(null)
   const [canGoBack, setCanGoBack] = useState(false)
+  const [userAgent, setUserAgent] = useState('')
+
+  useEffect(() => {
+    const setUa = async () => {
+      const ua = await Constants.getWebViewUserAgentAsync().then(ua => {return ua})
+      setUserAgent(ua)
+    }
+    setUa()
+  }, [])
+
+  
 
   BackHandler.addEventListener('hardwareBackPress', () => {
     if (backPressCount === 0 && !closeOnBackButtonClick) {
@@ -123,11 +135,14 @@ const BrowserView = ({ site, buttonOpacity, setButtonOpacity, currentSite, setSh
       setButtonOpacity(1)
     }
   }
+
+  if (userAgent.length < 1) { return null }
   
   return (
     <View style={{ flex: 1 }}>
       <WebView
         source={{ uri: randomUrl }}
+        userAgent={userAgent}
         onLoadStart={ (event) => { handleOnLoadStart(event.nativeEvent) }}
         onLoadProgress={(event) => { handleOnLoadProgress(event.nativeEvent) }}
         onLoad={(event) => { handleOnLoad(event.nativeEvent) }}
