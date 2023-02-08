@@ -28,6 +28,14 @@ React Native
 
 https://play.google.com/store/apps/details?id=com.github.micpob.stackexplorer
 
+### QR code:
+
+<br/>
+<div>
+  <img src="assets/Docs/Stack Explorer qr code.png" alt="Stack Explorer qr code" width="300px" >
+</div>
+<br/>
+
 
 
 
