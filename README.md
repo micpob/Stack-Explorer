@@ -1,22 +1,22 @@
 # Stack Explorer
 
-This Android app uses the public Stack Exchange API to explore the content of sites like Stack Overflow, SuperUser and dozens more, in order to find interesting questions and answers about science, languages, technology, history, arts and more.
+This Android app uses the public [Stack Exchange API](https://api.stackexchange.com/) to explore the content of sites like **Stack Overflow**, **SuperUser** and dozens more, in order to find interesting questions and answers about science, languages, technology, history, arts, etc.
 
 <br/>
-<div align="center" >
-  <img src="assets/Docs/1.png" alt="Stack Explorer 1" width="600px" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.4);">
+<div align="center" style="box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.4); max-width: 600px; margin: auto;">
+  <img src="assets/Docs/1.png" alt="Stack Explorer 1">
 </div>
 <br/>
 
-Select a topic that interest you, choose between the most popular tags or add new ones and tap the search button to start discovering new, interesting and high quality content randomly selected.
+Select a **topic** that interest you, refine the search by selecting some specific **tags** and tap the **search button** to start randomly discovering new, interesting and high quality content.
 
 <br/>
-<div align="center" >
-  <img src="assets/Docs/2.png" alt="Stack Explorer 2" width="600px" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.4);">
+<div align="center" style="box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.4); max-width: 600px; margin: auto;">
+  <img src="assets/Docs/2.png" alt="Stack Explorer 2">
 </div>
 <br/>
 
-Explore the questions and answers and save the most interesting ones to the favorites list to review them later.
+Explore the questions and answers and save the most interesting ones to the **favorites list** to review them later.
 
 ## Stack used:
 
