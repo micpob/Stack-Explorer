@@ -20,7 +20,7 @@ const DeleteTagsButton = ({deleteTags, setDeleteTags}) => {
         stores.map((result, i, store) => {
           asyncStorage[store[i][0]] = store[i][1]
         })
-        console.log(asyncStorage)
+        //console.log(asyncStorage)
         console.table(asyncStorage)
         let sizeInBytes = new Blob([JSON.stringify(asyncStorage)]).size
         var sizeInMB = (sizeInBytes / (1024*1024)).toFixed(2)

@@ -39,7 +39,7 @@ const SitePickerSearchable = ({site, setSite}) => {
         initValueTextStyle={{color: 'black', fontSize: 20, fontWeight: '600'}}
         overlayStyle={{flex: 1, padding: '5%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.7)'}}    
         optionContainerStyle={{backgroundColor: 'white', width: 300, maxHeight: 600 }}  
-        optionTextStyle= {{color: colors.primary, fontSize: 22, fontWeight: '600'}}
+        optionTextStyle= {{color: '#408080', fontSize: 22, fontWeight: '600'}}
         animationType='fade'
         selectStyle={{backgroundColor: 'white', borderColor: 'black', paddingLeft: 12, paddingRight: 12 }}
         cancelContainerStyle={{alignItems: 'center', marginTop: 8}}

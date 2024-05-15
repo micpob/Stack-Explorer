@@ -1,6 +1,6 @@
 {
   "name": "stack-explorer",
-  "version": "1.0",
+  "version": "1.2",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
@@ -9,21 +9,21 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@expo/vector-icons": "^13.0.0",
-    "@react-native-async-storage/async-storage": "~1.17.3",
-    "@react-native-community/netinfo": "9.3.5",
-    "expo": "~47.0.9",
-    "expo-build-properties": "^0.4.1",
-    "expo-constants": "~14.0.2",
-    "expo-dev-client": "~2.0.1",
-    "react": "18.1.0",
-    "react-dom": "18.1.0",
-    "react-native": "0.70.5",
+    "@expo/vector-icons": "^14.0.0",
+    "@react-native-async-storage/async-storage": "1.23.1",
+    "@react-native-community/netinfo": "11.3.1",
+    "expo": "^51.0.2",
+    "expo-build-properties": "~0.12.1",
+    "expo-constants": "~16.0.1",
+    "expo-dev-client": "~4.0.13",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-native": "0.74.1",
     "react-native-dialog": "^9.3.0",
-    "react-native-gesture-handler": "2.8.0",
+    "react-native-gesture-handler": "~2.16.1",
     "react-native-modal-selector-searchable": "^2.1.4",
     "react-native-notifier": "^1.9.0",
-    "react-native-webview": "11.23.1",
+    "react-native-webview": "13.8.6",
     "styled-components": "^5.3.6"
   },
   "devDependencies": {

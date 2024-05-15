@@ -13,6 +13,7 @@ import defaultYears from './src/utils/defaultYears'
 import defaultSites from './src/utils/defaultSites'
 import colors from './src/utils/colors'
 import { NotifierWrapper } from 'react-native-notifier'
+import {GestureHandlerRootView} from 'react-native-gesture-handler'
 
 const MainContainer = styled.View`
   flex-direction: column;
@@ -177,37 +178,39 @@ export default function App() {
   if (site.length < 1 || year.length < 1) { return null }
 
   return (
-    <NotifierWrapper>
-      <StatusBar backgroundColor="#000000" StatusBarStyle="light-content"></StatusBar>
+    <GestureHandlerRootView>
+      <NotifierWrapper>
+        <StatusBar backgroundColor="#000000" StatusBarStyle="light-content"></StatusBar>
 
-      <MainContainer>
+        <MainContainer>
 
-        {
-          showFavoritesView &&
-          <FavoritesView setButtonOpacity={setButtonOpacity} setLastScreen={setLastScreen} favorites={favorites} setFavorites={setFavorites} setRandomUrl={setRandomUrl} setShowFavoritesView={setShowFavoritesView} ></FavoritesView>
-        }
+          {
+            showFavoritesView &&
+            <FavoritesView setButtonOpacity={setButtonOpacity} setLastScreen={setLastScreen} favorites={favorites} setFavorites={setFavorites} setRandomUrl={setRandomUrl} setShowFavoritesView={setShowFavoritesView} ></FavoritesView>
+          }
 
-        { 
-          showSettingsView &&
-          <SettingsView setDisableStarbutton={setDisableStarbutton} setButtonOpacity={setButtonOpacity} allTags={allTags} setAllTags={setAllTags} year={year} setYear={setYear} site={site} setSite={setSite} setTags={setTags} orOperator={orOperator} setOrOperator={setOrOperator} ></SettingsView>
-        }
-        
-        {
-          showLoader && 
-          <LoaderContainer>
-            <ActivityIndicator size="large" color={colors.primary} />
-          </LoaderContainer> 
-        }
+          { 
+            showSettingsView &&
+            <SettingsView setDisableStarbutton={setDisableStarbutton} setButtonOpacity={setButtonOpacity} allTags={allTags} setAllTags={setAllTags} year={year} setYear={setYear} site={site} setSite={setSite} setTags={setTags} orOperator={orOperator} setOrOperator={setOrOperator} ></SettingsView>
+          }
+          
+          {
+            showLoader && 
+            <LoaderContainer>
+              <ActivityIndicator size="large" color={colors.primary} />
+            </LoaderContainer> 
+          }
 
-        {!showLoader && !showSettingsView && !showFavoritesView && randomUrl.length > 0 &&
-          <BrowserView site={site} buttonOpacity={buttonOpacity} setButtonOpacity={setButtonOpacity} currentSite={currentSite} setShowLoader={setShowLoader} closeOnBackButtonClick={closeOnBackButtonClick} setCloseOnBackButtonClick={setCloseOnBackButtonClick} backPressCount={backPressCount} setBackPressCount={setBackPressCount} disableStarButton={disableStarButton} setLastScreen={setLastScreen} setShowSettingsView={setShowSettingsView} setShowFavoritesView={setShowFavoritesView} lastScreen={lastScreen} randomUrl={randomUrl} setStarred={setStarred} favorites={favorites} setCurrentSite={setCurrentSite} setDisableStarbutton={setDisableStarbutton}></BrowserView>
-        }
-        <ButtonsContainer>
-          <ShowSettingsButton setDisableStarbutton={setDisableStarbutton} showFavoritesView={showFavoritesView} setLastScreen={setLastScreen} setShowSettingsView={setShowSettingsView} showSettingsView={showSettingsView} setStarred={setStarred} setShowFavoritesView={setShowFavoritesView} ></ShowSettingsButton>
-          <SearchButton setButtonOpacity={setButtonOpacity} buttonOpacity={buttonOpacity} setLastScreen={setLastScreen} setShowSettingsView={setShowSettingsView} showFavoritesView={showFavoritesView} setShowLoader={setShowLoader} year={year} site={site} tags={tags} links={links} setLinks={setLinks} setRandomUrl={setRandomUrl} orOperator={orOperator} setStarred={setStarred} setShowFavoritesView={setShowFavoritesView} setCurrentSite={setCurrentSite} setDisableStarbutton={setDisableStarbutton}></SearchButton>
-          <FavoritesButton showFavoritesView={showFavoritesView} setLastScreen={setLastScreen} starred={starred} setStarred={setStarred} showLoader={showLoader} setShowLoader={setShowLoader} showSettingsView={showSettingsView} setShowSettingsView={setShowSettingsView} randomUrl={randomUrl} setFavorites={setFavorites} setShowFavoritesView={setShowFavoritesView} currentSite={currentSite} disableStarButton={disableStarButton} setDisableStarbutton={setDisableStarbutton} ></FavoritesButton>
-        </ButtonsContainer>
-      </MainContainer>
-    </NotifierWrapper>
+          {!showLoader && !showSettingsView && !showFavoritesView && randomUrl.length > 0 &&
+            <BrowserView site={site} buttonOpacity={buttonOpacity} setButtonOpacity={setButtonOpacity} currentSite={currentSite} setShowLoader={setShowLoader} closeOnBackButtonClick={closeOnBackButtonClick} setCloseOnBackButtonClick={setCloseOnBackButtonClick} backPressCount={backPressCount} setBackPressCount={setBackPressCount} disableStarButton={disableStarButton} setLastScreen={setLastScreen} setShowSettingsView={setShowSettingsView} setShowFavoritesView={setShowFavoritesView} lastScreen={lastScreen} randomUrl={randomUrl} setStarred={setStarred} favorites={favorites} setCurrentSite={setCurrentSite} setDisableStarbutton={setDisableStarbutton}></BrowserView>
+          }
+          <ButtonsContainer>
+            <ShowSettingsButton setDisableStarbutton={setDisableStarbutton} showFavoritesView={showFavoritesView} setLastScreen={setLastScreen} setShowSettingsView={setShowSettingsView} showSettingsView={showSettingsView} setStarred={setStarred} setShowFavoritesView={setShowFavoritesView} ></ShowSettingsButton>
+            <SearchButton setButtonOpacity={setButtonOpacity} buttonOpacity={buttonOpacity} setLastScreen={setLastScreen} setShowSettingsView={setShowSettingsView} showFavoritesView={showFavoritesView} setShowLoader={setShowLoader} year={year} site={site} tags={tags} links={links} setLinks={setLinks} setRandomUrl={setRandomUrl} orOperator={orOperator} setStarred={setStarred} setShowFavoritesView={setShowFavoritesView} setCurrentSite={setCurrentSite} setDisableStarbutton={setDisableStarbutton}></SearchButton>
+            <FavoritesButton showFavoritesView={showFavoritesView} setLastScreen={setLastScreen} starred={starred} setStarred={setStarred} showLoader={showLoader} setShowLoader={setShowLoader} showSettingsView={showSettingsView} setShowSettingsView={setShowSettingsView} randomUrl={randomUrl} setFavorites={setFavorites} setShowFavoritesView={setShowFavoritesView} currentSite={currentSite} disableStarButton={disableStarButton} setDisableStarbutton={setDisableStarbutton} ></FavoritesButton>
+          </ButtonsContainer>
+        </MainContainer>
+      </NotifierWrapper>
+    </GestureHandlerRootView>
   )
 }
