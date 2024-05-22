@@ -60,11 +60,16 @@ const BrowserView = ({ site, buttonOpacity, setButtonOpacity, currentSite, setSh
     return false
   })
 
+  const cleanTitle = (title) => {
+    let cleanedTitle = title.substr(0, title.lastIndexOf('-'))
+    return cleanedTitle.trim()
+  }
+
   const setNewCurrentSite = (pageInfo) => {
     let domainName = pageInfo.url.split('//')[1].split('.')[0]
     if (domainName === site) {
       const siteObj = defaultSites['sites'].find(siteObj => siteObj.value === site)
-      const cleanedTitle = pageInfo.title.substr(0, pageInfo.title.lastIndexOf('-')).trim()
+      const cleanedTitle = cleanTitle(pageInfo.title)
       setCurrentSite({siteName: siteObj.name ?? '', title: cleanedTitle, url: pageInfo.url})
       setCanGoBack(pageInfo.canGoBack)
       setDisableStarbutton(false)
@@ -94,13 +99,13 @@ const BrowserView = ({ site, buttonOpacity, setButtonOpacity, currentSite, setSh
           default:
             siteName = ''
         }
-        const cleanedTitle = pageInfo.title.substr(0, pageInfo.title.lastIndexOf('-')).trim()
+        const cleanedTitle =  cleanTitle(pageInfo.title)
         setCurrentSite({siteName: siteName, title: cleanedTitle, url: pageInfo.url})
         setCanGoBack(pageInfo.canGoBack)
         setDisableStarbutton(false)
       } else if (defaultSites['sites'].some(siteObj => siteObj.value === domainName)) {
         const siteObj = defaultSites['sites'].find(siteObj => siteObj.value === domainName)
-        const cleanedTitle = pageInfo.title.substr(0, pageInfo.title.lastIndexOf('-')).trim()
+        const cleanedTitle =  cleanTitle(pageInfo.title)
         setCurrentSite({siteName: siteObj.name ?? '', title: cleanedTitle, url: pageInfo.url})
         setCanGoBack(pageInfo.canGoBack)
         setDisableStarbutton(false)
@@ -122,7 +127,7 @@ const BrowserView = ({ site, buttonOpacity, setButtonOpacity, currentSite, setSh
     if (disableStarButton === false && buttonOpacity !== 1) {
       setButtonOpacity(1)
     }
-     if (typeof pageInfo.title == 'undefined' || pageInfo.title.length < 1 || pageInfo.title.startsWith('https://') || disableStarButton === false) {
+     if (typeof pageInfo.title == 'undefined' || pageInfo.title.length < 1 || pageInfo.title.startsWith('https://') || disableStarButton === false || pageInfo.url.includes(pageInfo.title) ) {
       return
     } else {
       setNewCurrentSite(pageInfo)
