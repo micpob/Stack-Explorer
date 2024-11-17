@@ -31,7 +31,7 @@ const TitleContainer = styled.View`
 
 const StyledTitle = styled.Text`
   font-size: 24px;
-  font-weight: 900;
+  font-weight: 700;
   color: ${colors.primary};
 `
 

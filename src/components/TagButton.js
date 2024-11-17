@@ -19,7 +19,7 @@ const StyledTagButton = styled.TouchableOpacity`
 
 const StyledText = styled.Text`
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   text-align: center;
   color: ${props => props.deleteTags ? 'white' : props.selected ? 'white' : 'black'};
 `

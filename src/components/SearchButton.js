@@ -24,7 +24,8 @@ const StyledSearchButton = styled.TouchableOpacity`
 const StyledTextButton = styled.Text`
   color: white;
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 500;
+  /* font-family: 'Montserrat'; */
 `
 
 const SearchButton = ({buttonOpacity, setButtonOpacity, showFavoritesView, setLastScreen, setShowSettingsView, setShowLoader, year, site, tags, setRandomUrl, links, setLinks, orOperator, setStarred, setShowFavoritesView, setCurrentSite, setDisableStarbutton}) => {

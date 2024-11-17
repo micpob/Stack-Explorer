@@ -106,8 +106,8 @@ const AddTagForm = ({ site, allTags, setAllTags, showAddTagForm, setShowAddTagFo
                 showAnimationDuration: 500,
                 Component: NotifierComponents.Notification,
                 componentProps: {
-                  titleStyle: {color: 'white', fontSize: 24, fontWeight: '600'},
-                  descriptionStyle: {color: 'white', fontSize: 16, fontWeight: '600'},
+                  titleStyle: {color: 'white', fontSize: 24, fontWeight: '500'},
+                  descriptionStyle: {color: 'white', fontSize: 16, fontWeight: '500'},
                   containerStyle: {backgroundColor: colors.primary}
                 }, 
                 hideOnPress: true,

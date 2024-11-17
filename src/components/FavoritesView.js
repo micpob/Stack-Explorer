@@ -46,7 +46,7 @@ const HeaderTitleCell = styled.View`
 
 const HeaderText = styled.Text`
   font-size: ${props => props.deleteFavorites ? '20px' : '24px'}; 
-  font-weight: 600;
+  font-weight: 500;
   color: white; 
 `
 
@@ -85,7 +85,7 @@ const AlertTextContainer = styled.View`
 `
 const AlertText = styled.Text`
   font-size: 24px;
-  font-weight: 600;
+  font-weight: 500;
   color: #343434';
 `
 

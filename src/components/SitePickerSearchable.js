@@ -36,16 +36,17 @@ const SitePickerSearchable = ({site, setSite}) => {
         data={data}
         initValue={getInitValue()}
         onChange={(option)=> { onSelect(option.value) }}
-        initValueTextStyle={{color: 'black', fontSize: 20, fontWeight: '600'}}
+        initValueTextStyle={{color: 'black', fontSize: 20, fontWeight: '500'/* , fontFamily: 'Montserrat' */}}
         overlayStyle={{flex: 1, padding: '5%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.7)'}}    
         optionContainerStyle={{backgroundColor: 'white', width: 300, maxHeight: 600 }}  
-        optionTextStyle= {{color: '#408080', fontSize: 22, fontWeight: '600'}}
+        optionTextStyle= {{color: '#408080', fontSize: 22, fontWeight: '500'/* , fontFamily: 'Montserrat' */}}
         animationType='fade'
-        selectStyle={{backgroundColor: 'white', borderColor: 'black', paddingLeft: 12, paddingRight: 12 }}
+        selectStyle={{backgroundColor: 'white', borderColor: 'black', paddingLeft: 12, paddingRight: 12
+         }}
         cancelContainerStyle={{alignItems: 'center', marginTop: 8}}
         cancelText='CANCEL'
         cancelStyle={{backgroundColor: colors.primary, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 8, borderRadius: 4}}
-        cancelTextStyle={{fontSize: 20, fontWeight: '600', color: 'white'}}
+        cancelTextStyle={{fontSize: 20, fontWeight: '500', color: 'white'/* , fontFamily: 'Montserrat' */}}
         listType='FLATLIST'
       />
     </MainContainer>
