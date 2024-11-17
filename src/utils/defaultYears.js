@@ -15,6 +15,8 @@ const years = [
   {value: '1609459200', name:'2021'},
   {value: '1640995200', name:'2022'},
   {value: '1672531200', name:'2023'},
+  {value: '1704067200', name:'2024'},
+  {value: '1735689600', name:'2025'},
 ]
 
 export default {years}
